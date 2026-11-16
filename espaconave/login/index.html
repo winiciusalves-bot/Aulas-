@@ -1,9 +1,70 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Criar acesso</title>
-<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#05070d;color:#e8f0ff;font-family:system-ui,sans-serif;padding:16px;box-sizing:border-box}main{max-width:460px;text-align:center}a{color:#5aa2ff}.box{border:2px dashed #2b4a80;border-radius:14px;padding:18px;margin:16px 0}.btn{display:inline-block;background:#2a7de1;color:#fff;border-radius:12px;padding:12px 16px;text-decoration:none;opacity:.5;pointer-events:none}</style></head>
-<body><main><h1 style="font-size:22px">Criar acesso</h1>
-<p>Área para o responsável criar o acesso da criança. Quem cria a conta é o responsável, com o próprio e-mail.</p>
-<div class="box"><p><strong>Em preparação</strong></p><p class="help" style="font-size:14px">Nenhum cadastro é feito aqui por enquanto. O endereço do serviço de acesso será definido pelo responsável do projeto.</p>
-<!-- PLACEHOLDER: trocar href pelo endereço do serviço de acesso quando definido -->
-<a class="btn" href="#" aria-disabled="true">Criar acesso</a></div>
-<p><a href="../">Voltar à espaçonave</a></p></main></body></html>
+<style>
+body{margin:0;min-height:100vh;background:#05070d;color:#e8f0ff;font-family:system-ui,sans-serif;padding:16px;box-sizing:border-box}
+main{max-width:460px;margin:0 auto}
+label{display:block;margin:12px 0 4px;font-size:15px}
+input[type=text],input[type=email],input[type=password]{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #2b4a80;background:#0f1830;color:#e8f0ff;font-size:16px}
+.consent{background:#0f1830;border-radius:12px;padding:12px;margin:16px 0;font-size:14px;line-height:1.5}
+.consent label{display:flex;gap:8px;align-items:flex-start;margin:0}
+button{background:#2a7de1;color:#fff;border:0;border-radius:12px;padding:12px 16px;font-size:16px;cursor:pointer;width:100%;margin-top:8px}
+button:disabled{opacity:.5}
+#msg{min-height:1.4em;font-size:14px}
+.err{color:#ff8080}.ok{color:#7fe0a0}
+a{color:#5aa2ff}
+</style></head>
+<body><main>
+<h1 style="font-size:22px">Criar acesso</h1>
+<p style="font-size:15px">Este formulário é para o <strong>responsável</strong>. A criança não faz cadastro sozinha.</p>
+<form id="f">
+  <label for="email">E-mail do responsável</label>
+  <input id="email" type="email" required autocomplete="email">
+  <label for="senha">Senha (mínimo 8 caracteres)</label>
+  <input id="senha" type="password" minlength="8" required autocomplete="new-password">
+  <label for="nome">Primeiro nome da criança (até 30 letras)</label>
+  <input id="nome" type="text" maxlength="30" required>
+  <div class="consent">
+    <label><input id="aceite" type="checkbox" required>
+    <span>Autorizo a criação do acesso desta criança à espaçonave, nos termos do art. 14 da LGPD. Entendo que: (1) o site é público; (2) ficam guardados apenas o primeiro nome e a skin; (3) os dados ficam no Supabase, em servidor nos Estados Unidos (us-east-1); (4) posso pedir a exclusão a qualquer momento e a conta é minha, não da criança.</span></label>
+  </div>
+  <button id="enviar" type="submit">Criar acesso</button>
+  <p id="msg" role="status"></p>
+</form>
+<p><a href="../">Voltar à espaçonave</a></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://damgyslmdexmkkhojtmj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Ee1penIBv8waTVZHe4dSXg_dA98_hMz';
+const VERSAO = 'v1-2026-11-16';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const msg = document.getElementById('msg');
+function say(t, cls){ msg.textContent = t; msg.className = cls || ''; }
+document.getElementById('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('enviar'); btn.disabled = true;
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value;
+  const nome = document.getElementById('nome').value.trim();
+  try {
+    let { data: s } = await sb.auth.signInWithPassword({ email, password: senha });
+    if (!s || !s.user) {
+      const r = await sb.auth.signUp({ email, password: senha });
+      if (r.error) throw r.error;
+      const login = await sb.auth.signInWithPassword({ email, password: senha });
+      if (login.error) { say('Conta criada. Confirme o e-mail e volte para entrar.', 'ok'); btn.disabled = false; return; }
+      s = login.data;
+    }
+    const ins = await sb.from('acessos_crianca').insert({
+      responsavel_id: s.user.id, primeiro_nome: nome, skin: {},
+      consentimento_em: new Date().toISOString(), consentimento_versao: VERSAO
+    });
+    if (ins.error) throw ins.error;
+    say('Acesso criado. Guarde seu e-mail e senha. Você pode voltar à espaçonave.', 'ok');
+  } catch (err) {
+    say('Não foi possível criar o acesso. Confira os dados e tente de novo.', 'err');
+  }
+  btn.disabled = false;
+});
+</script>
+</body></html>
