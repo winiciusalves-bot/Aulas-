@@ -48,7 +48,7 @@ button.alt{background:transparent;border:2px solid #5aa2ff}
 #rocket{filter:drop-shadow(0 0 8px #5af0ff)}
 
 #rain{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
-</style></head><body>
+.bonecos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.bonecos figure{margin:0;width:150px}.boneco{width:140px;height:auto;animation:bob 2.4s ease-in-out infinite}figcaption{margin-top:6px}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@media (prefers-reduced-motion: reduce){.boneco{animation:none}}</style></head><body>
 <div id="space"><canvas id="rain"></canvas><div class="sun"></div>
 <div class="orb o1"><i class="pl" style="background:#b5b5b5"></i></div>
 <div class="orb o2"><i class="pl" style="background:#e0a86b"></i></div>
@@ -59,6 +59,10 @@ button.alt{background:transparent;border:2px solid #5aa2ff}
 <button id="skip" class="alt">Pular</button></div>
 <h1>Espaçonave</h1>
 <p class="help">Entre no computador infinito. Entre direto, sem login.</p>
+<div class="card" style="text-align:center"><div class="bonecos">
+<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Byte, robô azul"><line x1="100" y1="20" x2="100" y2="40" stroke="#2a7de1" stroke-width="4"/><circle class="blinkl" cx="100" cy="16" r="6" fill="#ff7a59"/><rect x="45" y="40" width="110" height="100" rx="18" fill="#2a7de1"/><rect x="62" y="62" width="76" height="40" rx="8" fill="#dff1ff"/><circle class="eye" cx="82" cy="82" r="7" fill="#1d2433"/><circle class="eye" cx="118" cy="82" r="7" fill="#1d2433"/><path d="M80 95 Q100 107 120 95" stroke="#1d2433" stroke-width="4" fill="none"/><rect x="60" y="142" width="80" height="28" rx="8" fill="#1f5fb3"/></svg><figcaption>Byte<br><span class="help">Grupo A · terça 16h</span></figcaption></figure>
+<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Pixel, boneca verde-água"><line x1="100" y1="35" x2="100" y2="16" stroke="#2e9e8a" stroke-width="4"/><circle cx="100" cy="95" r="60" fill="#5fd0b8"/><rect x="58" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><rect x="106" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><line x1="94" y1="90" x2="106" y2="90" stroke="#1d2433" stroke-width="4"/><circle class="eye" cx="76" cy="93" r="5" fill="#1d2433"/><circle class="eye" cx="124" cy="93" r="5" fill="#1d2433"/><path d="M86 120 Q100 130 114 120" stroke="#1d2433" stroke-width="4" fill="none"/><line class="gleam" x1="66" y1="70" x2="78" y2="62" stroke="#ffffff" stroke-width="4"/></svg><figcaption>Pixel<br><span class="help">Grupo B · terça 15h</span></figcaption></figure>
+</div><p class="help">Os professores do computador infinito.</p></div>
 <div class="card"><p>Use o link que você recebeu para entrar na sua espaçonave.</p></div>
 <p class="help">Nada é coletado. A skin fica salva só no aparelho onde você a criou.</p>
 <script>
