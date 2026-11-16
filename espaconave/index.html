@@ -63,7 +63,15 @@ button.alt{background:transparent;border:2px solid #5aa2ff}
 .caixa button.go{width:100%;background:#2a7de1;color:#fff;border:0;border-radius:10px;padding:12px;font-size:16px;cursor:pointer}
 .caixa button.go:disabled{opacity:.5}
 .caixa .x{float:right;background:none;border:0;color:#e8f0ff;font-size:22px;cursor:pointer}
-#msgacesso{min-height:1.4em;font-size:14px}</style></head><body>
+#msgacesso{min-height:1.4em;font-size:14px}
+/* Universo fixo atrás de tudo: a página inteira fica dentro dele */
+#space{position:fixed;inset:0;z-index:0;opacity:1!important;pointer-events:none;background:radial-gradient(#0a1230,#05070d)}
+#space.gone{opacity:1!important}
+#space #rocket,#space #pc,#space #skip,#space #rain{display:none}
+body>*:not(#space):not(.painel){position:relative;z-index:1}
+body>.painel{position:fixed;z-index:9}
+#space .orb,#space .sun{animation-play-state:running}
+#space .star{animation-duration:3s}</style></head><body>
 <div id="space"><canvas id="rain"></canvas><div class="sun"></div>
 <div class="orb o1"><i class="pl" style="background:#b5b5b5"></i></div>
 <div class="orb o2"><i class="pl" style="background:#e0a86b"></i></div>
