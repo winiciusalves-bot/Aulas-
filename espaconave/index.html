@@ -1,0 +1,35 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Espaçonave</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#05070d;color:#e8f0ff;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;overflow-x:hidden;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+h1{font-size:24px;margin:8px 0}
+.card{background:#0f1830;border-radius:16px;padding:16px;margin:12px 0}
+a.btn,button{display:inline-block;background:#2a7de1;color:#fff;border:0;border-radius:12px;padding:12px 16px;font-size:16px;text-decoration:none;margin:4px;cursor:pointer}
+button.alt{background:transparent;border:2px solid #5aa2ff}
+.grid{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:#0f1830;border:2px solid #2a7de1;color:#e8f0ff;border-radius:12px;padding:8px 12px;cursor:pointer}
+.chip.on{background:#ffd54a;color:#1d2433}
+#space{position:fixed;inset:0;background:radial-gradient(#0a1230,#05070d);overflow:hidden;z-index:5;transition:opacity .8s}
+#space.gone{opacity:0;pointer-events:none}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:warp 1.6s linear infinite}
+@keyframes warp{from{transform:scale(.2);opacity:0}to{transform:scale(4);opacity:1}}
+#ship{position:absolute;left:50%;top:60%;width:90px;transform:translate(-50%,-50%);animation:fly 3.2s ease-in forwards}
+@keyframes fly{to{transform:translate(-50%,-50%) scale(.05);opacity:0}}
+#grid{position:absolute;inset:0;background-image:linear-gradient(#1d3a6b 1px,transparent 1px),linear-gradient(90deg,#1d3a6b 1px,transparent 1px);background-size:40px 40px;opacity:.35;animation:zoom 3.2s ease-in forwards}
+@keyframes zoom{from{transform:scale(1)}to{transform:scale(4)}}
+#skip{position:fixed;bottom:16px;right:16px;z-index:6}
+.avatar{width:220px;max-width:100%;display:block;margin:0 auto}
+.help{opacity:.8;font-size:14px}
+</style></head><body>
+<div id="space"><div id="grid"></div><svg id="ship" viewBox="0 0 120 80"><path d="M10 40 L60 10 L110 40 L60 70 Z" fill="#c9d6ff" stroke="#5aa2ff" stroke-width="3"/><circle cx="60" cy="40" r="10" fill="#2a7de1"/></svg><button id="skip" class="alt">Pular</button></div>
+<h1>Espaçonave</h1>
+<p class="help">Entre no computador infinito. Entre direto, sem login.</p>
+<div class="card"><p>Use o link que você recebeu para entrar na sua espaçonave.</p></div>
+<p class="help">Nada é coletado. A skin fica salva só no aparelho onde você a criou.</p>
+<script>
+const $=id=>document.getElementById(id);
+function enter(){ $('space').classList.add('gone'); }
+window.addEventListener('DOMContentLoaded',()=>{
+  const s=$('space'); for(let i=0;i<60;i++){const e=document.createElement('div');e.className='star';e.style.left=Math.random()*100+'%';e.style.top=Math.random()*100+'%';e.style.animationDelay=(Math.random()*1.6)+'s';s.appendChild(e);}
+  setTimeout(enter,3600); $('skip').onclick=enter;
+});
+</script></body></html>
