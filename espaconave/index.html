@@ -48,7 +48,22 @@ button.alt{background:transparent;border:2px solid #5aa2ff}
 #rocket{filter:drop-shadow(0 0 8px #5af0ff)}
 
 #rain{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
-.bonecos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.bonecos figure{margin:0;width:150px}.boneco{width:140px;height:auto;animation:bob 2.4s ease-in-out infinite}figcaption{margin-top:6px}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@media (prefers-reduced-motion: reduce){.boneco{animation:none}}</style></head><body>
+.bonecos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.bonecos figure{margin:0;width:150px}.boneco{width:140px;height:auto;animation:bob 2.4s ease-in-out infinite}figcaption{margin-top:6px}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@media (prefers-reduced-motion: reduce){.boneco{animation:none}}
+.foguete-btn{display:block;margin:12px auto;background:none;border:0;cursor:pointer;width:110px;color:#e8f0ff}
+.foguete-btn svg{width:110px;animation:bob 2.4s ease-in-out infinite;filter:drop-shadow(0 0 10px #5af0ff)}
+.painel{position:fixed;inset:0;background:#05070ddd;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+.painel.on{display:flex}
+.caixa{background:#0a1830;border:2px solid #5af0ff;border-radius:16px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:90vh;overflow:auto}
+.caixa input[type=text],.caixa input[type=email],.caixa input[type=password]{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #2b4a80;background:#0f1830;color:#e8f0ff;font-size:16px;margin:4px 0 10px}
+.abas{display:flex;gap:8px;margin-bottom:12px}
+.abas button{flex:1;background:transparent;border:2px solid #5af0ff;color:#e8f0ff;border-radius:10px;padding:10px;cursor:pointer}
+.abas button.on{background:#5af0ff;color:#05070d}
+.caixa .consent{font-size:13px;line-height:1.45;background:#0f1830;border-radius:10px;padding:10px;margin:8px 0}
+.caixa .consent label{display:flex;gap:8px;align-items:flex-start}
+.caixa button.go{width:100%;background:#2a7de1;color:#fff;border:0;border-radius:10px;padding:12px;font-size:16px;cursor:pointer}
+.caixa button.go:disabled{opacity:.5}
+.caixa .x{float:right;background:none;border:0;color:#e8f0ff;font-size:22px;cursor:pointer}
+#msgacesso{min-height:1.4em;font-size:14px}</style></head><body>
 <div id="space"><canvas id="rain"></canvas><div class="sun"></div>
 <div class="orb o1"><i class="pl" style="background:#b5b5b5"></i></div>
 <div class="orb o2"><i class="pl" style="background:#e0a86b"></i></div>
@@ -63,6 +78,7 @@ button.alt{background:transparent;border:2px solid #5aa2ff}
 <figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Byte, robô azul"><line x1="100" y1="20" x2="100" y2="40" stroke="#2a7de1" stroke-width="4"/><circle class="blinkl" cx="100" cy="16" r="6" fill="#ff7a59"/><rect x="45" y="40" width="110" height="100" rx="18" fill="#2a7de1"/><rect x="62" y="62" width="76" height="40" rx="8" fill="#dff1ff"/><circle class="eye" cx="82" cy="82" r="7" fill="#1d2433"/><circle class="eye" cx="118" cy="82" r="7" fill="#1d2433"/><path d="M80 95 Q100 107 120 95" stroke="#1d2433" stroke-width="4" fill="none"/><rect x="60" y="142" width="80" height="28" rx="8" fill="#1f5fb3"/></svg><figcaption>Byte<br><span class="help">Grupo A · terça 16h</span></figcaption></figure>
 <figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Pixel, boneca verde-água"><line x1="100" y1="35" x2="100" y2="16" stroke="#2e9e8a" stroke-width="4"/><circle cx="100" cy="95" r="60" fill="#5fd0b8"/><rect x="58" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><rect x="106" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><line x1="94" y1="90" x2="106" y2="90" stroke="#1d2433" stroke-width="4"/><circle class="eye" cx="76" cy="93" r="5" fill="#1d2433"/><circle class="eye" cx="124" cy="93" r="5" fill="#1d2433"/><path d="M86 120 Q100 130 114 120" stroke="#1d2433" stroke-width="4" fill="none"/><line class="gleam" x1="66" y1="70" x2="78" y2="62" stroke="#ffffff" stroke-width="4"/></svg><figcaption>Pixel<br><span class="help">Grupo B · terça 15h</span></figcaption></figure>
 </div><p class="help">Os professores do computador infinito.</p></div>
+<button id="abrir" class="foguete-btn" aria-label="Abrir acesso"><svg viewBox="0 0 60 90"><path d="M30 2 C44 22 46 50 40 70 L20 70 C14 50 16 22 30 2Z" fill="#dfe8ff" stroke="#5aa2ff" stroke-width="2"/><circle cx="30" cy="38" r="7" fill="#2a7de1"/><path d="M20 62 L8 80 L22 74Z M40 62 L52 80 L38 74Z" fill="#ff7a59"/><path d="M24 72 Q30 92 36 72Z" fill="#ffb800"/></svg><span class="help">Entrar ou criar acesso</span></button>
 <div class="card"><p>Use o link que você recebeu para entrar na sua espaçonave.</p></div>
 <p class="help">Nada é coletado. A skin fica salva só no aparelho onde você a criou.</p>
 <script>
@@ -94,6 +110,63 @@ window.addEventListener('DOMContentLoaded',()=>{
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduce){ draw(); }
   setTimeout(()=>{ stop=true; c.style.transition='opacity .8s'; c.style.opacity='0'; },2600);
+})();
+</script>
+<div id="painel" class="painel" role="dialog" aria-modal="true" aria-labelledby="titulo-acesso"><div class="caixa">
+<button class="x" id="fechar" aria-label="Fechar">×</button>
+<h2 id="titulo-acesso" style="font-size:20px;margin:0 0 12px">Acesso</h2>
+<div class="abas"><button id="aba-entrar" class="on" type="button">Entrar</button><button id="aba-criar" type="button">Criar conta</button></div>
+<form id="form-acesso">
+  <label for="a-email">E-mail do responsável</label><input id="a-email" type="email" required autocomplete="email">
+  <label for="a-senha">Senha</label><input id="a-senha" type="password" minlength="8" required autocomplete="current-password">
+  <div id="bloco-criar" hidden>
+    <label for="a-nome">Primeiro nome da criança (até 30 letras)</label><input id="a-nome" type="text" maxlength="30">
+    <div class="consent"><label><input id="a-aceite" type="checkbox"> <span>Autorizo a criação do acesso desta criança à espaçonave, nos termos do art. 14 da LGPD. Entendo que: (1) o site é público; (2) ficam guardados apenas o primeiro nome e a skin; (3) os dados ficam no Supabase, em servidor nos Estados Unidos (us-east-1); (4) posso pedir a exclusão a qualquer momento. A conta é minha, do responsável, não da criança.</span></label></div>
+  </div>
+  <button id="a-enviar" class="go" type="submit">Entrar</button>
+  <p id="msgacesso" role="status"></p>
+</form></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  const SUPABASE_URL='https://damgyslmdexmkkhojtmj.supabase.co';
+  const SUPABASE_KEY='sb_publishable_Ee1penIBv8waTVZHe4dSXg_dA98_hMz';
+  const VERSAO='v1-2026-11-16';
+  let modo='entrar';
+  const $$=id=>document.getElementById(id);
+  const sb=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+  function fechar(){ $$('painel').classList.toggle('on',false); }
+  function setModo(m){ modo=m; $$('aba-entrar').classList.toggle('on',m==='entrar'); $$('aba-criar').classList.toggle('on',m==='criar'); $$('bloco-criar').hidden=(m!=='criar'); $$('a-enviar').textContent=m==='criar'?'Criar conta':'Entrar'; $$('a-nome').required=(m==='criar'); $$('a-aceite').required=(m==='criar'); $$('a-senha').autocomplete=(m==='criar'?'new-password':'current-password'); $$('msgacesso').textContent=''; }
+  function say(t,ok){ $$('msgacesso').textContent=t; $$('msgacesso').style.color=ok?'#7fe0a0':'#ff8080'; }
+  $$('abrir').addEventListener('click',()=>{ $$('painel').classList.toggle('on',true); $$('a-email').focus(); });
+  $$('fechar').addEventListener('click',fechar);
+  $$('painel').addEventListener('click',e=>{ if(e.target.id==='painel') fechar(); });
+  $$('aba-entrar').addEventListener('click',()=>setModo('entrar'));
+  $$('aba-criar').addEventListener('click',()=>setModo('criar'));
+  $$('form-acesso').addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(!sb){ say('Serviço de acesso indisponível agora. Tente mais tarde.',false); return; }
+    const btn=$$('a-enviar'); btn.disabled=true;
+    const email=$$('a-email').value.trim(), senha=$$('a-senha').value;
+    try{
+      if(modo==='entrar'){
+        const r=await sb.auth.signInWithPassword({email,password:senha});
+        if(r.error) throw r.error;
+        say('Entrou. Sua espaçonave será aberta aqui em breve.',true);
+      } else {
+        const nome=$$('a-nome').value.trim();
+        if(!$$('a-aceite').checked){ say('Marque a autorização para continuar.',false); btn.disabled=false; return; }
+        const r=await sb.auth.signUp({email,password:senha});
+        if(r.error) throw r.error;
+        const l=await sb.auth.signInWithPassword({email,password:senha});
+        if(l.error){ say('Conta criada. Confirme o e-mail e depois clique em Entrar.',true); btn.disabled=false; return; }
+        const ins=await sb.from('acessos_crianca').insert({responsavel_id:l.data.user.id,primeiro_nome:nome,skin:{},consentimento_em:new Date().toISOString(),consentimento_versao:VERSAO});
+        if(ins.error) throw ins.error;
+        say('Acesso criado. Guarde seu e-mail e senha.',true);
+      }
+    }catch(err){ say('Não foi possível concluir. Confira os dados e tente de novo.',false); }
+    btn.disabled=false;
+  });
 })();
 </script>
 </body></html>
