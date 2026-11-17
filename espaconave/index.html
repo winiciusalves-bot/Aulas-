@@ -484,7 +484,7 @@ function chatInicio(){
 /* ---------- Mapa ---------- */
 function pintarMapa(){
   const ok=completo(), feita=!!(S.dados.aulas&&S.dados.aulas['1']&&S.dados.aulas['1'].concluida);
-  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira missão: nome e um poder de cada tipo.':feita?'Missão 1 concluída. Na próxima aula você escolhe o caminho: Lógica ou Internet segura.':'Seu robô está pronto. A primeira missão é no planeta Máquina.';
+  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira missão: nome e um poder de cada tipo.':feita?'Missão 1 concluída. Na próxima aula você escolhe o caminho: Lógica ou Internet segura.':'Seu robô está pronto. A primeira missão é no planeta Máquina e é feita no computador.';
   const M=$('mapa'); M.textContent='';
   PLANETAS.forEach((p,i)=>{
     const b=document.createElement('button'); b.className='planeta';
@@ -492,7 +492,7 @@ function pintarMapa(){
     if(aberto) b.classList.add(feita?'feito':'aberto'); else b.disabled=true;
     const ic=document.createElement('i'); ic.style.background=p.c; if(p.foto){ic.style.backgroundImage=`url(${p.foto})`;ic.style.backgroundSize='cover';}
     const n=document.createElement('b'); n.textContent=p.n;
-    const s=document.createElement('small'); s.textContent=i===0?(feita?'✓ Missão 1 concluída':ok?'Missão 1 · toque para começar':'Termine o robô'):(i<3?'Abre depois da missão 1':'Em breve');
+    const s=document.createElement('small'); s.textContent=i===0?(feita?'✓ Missão 1 concluída':ok?'Missão 1 · 💻 Computador · toque para começar':'Termine o robô'):(i<3?'Abre depois da missão 1':'Em breve');
     const d=document.createElement('small'); d.style.display='block'; d.textContent=p.d;
     b.append(ic,n,d,s);
     if(aberto) b.onclick=abrirAula;
@@ -510,7 +510,7 @@ function abrirAula(){
   $('prof-a').innerHTML=prof().svg;
   const nome=S.aluno.nome, rn=R().nome.trim()||'seu robô';
   if(S.aluno.grupo==='A'){
-    $('aula-titulo').textContent='Missão 1 · Planeta Máquina';
+    $('aula-titulo').textContent='Missão 1 · Planeta Máquina · 💻 Computador';
     const LBL={e:'Entrada',p:'Processamento',s:'Saída'};
     const RIGHT=['Sorte de principiante? Próxima!','Acertou. Não se empolga, ainda tem mais!','Boa! O '+rn+' ficou orgulhoso.'];
     const WRONG=['Ahá! Achei que você ia cair nessa 😏 Tenta outra vez.','Quase! Eu sou um robô: eu não erro... a não ser de propósito 😜','Opa! Pensa: isso traz informação, decide ou mostra o resultado?'];
@@ -530,7 +530,7 @@ function abrirAula(){
     desenha();
     falar('fala-a',`Oi, ${nome}! Chegou a hora de provar o que você sabe 😏 O ${rn} está de olho.`);
   } else {
-    $('aula-titulo').textContent='Missão 1 · Planeta Máquina';
+    $('aula-titulo').textContent='Missão 1 · Planeta Máquina · 💻 Computador';
     const QS=[
      {q:'Quando a energia acaba, o computador perde o que estava aberto. Qual parte explica isso?',o:['Armazenamento (HD ou SSD)','Memória RAM','Processador'],a:1,e:'A RAM é temporária: ela apaga quando a energia acaba.'},
      {q:'Qual é maior: 1 GB ou 1 TB?',o:['1 GB','1 TB'],a:1,e:'1 TB equivale a 1000 GB.'},
