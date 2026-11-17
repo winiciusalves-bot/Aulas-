@@ -577,7 +577,7 @@ function retomarSessao(){
 function encerrarSessao(){ if(!SESS)return; pausarSessao(); SESS.fim=new Date().toISOString(); salvar(true); }
 document.addEventListener('visibilitychange',()=>{ if(document.hidden){pausarSessao();salvar(true);} else retomarSessao(); });
 addEventListener('pagehide',encerrarSessao);
-setInterval(()=>{ if(SESS&&SESS.visivel&&!document.hidden) salvar(true); },60000);
+setInterval(()=>{ if(SESS&&SESS.visivel&&!document.hidden){ pausarSessao(); retomarSessao(); salvar(true); } },60000);
 
 /* ---------- Entrada e saída ---------- */
 async function entrar(user){
