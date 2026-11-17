@@ -109,8 +109,8 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .certa{border-color:var(--ok)!important}
 
 /* Cena de pouso */
-.cena{--dx:205px;position:relative;height:600px;max-width:780px;width:100%;margin:8px auto 84px}
-.foguete{position:absolute;left:50%;bottom:0;width:170px;z-index:2;transform:translateX(-50%);animation:pousa 3.4s cubic-bezier(.25,.6,.3,1) both}
+.cena{--dx:262px;--pb:104px;--sy:16px;position:relative;height:600px;max-width:780px;width:100%;margin:8px auto 84px}
+.foguete{position:absolute;left:50%;bottom:0;width:260px;z-index:2;transform:translateX(-50%);animation:pousa 3.4s cubic-bezier(.25,.6,.3,1) both}
 .foguete svg{width:100%;height:auto;filter:drop-shadow(0 0 16px #5af0ff88)}
 .foguete path[fill="url(#chama)"]{animation:apaga .8s 3.3s forwards}
 @keyframes pousa{0%{transform:translate(-50%,-120vh)}80%{transform:translate(-50%,-14px)}90%{transform:translate(-50%,3px)}95%{transform:translate(-50%,-2px)}100%{transform:translate(-50%,0)}}
@@ -126,10 +126,11 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .cena .prof figcaption{opacity:0;animation:aparece .4s 7.4s forwards}
 .cena .prof.esq{animation:sairEsq 2.4s 3.8s linear forwards}
 .cena .prof.dir{animation:sairDir 2.4s 5s linear forwards}
-@keyframes sairEsq{0%{left:50%;bottom:66px;opacity:0;transform:translateX(-50%) scale(.3)}8%{opacity:1}45%{left:50%;bottom:0;opacity:1;transform:translateX(-50%) scale(.85)}100%{left:calc(50% - var(--dx));bottom:26px;opacity:1;transform:translateX(-50%) scale(1)}}
-@keyframes sairDir{0%{left:50%;bottom:66px;opacity:0;transform:translateX(-50%) scale(.3)}8%{opacity:1}45%{left:50%;bottom:0;opacity:1;transform:translateX(-50%) scale(.85)}100%{left:calc(50% + var(--dx));bottom:26px;opacity:1;transform:translateX(-50%) scale(1)}}
+@keyframes sairEsq{0%{left:50%;bottom:var(--pb);opacity:0;transform:translateX(-50%) scale(.42)}8%{opacity:1}45%{left:50%;bottom:0;opacity:1;transform:translateX(-50%) scale(.85)}100%{left:calc(50% - var(--dx));bottom:26px;opacity:1;transform:translateX(-50%) scale(1)}}
+@keyframes sairDir{0%{left:50%;bottom:var(--pb);opacity:0;transform:translateX(-50%) scale(.42)}8%{opacity:1}45%{left:50%;bottom:0;opacity:1;transform:translateX(-50%) scale(.85)}100%{left:calc(50% + var(--dx));bottom:26px;opacity:1;transform:translateX(-50%) scale(1)}}
 @keyframes passo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.cena .caixa{position:absolute;left:50%;bottom:300px;transform:translateX(-50%);width:min(360px,92%);margin:0;opacity:0;animation:aparece .8s 7.5s forwards}
+.cena .caixa{position:absolute;left:50%;bottom:120px;z-index:5;transform:translateX(-50%);transform-origin:50% 100%;width:min(360px,92%);margin:0;opacity:0;animation:sobe 1.2s 7.5s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes sobe{0%{opacity:0;transform:translate(-50%,var(--sy)) scale(.08)}12%{opacity:1}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
 @keyframes aparece{to{opacity:1}}
 
 .solo{position:absolute;left:50%;bottom:-70px;width:100vw;height:150px;transform:translateX(-50%);z-index:0;border-radius:50% 50% 0 0/38px 38px 0 0;
@@ -139,13 +140,13 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .poeira.p2{animation:poeiraD 1.8s 2.6s ease-out forwards}
 @keyframes poeiraE{0%{opacity:0;transform:translateX(-50%) scale(.3)}30%{opacity:.9}90%{opacity:0;transform:translateX(-120%) scale(1.8)}100%{opacity:0;transform:translateX(-50%) scale(0)}}
 @keyframes poeiraD{0%{opacity:0;transform:translateX(-50%) scale(.3)}30%{opacity:.9}90%{opacity:0;transform:translateX(20%) scale(1.8)}100%{opacity:0;transform:translateX(-50%) scale(0)}}
-.rampa{position:absolute;left:50%;bottom:8px;width:96px;height:66px;margin-left:-48px;z-index:3;transform-origin:top center;transform:scaleY(0);clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);background:repeating-linear-gradient(180deg,#c9d6ff 0 5px,#7d8aa6 5px 10px);animation:rampa .5s 3.3s forwards}
+.rampa{position:absolute;left:50%;bottom:8px;width:150px;height:98px;margin-left:-75px;z-index:3;transform-origin:top center;transform:scaleY(0);clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);background:repeating-linear-gradient(180deg,#c9d6ff 0 5px,#7d8aa6 5px 10px);animation:rampa .5s 3.3s forwards}
 @keyframes rampa{to{transform:scaleY(1)}}
 .porta{opacity:0;animation:aparece .4s 3.2s forwards}
 .cena .prof::after{content:"";position:absolute;left:50%;bottom:16px;width:70px;height:10px;transform:translateX(-50%);border-radius:50%;background:#0009;z-index:-1}
-.foguete::after{content:"";position:absolute;left:50%;bottom:6px;width:190px;height:16px;transform:translateX(-50%);border-radius:50%;background:#000a;z-index:-1}
+.foguete::after{content:"";position:absolute;left:50%;bottom:6px;width:110%;height:18px;transform:translateX(-50%);border-radius:50%;background:#000a;z-index:-1}
 @media (prefers-reduced-motion:reduce){.poeira{display:none}.rampa{transform:none}.porta{opacity:1}.cena .prof.esq{left:calc(50% - var(--dx))}.cena .prof.dir{left:calc(50% + var(--dx))}}
-@media(max-width:600px){.cena{--dx:112px;height:640px}.cena .caixa{bottom:300px}.cena .prof{width:84px}.cena .prof svg{width:84px;height:auto}.foguete{width:130px}}
+@media(max-width:600px){.cena{--dx:138px;--pb:76px;--sy:224px;height:640px}.cena .caixa{bottom:300px}.rampa{width:110px;height:70px;margin-left:-55px}.cena .prof{width:84px}.cena .prof svg{width:84px;height:auto}.foguete{width:190px}}
 @media (prefers-reduced-motion:reduce){.foguete,.cena .prof,.cena .caixa{animation:none!important;opacity:1}.foguete path[fill="url(#chama)"]{opacity:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head>
