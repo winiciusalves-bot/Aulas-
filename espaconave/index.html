@@ -107,6 +107,23 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .item:disabled,.cx:disabled{opacity:.45}
 #res{white-space:pre-wrap;font-size:14px;background:#0a1230;border-radius:12px;padding:12px;margin-top:10px}
 .certa{border-color:var(--ok)!important}
+
+/* Cena de pouso */
+.cena{--dx:205px;position:relative;height:600px;max-width:780px;width:100%;margin:8px auto 0}
+.foguete{position:absolute;left:50%;bottom:0;width:170px;transform:translateX(-50%);animation:pousa 3.4s cubic-bezier(.2,.7,.3,1) both}
+.foguete svg{width:100%;height:auto;filter:drop-shadow(0 0 16px #5af0ff88)}
+.foguete path[fill="url(#chama)"]{animation:apaga .8s 3.3s forwards}
+@keyframes pousa{0%{transform:translate(-50%,-120vh)}100%{transform:translate(-50%,0)}}
+@keyframes apaga{to{opacity:0}}
+.cena .prof{position:absolute;bottom:40px;margin:0;width:96px;text-align:center;font-size:13px;color:var(--mut);opacity:0;transform:translateX(-50%) scale(.2)}
+.cena .prof svg{width:96px;height:96px;display:block;margin:0 auto 4px;animation:flutua 3.2s ease-in-out infinite}
+.cena .prof.esq{left:calc(50% - var(--dx));animation:sai .9s 3.4s forwards}
+.cena .prof.dir{left:calc(50% + var(--dx));animation:sai .9s 3.6s forwards}
+@keyframes sai{to{opacity:1;transform:translateX(-50%) scale(1)}}
+.cena .caixa{position:absolute;left:50%;bottom:300px;transform:translateX(-50%);width:min(360px,92%);margin:0;opacity:0;animation:aparece .8s 4.6s forwards}
+@keyframes aparece{to{opacity:1}}
+@media(max-width:600px){.cena{--dx:112px;height:640px}.cena .caixa{bottom:300px}.cena .prof{width:84px}.cena .prof svg{width:84px;height:84px}.foguete{width:130px}}
+@media (prefers-reduced-motion:reduce){.foguete,.cena .prof,.cena .caixa{animation:none!important;opacity:1}.foguete path[fill="url(#chama)"]{opacity:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head>
 <body>
@@ -118,8 +135,19 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 <section id="v-entrada" class="hero">
   <h1>Bem-vindo ao <span>universo</span></h1>
   <p class="sub">Aqui você monta o seu robô, escolhe os poderes dele e parte para as missões do computador infinito.</p>
-  <button id="abrir" class="lancar" aria-label="Entrar na espaçonave">
-    <svg viewBox="0 0 80 120" aria-hidden="true">
+  <div class="cena">
+    <figure class="prof esq" id="prof-esq"></figure>
+    <figure class="prof dir" id="prof-dir"></figure>
+    <div class="caixa" id="caixa">
+      <h2 id="t-acesso">Identificação do tripulante</h2>
+      <form id="form-acesso">
+        <label for="a-user">Usuário</label><input id="a-user" type="text" required autocomplete="username" autocapitalize="off" spellcheck="false">
+        <label for="a-senha">Senha</label><input id="a-senha" type="password" required autocomplete="current-password">
+        <p style="margin-top:14px"><button id="a-enviar" class="btn" style="width:100%" type="submit">Decolar</button></p>
+        <p id="msgacesso" role="status"></p>
+      </form>
+    </div>
+    <div class="foguete" aria-hidden="true"><svg class="nave" viewBox="0 0 80 120" aria-hidden="true">
       <defs>
         <linearGradient id="corpo" x1="0" x2="1"><stop offset="0" stop-color="#7d8aa6"/><stop offset=".3" stop-color="#f4f7ff"/><stop offset=".55" stop-color="#d6deef"/><stop offset="1" stop-color="#5b6785"/></linearGradient>
         <linearGradient id="aleta" x1="0" x2="1"><stop offset="0" stop-color="#8b1e2d"/><stop offset="1" stop-color="#e0475a"/></linearGradient>
@@ -142,11 +170,9 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
       <path d="M61 30h6v16h-6Z" fill="#7d8aa6"/>
       <rect x="66" y="44" width="4" height="46" rx="2" fill="#5b6785"/>
       <path d="M60 84h14v4H60Z" fill="#3a4460"/>
-    </svg>
-    <b>Entrar na espaçonave</b>
-  </button>
-  <div class="profs" id="profs"></div>
-  <p class="mut" style="margin-top:14px">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
+    </svg></div>
+  </div>
+  <p class="mut">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
 </section>
 
 <!-- HANGAR -->
@@ -209,17 +235,6 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 </section>
 </main>
 
-<div id="painel" class="painel" role="dialog" aria-modal="true" aria-labelledby="t-acesso"><div class="caixa">
-  <button class="fechar" id="fechar" aria-label="Fechar">×</button>
-  <h2 id="t-acesso">Identificação do tripulante</h2>
-  <form id="form-acesso">
-    <label for="a-user">Usuário</label><input id="a-user" type="text" required autocomplete="username" autocapitalize="off" spellcheck="false">
-    <label for="a-senha">Senha</label><input id="a-senha" type="password" required autocomplete="current-password">
-    <p style="margin-top:14px"><button id="a-enviar" class="btn" style="width:100%" type="submit">Decolar</button></p>
-    <p id="msgacesso" role="status"></p>
-  </form>
-</div></div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 "use strict";
@@ -236,7 +251,8 @@ const S={key:null,aluno:null,uid:null,rowId:null,online:false,dados:{robo:null,a
 const BYTE='<svg viewBox="0 0 200 200" role="img" aria-label="Byte"><line x1="100" y1="20" x2="100" y2="40" stroke="#3d8bff" stroke-width="5"/><circle cx="100" cy="15" r="8" fill="#ff7a59"/><rect x="42" y="38" width="116" height="104" rx="22" fill="#3d8bff"/><rect x="60" y="60" width="80" height="46" rx="12" fill="#e6f4ff"/><circle cx="82" cy="82" r="8" fill="#101a33"/><circle cx="118" cy="82" r="8" fill="#101a33"/><path d="M82 96q18 12 36 0" stroke="#101a33" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="62" y="146" width="76" height="30" rx="10" fill="#2460c4"/><circle cx="34" cy="92" r="9" fill="#2460c4"/><circle cx="166" cy="92" r="9" fill="#2460c4"/></svg>';
 const PIXEL='<svg viewBox="0 0 200 200" role="img" aria-label="Pixel"><line x1="100" y1="36" x2="100" y2="14" stroke="#2e9e8a" stroke-width="5"/><circle cx="100" cy="12" r="6" fill="#ffd166"/><circle cx="100" cy="100" r="64" fill="#5fd0b8"/><rect x="54" y="82" width="40" height="30" rx="9" fill="#eafffa" stroke="#101a33" stroke-width="5"/><rect x="106" y="82" width="40" height="30" rx="9" fill="#eafffa" stroke="#101a33" stroke-width="5"/><line x1="94" y1="94" x2="106" y2="94" stroke="#101a33" stroke-width="5"/><circle cx="76" cy="98" r="6" fill="#101a33"/><circle cx="124" cy="98" r="6" fill="#101a33"/><path d="M84 130q16 10 32-2" stroke="#101a33" stroke-width="4" fill="none" stroke-linecap="round"/></svg>';
 const prof=()=>S.aluno&&S.aluno.grupo==='B'?{nome:'Pixel',svg:PIXEL}:{nome:'Byte',svg:BYTE};
-$('profs').innerHTML='<figure>'+BYTE+'<figcaption>Byte</figcaption></figure><figure>'+PIXEL+'<figcaption>Pixel</figcaption></figure>';
+$('prof-esq').innerHTML=BYTE+'<figcaption>Byte</figcaption>';
+$('prof-dir').innerHTML=PIXEL+'<figcaption>Pixel</figcaption>';
 
 /* ---------- Catálogo ---------- */
 const MODELOS=[
@@ -510,11 +526,7 @@ async function entrar(user){
   pintar(); tela('v-hangar'); aba(completo()?'missoes':'modelo');
   if(!completo()) falar('fala-h',S.aluno.grupo==='B'?`${S.aluno.nome}, bem-vindo ao hangar. Monte um robô que preste e depois a gente conversa.`:`Oi, ${S.aluno.nome}! Este é o seu hangar. Vamos montar o seu robô?`);
 }
-function fecharPainel(){ $('painel').classList.toggle('on',false); }
-$('abrir').onclick=()=>{ $('painel').classList.toggle('on',true); $('a-user').focus(); };
-$('fechar').onclick=fecharPainel;
-$('painel').onclick=e=>{ if(e.target.id==='painel') fecharPainel(); };
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') fecharPainel(); });
+function fecharPainel(){}
 $('form-acesso').addEventListener('submit',async e=>{
   e.preventDefault();
   const m=$('msgacesso'), diz=(t,ok)=>{m.textContent=t;m.style.color=ok?'var(--ok)':'var(--bad)';};
