@@ -460,11 +460,11 @@ function pintarMapa(){
 }
 
 /* ---------- Aula 1 ---------- */
-const A={log:[],acertos:0,total:0,fim:false,travada:false};
+const A={log:[],acertos:0,total:0,fim:false,travada:false,ini:null,marcas:[]};
 const HOJE=()=>new Date().toLocaleDateString('pt-BR');
 function abrirAula(){
   salvar(true);
-  A.log=[];A.acertos=0;A.fim=false;A.travada=false;
+  A.log=[];A.acertos=0;A.fim=false;A.travada=false;A.ini=new Date().toISOString();A.marcas=[];
   $('res').hidden=true;$('msgcopia').textContent='';$('finalizar').disabled=false;
   $('prof-a').innerHTML=prof().svg;
   const nome=S.aluno.nome, rn=R().nome.trim()||'seu robô';
@@ -480,7 +480,7 @@ function abrirAula(){
     Object.keys(LBL).forEach(c=>{const b=document.createElement('button');b.className='cx';b.textContent=LBL[c];b.onclick=()=>{
       if(A.travada||!resto.length) return;
       if(sel===null){falar('fala-a','Escolhe um item primeiro, não sou adivinho 😏');return;}
-      const it=resto[sel], ok=it[1]===c; A.log.push([it[0],LBL[c],ok]);
+      const it=resto[sel], ok=it[1]===c; A.log.push([it[0],LBL[c],ok]);A.marcas.push({p:A.log.length,em:new Date().toISOString(),acerto:ok});
       if(ok){A.acertos++;resto.splice(sel,1);sel=null;falar('fala-a',RIGHT[Math.floor(Math.random()*RIGHT.length)]);}
       else falar('fala-a',WRONG[Math.floor(Math.random()*WRONG.length)]);
       desenha();
@@ -501,7 +501,7 @@ function abrirAula(){
     A.total=QS.length; let i=0;
     $('aula-corpo').innerHTML='<p class="mut" id="qn"></p><h2 id="q"></h2><div class="itens" id="opts"></div><p id="expl" style="margin-top:10px"></p><button id="prox" class="btn" hidden>Próxima</button>';
     const mostra=()=>{const q=QS[i];$('qn').textContent=`Pergunta ${i+1} de ${QS.length}`;$('q').textContent=q.q;$('expl').textContent='';$('prox').hidden=true;const X=$('opts');X.textContent='';
-      q.o.forEach((t,k)=>{const b=document.createElement('button');b.className='item';b.textContent=t;b.onclick=()=>{if(A.travada)return;const ok=k===q.a;if(ok)A.acertos++;A.log.push([q.q,t,ok]);[...X.children].forEach((x,n)=>{x.disabled=true;if(n===q.a)x.classList.add('certa');});falar('fala-a',(ok?RIGHT:WRONG)[Math.floor(Math.random()*3)]);$('expl').textContent=q.e;$('prox').hidden=false;};X.appendChild(b);});};
+      q.o.forEach((t,k)=>{const b=document.createElement('button');b.className='item';b.textContent=t;b.onclick=()=>{if(A.travada)return;const ok=k===q.a;if(ok)A.acertos++;A.log.push([q.q,t,ok]);A.marcas.push({p:A.log.length,em:new Date().toISOString(),acerto:ok});[...X.children].forEach((x,n)=>{x.disabled=true;if(n===q.a)x.classList.add('certa');});falar('fala-a',(ok?RIGHT:WRONG)[Math.floor(Math.random()*3)]);$('expl').textContent=q.e;$('prox').hidden=false;};X.appendChild(b);});};
     $('prox').onclick=()=>{i++;if(i<QS.length){mostra();return;}A.fim=true;$('qn').textContent='Fim do quiz';$('q').textContent=`Você acertou ${A.acertos} de ${QS.length}.`;$('opts').textContent='';$('expl').textContent='';$('prox').hidden=true;falar('fala-a',`${A.acertos} de ${QS.length}, ${nome}. A revanche fica aberta. Toque em "Finalizar aula" 😏`);};
     mostra();
     falar('fala-a',`Missão aceita, ${nome}! Vamos ver se o piloto do ${rn} sabe como a máquina funciona.`);
@@ -524,7 +524,7 @@ async function finalizar(){
   A.travada=true; $('finalizar').disabled=true;
   document.querySelectorAll('#aula-corpo button').forEach(b=>b.disabled=true);
   S.dados.aulas=S.dados.aulas||{};
-  S.dados.aulas['1']={data:HOJE(),fim:new Date().toISOString(),concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log};
+  S.dados.aulas['1']={data:HOJE(),inicio:A.ini,fim:new Date().toISOString(),marcas:A.marcas,concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log};
   falar('fala-a',`Missão encerrada, ${S.aluno.nome}! Resultado guardado. Agora é só enviar.`);
   copiar(); await salvar(true);
 }
@@ -555,12 +555,36 @@ async function salvar(silencio){
   return ok;
 }
 
+/* ---------- Tempo de uso ---------- */
+let SESS=null;
+function abrirSessao(){
+  SESS={ini:new Date().toISOString(),t0:Date.now(),ativo:0,visivel:!document.hidden,fim:null};
+  S.dados.sessoes=Array.isArray(S.dados.sessoes)?S.dados.sessoes:[];
+  S.dados.sessoes.push(SESS); S.dados.acessos=Array.isArray(S.dados.acessos)?S.dados.acessos:[];
+  S.dados.acessos.push(SESS.ini);
+  if(S.dados.acessos.length>300)S.dados.acessos=S.dados.acessos.slice(-300);
+  if(S.dados.sessoes.length>300)S.dados.sessoes=S.dados.sessoes.slice(-300);
+  salvar(true);
+}
+function pausarSessao(){ // soma o tempo em que a aba estava visível
+  if(!SESS||!SESS.visivel)return;
+  SESS.ativo+=Date.now()-SESS.t0; SESS.visivel=false; SESS.fim=new Date().toISOString();
+}
+function retomarSessao(){
+  if(!SESS||SESS.visivel)return;
+  SESS.t0=Date.now(); SESS.visivel=true;
+}
+function encerrarSessao(){ if(!SESS)return; pausarSessao(); SESS.fim=new Date().toISOString(); salvar(true); }
+document.addEventListener('visibilitychange',()=>{ if(document.hidden){pausarSessao();salvar(true);} else retomarSessao(); });
+addEventListener('pagehide',encerrarSessao);
+setInterval(()=>{ if(SESS&&SESS.visivel&&!document.hidden) salvar(true); },60000);
+
 /* ---------- Entrada e saída ---------- */
 async function entrar(user){
   S.uid=user.id; S.key=(user.email||'').split('@')[0];
   S.aluno=ALUNOS[S.key]||{nome:S.key,grupo:'A'};
   await carregar();
-  S.dados.acessos.push(new Date().toISOString()); if(S.dados.acessos.length>300) S.dados.acessos=S.dados.acessos.slice(-300); salvar(true);
+  abrirSessao();
   $('ola').textContent='Hangar de '+S.aluno.nome;
   $('prof-h').innerHTML=prof().svg; $('prof-a').innerHTML=prof().svg;
   $('nome-robo').value=R().nome; $('chat').textContent=''; $('resp').textContent=''; chat.passo=0; $('msgsalvar').textContent='';
