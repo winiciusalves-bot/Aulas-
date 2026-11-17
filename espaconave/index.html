@@ -488,17 +488,20 @@ function chatInicio(){
 /* ---------- Mapa ---------- */
 function pintarMapa(){
   const ok=completo(); const feitas=Object.keys(AULAS).filter(n=>feitaAula(+n)).length;
-  const prox=Object.keys(AULAS).map(Number).find(n=>liberada(n)&&!feitaAula(n));
-  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira aula: nome e um poder de cada tipo.':prox?`Sua próxima aula é a ${prox}: ${AULAS[prox].titulo}. Ela é feita no ${AULAS[prox].ap.replace(/^\S+\s/,'').toLowerCase()}.`:`Você concluiu ${feitas} aula(s). A próxima ainda está sendo preparada.`;
+  const prox=Object.keys(AULAS).map(Number).find(n=>liberada(n)&&!aprovada(n));
+  const reprov=Object.keys(AULAS).map(Number).find(n=>liberada(n)&&feitaAula(n)&&!aprovada(n));
+  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira aula: nome e um poder de cada tipo.':reprov?`Aula ${reprov}: você fez ${Math.round(notaAula(reprov)*100)}%. Para avançar, precisa de pelo menos 80%. Refaça a aula.`:prox?`Sua próxima aula é a ${prox}: ${AULAS[prox].titulo}. Ela é feita no ${AULAS[prox].ap.replace(/^\S+\s/,'').toLowerCase()}.`:`Você concluiu ${feitas} aula(s). A próxima ainda está sendo preparada.`;
   const M=$('mapa'); M.textContent='';
   PLANETAS.forEach(p=>{
     const b=document.createElement('button'); b.className='planeta';
     const prontas=p.aulas.filter(n=>AULAS[n]);
-    const alvo=prontas.find(n=>liberada(n)&&!feitaAula(n));
+    const alvo=prontas.find(n=>liberada(n)&&!aprovada(n));
+    const reprovada=prontas.find(n=>liberada(n)&&feitaAula(n)&&!aprovada(n));
     const todas=p.aulas.length&&p.aulas.every(n=>feitaAula(n));
     const feitasP=prontas.filter(n=>feitaAula(n));
     let txt;
-    if(alvo){ const sv=(S.dados.aulas||{})[alvo]; b.classList.add('aberto'); b.onclick=()=>abrirAula(alvo);
+    if(reprovada){ b.classList.add('aberto'); b.onclick=()=>abrirAula(reprovada); txt=`Aula ${reprovada} · nota ${Math.round(notaAula(reprovada)*100)}% · toque para refazer (precisa de 80%)`; }
+    else if(alvo){ const sv=(S.dados.aulas||{})[alvo]; b.classList.add('aberto'); b.onclick=()=>abrirAula(alvo);
       txt=`Aula ${alvo} · ${AULAS[alvo].ap} · ${sv&&sv.passo>0?'toque para continuar':'toque para começar'}`; }
     else if(feitasP.length){ b.classList.add('feito'); const ult=feitasP[feitasP.length-1]; b.onclick=()=>abrirAula(ult);
       txt=todas?'✓ Planeta concluído · toque para rever':`✓ ${feitasP.length} de ${p.aulas.length} aulas · a próxima está chegando`; }
@@ -600,14 +603,19 @@ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=
 function passosDe(n,grupo){return AULAS[n].passos.filter(p=>!p.g||p.g===grupo).map(p=>Object.assign({},p,(grupo==='B'&&p.B)?p.B:{}));}
 function contaTotal(ps){return ps.reduce((s,p)=>s+(p.t==='q'?1:p.t==='classe'?p.itens.length:0),0);}
 function feitaAula(n){return !!(S.dados.aulas&&S.dados.aulas[n]&&S.dados.aulas[n].concluida&&S.dados.aulas[n].nPassos);}
-function liberada(n){return completo()&&!!AULAS[n]&&(n===1||feitaAula(n-1));}
+const NOTA_MIN=0.8; // regra do plano: 80% nos exercícios objetivos para avançar
+function notaAula(n){const a=S.dados.aulas&&S.dados.aulas[n]; return a&&a.total?a.acertos/a.total:0;}
+function aprovada(n){return feitaAula(n)&&notaAula(n)>=NOTA_MIN;}
+function liberada(n){return completo()&&!!AULAS[n]&&(n===1||aprovada(n-1));}
 function abrirAula(n){
   n=n||1; if(!AULAS[n]) return;
   salvar(true);
   A.n=n; A.passos=passosDe(n,S.aluno.grupo); A.total=contaTotal(A.passos);
   let sv=(S.dados.aulas||{})[n];
+  if(sv&&sv.concluida&&!(sv.nPassos&&sv.total&&sv.acertos/sv.total>=NOTA_MIN)){ /* refazer: começa do zero */ sv=null; }
   if(sv&&!sv.nPassos){ S.dados.antigas=S.dados.antigas||{}; S.dados.antigas[n]=sv; delete S.dados.aulas[n]; sv=null; } // resultado da versão curta fica guardado à parte
-  A.revisao=!!(sv&&sv.concluida); A.fim=false; A.travada=false;
+  A.revisao=!!(sv&&sv.concluida&&sv.nPassos&&sv.total&&sv.acertos/sv.total>=NOTA_MIN); // aula aprovada: só revisão; reprovada: refaz do zero
+  A.fim=false; A.travada=false;
   if(sv&&!sv.concluida&&sv.passo>0&&sv.passo<A.passos.length&&sv.nPassos===A.passos.length){
     A.i=sv.passo; A.log=sv.respostas||[]; A.acertos=sv.acertos||0; A.marcas=sv.marcas||[]; A.conc=sv.conceitos||{}; A.abertas=sv.abertas||[]; A.auto=sv.auto||null; A.ini=sv.inicio||new Date().toISOString();
   }else{
@@ -817,6 +825,7 @@ function cartaoAluno(r){
     <div class="kv"><span>Fim</span><span>${pdata(a.fim)}</span></div>
     <div class="kv"><span>Duração</span><span>${dur}</span></div>
     <div class="kv"><span>Acertos de primeira</span><span>${a.acertos??'—'} de ${a.total??'—'}</span></div>
+    <div class="kv"><span>Nota</span><span>${a.total?Math.round(a.acertos/a.total*100)+'% · '+(a.acertos/a.total>=NOTA_MIN?'aprovado':'abaixo de 80%'):'—'}</span></div>
     ${Object.keys(conc).map(c=>`<div class="kv"><span>${pesc(c)}</span><span>${conc[c][0]} de ${conc[c][1]}</span></div>`).join('')}
     ${a.auto?`<div class="kv"><span>Autoavaliação</span><span>${AUTO[a.auto]||pesc(a.auto)}</span></div>`:''}
     ${(a.abertas||[]).map(x=>`<p class="resp-ab"><b>${pesc(x.q)}</b><br>${pesc(x.r)}</p>`).join('')}
