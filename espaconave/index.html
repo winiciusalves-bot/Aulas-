@@ -221,7 +221,7 @@ const MODELOS=[
  {id:'rover',nome:'Rover explorador',fato:'Rovers como o Perseverance, da NASA, exploram Marte sobre seis rodas.'},
  {id:'braco',nome:'Braço robótico',fato:'Braços robóticos montam carros nas fábricas e trabalham na Estação Espacial.'},
  {id:'drone',nome:'Drone',fato:'Drones voam com hélices. Um pequeno helicóptero, o Ingenuity, já voou em Marte.'},
- {id:'humanoide',nome:'Humanoide',fato:'Humanoides andam sobre duas pernas, como o ASIMO, da Honda.'},
+ {id:'humanoide',nome:'Humanoide',fato:'O Robonaut 2, da NASA, é um humanoide com braços e mãos de alta precisão. Foi testado na Estação Espacial Internacional. Foto: NASA.',foto:'espaconave/imagens/robonaut-2.jpg'},
  {id:'aspirador',nome:'Robô aspirador',fato:'Usa sensores para desviar dos móveis e não cair da escada.'},
  {id:'quadrupede',nome:'Cão-robô',fato:'Robôs de quatro patas, como o Spot, inspecionam lugares perigosos.'}];
 const CORES=['#3d8bff','#ff5d73','#3fd18c','#ffb800','#a78bfa','#ff8a3d','#e6edff'];
@@ -310,7 +310,7 @@ function pintar(){
 function montarHangar(){
   $('abas').innerHTML=ABAS.map(([k,n])=>`<button role="tab" data-a="${k}">${n}</button>`).join('');
   $('abas').onclick=e=>{const b=e.target.closest('[data-a]'); if(b) aba(b.dataset.a);};
-  $('modelos').innerHTML=MODELOS.map(m=>`<button class="op" data-m="${m.id}" aria-pressed="false">${roboSVG(m.id,'#3d8bff')}<b>${m.nome}</b><small>${m.fato}</small></button>`).join('');
+  $('modelos').innerHTML=MODELOS.map(m=>`<button class="op" data-m="${m.id}" aria-pressed="false">${m.foto?`<img src="${m.foto}" alt="${m.nome}" loading="lazy" style="width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:10px;margin-bottom:6px">`:roboSVG(m.id,'#3d8bff')}<b>${m.nome}</b><small>${m.fato}</small></button>`).join('');
   $('modelos').onclick=e=>{const b=e.target.closest('[data-m]'); if(!b) return; R().modelo=b.dataset.m; pintar(); falar('fala-h',MODELOS.find(m=>m.id===b.dataset.m).fato);};
   $('cores').innerHTML=CORES.map(c=>`<button class="cor" data-c="${c}" style="background:${c}" aria-label="Cor ${c}" aria-pressed="false"></button>`).join('');
   $('cores').onclick=e=>{const b=e.target.closest('[data-c]'); if(b){R().cor=b.dataset.c;pintar();}};
