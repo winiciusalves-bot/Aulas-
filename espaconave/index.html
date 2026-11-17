@@ -192,6 +192,20 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 #v-entrada #caixa{max-width:none;margin:0}
 #v-entrada #caixa .nota{margin:10px 0 0;font-size:11px;color:#7f93c4;text-align:center}
 #v-entrada .so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#v-prof{max-width:980px;margin:0 auto;padding:12px 0;text-align:left}
+.prof-h{font-size:24px;margin:6px 0 2px}
+.prof-menu{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:18px 0}
+.prof-bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.grade-p{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-top:10px}
+.grade-p .card p{margin:6px 0;font-size:14px;color:var(--mut)}
+.grade-p .card h2{font-size:17px;margin:0 0 6px}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:5px 0;border-top:1px solid #1b2a52}
+.kv span:first-child{color:var(--mut)}
+.bola{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:700;margin-left:6px}
+.feito{background:#143d2c;color:#3ddc97}.falta{background:#3a2a10;color:#ffc857}
+.marcas{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.marcas i{width:14px;height:14px;border-radius:4px;display:inline-block}
+.certo{background:#3ddc97}.errado{background:#ff6b6b}
 </style></head>
 <body>
 <canvas id="ceu" aria-hidden="true"></canvas>
@@ -264,6 +278,37 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 </section>
 
 <!-- AULA 1 -->
+<section id="v-prof" hidden>
+  <h1 class="prof-h">Painel do professor</h1>
+  <p class="sub">Escolha o que quer abrir.</p>
+  <div id="prof-menu" class="prof-menu">
+    <button class="btn" id="p-materias" type="button">Matérias e tarefas</button>
+    <button class="btn sec" id="p-alunos" type="button">Painel de alunos</button>
+    <button class="btn sec" id="p-sair" type="button">Sair</button>
+  </div>
+  <div id="p-materias-box" hidden>
+    <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button></div>
+    <div class="grade-p">
+      <div class="card"><h2>Montar o robô</h2><p>Dar um nome, escolher um modelo e um poder de cada tipo: perceber, pensar e agir.</p><p>Depois, inventar um poder novo pelo chat, com nome, o que ele faz e o que resolve.</p></div>
+      <div class="card"><h2>Missão 1 · Planeta Máquina</h2><p><b>Grupo A (Byte):</b> classificar 8 itens do computador e do robô em Entrada, Processamento ou Saída.</p><p><b>Grupo B (Pixel):</b> 5 perguntas de múltipla escolha sobre como o computador funciona (RAM, armazenamento, unidades de medida).</p></div>
+      <div class="card"><h2>Os 7 planetas</h2>
+        <div class="kv"><span>1 · Máquina</span><span>Como o computador funciona</span></div>
+        <div class="kv"><span>2 · Lógica</span><span>Passo a passo e decisões</span></div>
+        <div class="kv"><span>3 · Internet segura</span><span>Senhas, golpes e privacidade</span></div>
+        <div class="kv"><span>4 · Código</span><span>Programar de verdade</span></div>
+        <div class="kv"><span>5 · Dados</span><span>Números, textos e memória</span></div>
+        <div class="kv"><span>6 · Robótica</span><span>Circuitos, sensores e motores</span></div>
+        <div class="kv"><span>7 · Criação</span><span>O seu próprio projeto</span></div>
+        <p>Só a Missão 1 está liberada no site. As demais aparecem como "Em breve".</p></div>
+    </div>
+  </div>
+  <div id="p-alunos-box" hidden>
+    <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button><button class="btn sec" id="p-atualizar" type="button">Atualizar</button></div>
+    <div id="p-lista" class="grade-p"></div>
+    <p id="p-msg" class="sub"></p>
+  </div>
+</section>
+
 <section id="v-aula" hidden>
   <div class="topo"><h2 id="aula-titulo"></h2><button id="voltar" class="btn sec">Voltar ao mapa</button></div>
   <div class="card fala"><span id="prof-a"></span><div class="balao" id="fala-a" aria-live="polite"></div></div>
@@ -357,7 +402,7 @@ function completo(){const t=tiposPresentes();return !!R().nome.trim()&&t.sensor&
 function falar(el,t){$(el).textContent=t;}
 
 /* ---------- Telas ---------- */
-function tela(v){['v-entrada','v-hangar','v-aula'].forEach(x=>{$(x).hidden=(x!==v);});window.scrollTo(0,0);}
+function tela(v){['v-entrada','v-hangar','v-aula','v-prof'].forEach(x=>{$(x).hidden=(x!==v);});window.scrollTo(0,0);}
 const ABAS=[['modelo','1 Modelo'],['poderes','2 Poderes'],['inventar','3 Inventar'],['missoes','4 Missões']];
 function aba(a){
   ABAS.forEach(([k])=>{$('t-'+k).hidden=(k!==a);});
@@ -592,6 +637,47 @@ async function entrar(user){
   if(!completo()) falar('fala-h',S.aluno.grupo==='B'?`${S.aluno.nome}, bem-vindo ao hangar. Monte um robô que preste e depois a gente conversa.`:`Oi, ${S.aluno.nome}! Este é o seu hangar. Vamos montar o seu robô?`);
 }
 function fecharPainel(){}
+
+/* ---------- Professor: menu, matérias e painel de alunos ---------- */
+async function ehProfessor(user){
+  try{ const q=await sb.from('professores').select('uid').eq('uid',user.id).limit(1); return !q.error&&!!(q.data&&q.data.length); }
+  catch(e){ return false; }
+}
+function abrirMenuProf(){
+  $('v-prof').hidden=false; $('p-materias-box').hidden=true; $('p-alunos-box').hidden=true; $('prof-menu').hidden=false;
+  ['v-entrada','v-hangar','v-aula'].forEach(x=>$(x).hidden=true); window.scrollTo(0,0);
+}
+document.getElementById('p-materias').onclick=()=>{$('prof-menu').hidden=true;$('p-materias-box').hidden=false;};
+document.getElementById('p-alunos').onclick=()=>{$('prof-menu').hidden=true;$('p-alunos-box').hidden=false;carregarAlunos();};
+document.getElementById('p-atualizar').onclick=carregarAlunos;
+document.querySelectorAll('#v-prof [data-voltar]').forEach(b=>b.onclick=abrirMenuProf);
+document.getElementById('p-sair').onclick=async()=>{ try{await sb.auth.signOut();}catch(e){} S.key=S.aluno=S.uid=null; tela('v-entrada'); };
+const pmin=s=>{s=Math.round((s||0)/60);return s<60?s+' min':Math.floor(s/60)+' h '+(s%60)+' min';};
+const pdata=iso=>iso?new Date(iso).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}):'—';
+const pesc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function cartaoAluno(r){
+  const k=r.skin||{}, aulas=k.aulas||{}, a1=aulas['1']||null, ses=Array.isArray(k.sessoes)?k.sessoes:[];
+  const tempo=ses.reduce((s,x)=>s+(x.ativo||0),0)/1000;
+  const ultima=ses.length?ses[ses.length-1].ini:(Array.isArray(k.acessos)&&k.acessos.length?k.acessos[k.acessos.length-1]:null);
+  const marcas=(a1&&Array.isArray(a1.marcas))?a1.marcas:[];
+  const feita=a1&&a1.concluida;
+  return `<div class="card"><h2>${pesc(r.primeiro_nome)}<span class="bola ${feita?'feito':'falta'}">${feita?'missão 1 concluída':'missão 1 pendente'}</span></h2>
+    <div class="kv"><span>Robô</span><span>${pesc((k.robo&&k.robo.nome)||'sem robô')}</span></div>
+    <div class="kv"><span>Sessões</span><span>${ses.length||(k.acessos||[]).length}</span></div>
+    <div class="kv"><span>Tempo de uso</span><span>${pmin(tempo)}</span></div>
+    <div class="kv"><span>Último acesso</span><span>${pdata(ultima)}</span></div>
+    <div class="kv"><span>Início da missão 1</span><span>${pdata(a1&&a1.inicio)}</span></div>
+    <div class="kv"><span>Fim da missão 1</span><span>${pdata(a1&&a1.fim)}</span></div>
+    <div class="kv"><span>Acertos</span><span>${a1?a1.acertos+' de '+a1.total:'—'}</span></div>
+    <div class="marcas" title="cada quadrinho é uma resposta: verde acerto, vermelho erro">${marcas.map(m=>`<i class="${m.acerto?'certo':'errado'}" title="${pdata(m.em)}"></i>`).join('')}</div></div>`;
+}
+async function carregarAlunos(){
+  $('p-msg').textContent='Carregando…';
+  const q=await sb.from('acessos_crianca').select('id,primeiro_nome,skin,criado_em').order('criado_em',{ascending:true});
+  if(q.error){ $('p-msg').textContent='Não foi possível ler os dados agora.'; $('p-lista').innerHTML=''; return; }
+  $('p-lista').innerHTML=q.data.length?q.data.map(cartaoAluno).join(''):'<p>Nenhum tripulante ainda.</p>';
+  $('p-msg').textContent='Atualizado em '+new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+'.';
+}
 $('form-acesso').addEventListener('submit',async e=>{
   e.preventDefault();
   const m=$('msgacesso'), diz=(t,ok)=>{m.textContent=t;m.style.color=ok?'var(--ok)':'var(--bad)';};
@@ -602,7 +688,8 @@ $('form-acesso').addEventListener('submit',async e=>{
   try{
     const r=await sb.auth.signInWithPassword({email:u+DOMINIO,password:$('a-senha').value});
     if(r.error) throw r.error;
-    $('a-senha').value=''; diz('',true); fecharPainel(); await entrar(r.data.user);
+    $('a-senha').value=''; diz('',true); fecharPainel();
+    if(await ehProfessor(r.data.user)){ abrirMenuProf(); } else { await entrar(r.data.user); }
   }catch(err){diz('Usuário ou senha incorretos.');}
   b.disabled=false;
 });
