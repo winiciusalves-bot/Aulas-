@@ -1,96 +1,529 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Espaçonave</title><style>
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Espaçonave</title>
+<style>
+:root{--bg:#04060f;--panel:rgba(12,20,44,.86);--panel2:#0f1a38;--line:#24407a;--cy:#5af0ff;--blue:#3d8bff;--txt:#e9f1ff;--mut:#a3b5d9;--ok:#58e6a0;--bad:#ff9a9a;--gold:#ffd166;--r:18px}
 *{box-sizing:border-box}
-body{margin:0;background:#05070d;color:#e8f0ff;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;overflow-x:hidden;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
-h1{font-size:24px;margin:8px 0}
-.card{background:#0f1830;border-radius:16px;padding:16px;margin:12px 0}
-a.btn,button{display:inline-block;background:#2a7de1;color:#fff;border:0;border-radius:12px;padding:12px 16px;font-size:16px;text-decoration:none;margin:4px;cursor:pointer}
-button.alt{background:transparent;border:2px solid #5aa2ff}
-.help{opacity:.8;font-size:14px}
-#space{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(#0a1230,#05070d);overflow:hidden}
-#space .star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:warp 3s linear infinite}
-@keyframes warp{from{transform:scale(.2);opacity:0}to{transform:scale(4);opacity:1}}
-#space::before{content:"";position:absolute;inset:-50%;background-image:linear-gradient(rgba(90,240,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(90,240,255,.12) 1px,transparent 1px);background-size:48px 48px;transform:perspective(500px) rotateX(60deg);animation:gridmove 4s linear infinite}
-@keyframes gridmove{to{background-position:0 48px}}
-#space .sun{position:absolute;left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:radial-gradient(#fff3a0,#ffb800 60%,#ff7a00);box-shadow:0 0 60px #5af0ffaa,0 0 120px #2a7de1aa}
-#space .orb{position:absolute;left:50%;top:50%;border:1px dashed #5af0ff55;border-radius:50%;animation:spin linear infinite}
-#space .pl{position:absolute;top:-7px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%}
-@keyframes spin{to{transform:rotate(360deg)}}
-#space .o1{width:120px;height:120px;margin:-60px 0 0 -60px;animation-duration:6s}
-#space .o2{width:190px;height:190px;margin:-95px 0 0 -95px;animation-duration:10s}
-#space .o3{width:270px;height:270px;margin:-135px 0 0 -135px;animation-duration:15s}
-#space .o4{width:350px;height:350px;margin:-175px 0 0 -175px;animation-duration:22s}
-body>*:not(#space):not(.painel){position:relative;z-index:1}
-.bonecos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.bonecos figure{margin:0;width:150px}.boneco{width:140px;height:auto;animation:bob 2.4s ease-in-out infinite}figcaption{margin-top:6px}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.foguete-btn{display:block;margin:12px auto;background:none;border:0;cursor:pointer;width:110px;color:#e8f0ff}
-.foguete-btn svg{width:110px;animation:bob 2.4s ease-in-out infinite;filter:drop-shadow(0 0 10px #5af0ff)}
-@media (prefers-reduced-motion: reduce){#space *,.boneco,.foguete-btn svg{animation:none!important}}
-.painel{position:fixed;inset:0;z-index:9;background:#05070ddd;display:none;align-items:center;justify-content:center;padding:16px}
-.painel.on{display:flex}
-.caixa{background:#0a1830;border:2px solid #5af0ff;border-radius:16px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:90vh;overflow:auto}
-.caixa input[type=text],.caixa input[type=password]{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #2b4a80;background:#0f1830;color:#e8f0ff;font-size:16px;margin:4px 0 10px}
-.caixa button.go{width:100%;background:#2a7de1;color:#fff;border:0;border-radius:10px;padding:12px;font-size:16px;cursor:pointer}
-.caixa button.go:disabled{opacity:.5}
-.caixa .x{float:right;background:none;border:0;color:#e8f0ff;font-size:22px;cursor:pointer}
-#msgacesso{min-height:1.4em;font-size:14px}
-</style></head><body>
-<div id="space"><div class="sun"></div>
-<div class="orb o1"><i class="pl" style="background:#b5b5b5"></i></div>
-<div class="orb o2"><i class="pl" style="background:#e0a86b"></i></div>
-<div class="orb o3"><i class="pl" style="background:#4a9fe8"></i></div>
-<div class="orb o4"><i class="pl" style="background:#d9573b"></i></div></div>
-<h1 style="font-size:28px;margin:4px 0 2px">Bem-vindo ao universo</h1>
-<p class="help" style="font-size:16px">Você está entrando no computador infinito. Toque no foguete para entrar na sua espaçonave.</p>
-<div class="card" style="text-align:center"><div class="bonecos">
-<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Byte, robô azul"><line x1="100" y1="20" x2="100" y2="40" stroke="#2a7de1" stroke-width="4"/><circle cx="100" cy="16" r="6" fill="#ff7a59"/><rect x="45" y="40" width="110" height="100" rx="18" fill="#2a7de1"/><rect x="62" y="62" width="76" height="40" rx="8" fill="#dff1ff"/><circle cx="82" cy="82" r="7" fill="#1d2433"/><circle cx="118" cy="82" r="7" fill="#1d2433"/><path d="M80 95 Q100 107 120 95" stroke="#1d2433" stroke-width="4" fill="none"/><rect x="60" y="142" width="80" height="28" rx="8" fill="#1f5fb3"/></svg><figcaption>Byte<br><span class="help">Grupo A · terça 16h</span></figcaption></figure>
-<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Pixel, boneca verde-água"><line x1="100" y1="35" x2="100" y2="16" stroke="#2e9e8a" stroke-width="4"/><circle cx="100" cy="95" r="60" fill="#5fd0b8"/><rect x="58" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><rect x="106" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><line x1="94" y1="90" x2="106" y2="90" stroke="#1d2433" stroke-width="4"/><circle cx="76" cy="93" r="5" fill="#1d2433"/><circle cx="124" cy="93" r="5" fill="#1d2433"/><path d="M86 120 Q100 130 114 120" stroke="#1d2433" stroke-width="4" fill="none"/></svg><figcaption>Pixel<br><span class="help">Grupo B · terça 15h</span></figcaption></figure>
-</div><p class="help">Os professores do computador infinito.</p></div>
-<button id="abrir" class="foguete-btn" aria-label="Entrar na espaçonave"><svg viewBox="0 0 60 90"><path d="M30 2 C44 22 46 50 40 70 L20 70 C14 50 16 22 30 2Z" fill="#dfe8ff" stroke="#5aa2ff" stroke-width="2"/><circle cx="30" cy="38" r="7" fill="#2a7de1"/><path d="M20 62 L8 80 L22 74Z M40 62 L52 80 L38 74Z" fill="#ff7a59"/><path d="M24 72 Q30 92 36 72Z" fill="#ffb800"/></svg><span class="help">Entrar</span></button>
-<div class="card"><p>Use o link que você recebeu para entrar na sua espaçonave.</p></div>
-<p class="help">Nada é coletado. A skin fica salva só no aparelho onde você a criou.</p>
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45;min-height:100vh;overflow-x:hidden}
+#ceu{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.deco{position:fixed;z-index:0;pointer-events:none;border-radius:50%}
+.sol{left:-90px;top:-90px;width:240px;height:240px;background:radial-gradient(circle at 60% 60%,#fff6c2,#ffb800 45%,#ff7a00 70%,transparent 72%);filter:blur(1px);opacity:.85;box-shadow:0 0 120px 40px #ff9d0033}
+.gigante{right:-70px;bottom:-60px;width:260px;height:260px;background:radial-gradient(circle at 32% 30%,#9fd0ff,#3d6fd6 45%,#16245e 75%);box-shadow:inset -30px -24px 60px #020414,0 0 60px #3d8bff33}
+.gigante::before{content:"";position:absolute;left:-28%;top:44%;width:156%;height:16%;border-radius:50%;border:6px solid #c9d8ff55;border-left-color:#c9d8ff22;transform:rotate(-18deg)}
+.lua{right:12%;top:9%;width:54px;height:54px;background:radial-gradient(circle at 35% 30%,#f3f0e6,#a9a493 60%,#5d594d);box-shadow:inset -8px -6px 14px #0008;animation:flutua 9s ease-in-out infinite}
+@keyframes flutua{50%{transform:translateY(-10px)}}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+h1{font-size:clamp(28px,6vw,44px);line-height:1.1;margin:10px 0 8px;letter-spacing:-.02em;text-wrap:balance}
+h1 span{background:linear-gradient(90deg,var(--cy),#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:20px;margin:0 0 10px}
+h3{font-size:16px;margin:14px 0 8px;color:var(--cy);font-weight:600}
+p{margin:0 0 10px}
+.mut{color:var(--mut);font-size:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0;backdrop-filter:blur(6px)}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:14px;border:0;background:linear-gradient(180deg,#4a97ff,#2a6fe0);color:#fff;font-weight:600}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sec{background:transparent;border:1.5px solid var(--line);color:var(--txt);font-weight:500}
+.btn.ok{background:linear-gradient(180deg,#3fd18c,#1f9d63)}
+:focus-visible{outline:3px solid var(--cy);outline-offset:2px}
+[hidden]{display:none!important}
 
-<div id="painel" class="painel" role="dialog" aria-modal="true" aria-labelledby="titulo-acesso"><div class="caixa">
-<button class="x" id="fechar" aria-label="Fechar">×</button>
-<h2 id="titulo-acesso" style="font-size:20px;margin:0 0 12px">Entrar</h2>
-<form id="form-acesso">
-  <label for="a-user">Usuário</label><input id="a-user" type="text" required autocomplete="username" autocapitalize="off" spellcheck="false">
-  <label for="a-senha">Senha</label><input id="a-senha" type="password" required autocomplete="current-password">
-  <button id="a-enviar" class="go" type="submit">Entrar</button>
-  <p id="msgacesso" role="status"></p>
-</form></div></div>
+/* Entrada */
+.hero{min-height:calc(100vh - 80px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px}
+.hero .sub{font-size:18px;color:var(--mut);max-width:34ch}
+.lancar{background:none;border:0;padding:8px;margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.lancar svg{width:120px;filter:drop-shadow(0 0 14px #5af0ffaa);animation:flutua 2.6s ease-in-out infinite}
+.lancar b{display:inline-block;padding:12px 26px;border-radius:999px;background:linear-gradient(180deg,#4a97ff,#2a6fe0);font-size:18px;box-shadow:0 0 0 0 #3d8bff88;animation:pulso 2.4s infinite}
+@keyframes pulso{70%{box-shadow:0 0 0 16px #3d8bff00}100%{box-shadow:0 0 0 0 #3d8bff00}}
+.profs{display:flex;gap:26px;justify-content:center;margin-top:18px}
+.profs figure{margin:0;width:92px;font-size:13px;color:var(--mut)}
+.profs svg{width:84px;height:84px;animation:flutua 3.2s ease-in-out infinite}
+.profs figure:nth-child(2) svg{animation-delay:-1.4s}
+
+/* Painel de login */
+.painel{position:fixed;inset:0;z-index:9;background:#03050dcc;display:none;align-items:center;justify-content:center;padding:16px}
+.painel.on{display:flex}
+.caixa{background:#0b1634;border:1.5px solid var(--cy);border-radius:20px;padding:20px;width:100%;max-width:380px;box-shadow:0 0 50px #5af0ff33}
+.caixa label{display:block;font-size:14px;color:var(--mut);margin-top:10px}
+input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14px;border-radius:12px;border:1.5px solid var(--line);background:#0a1230;color:var(--txt);font:inherit}
+.fechar{float:right;background:none;border:0;font-size:26px;line-height:1;padding:4px 8px;color:var(--mut)}
+#msgacesso{min-height:1.5em;font-size:14px;margin:10px 0 0}
+
+/* Hangar */
+.topo{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.topo h2{font-size:22px;margin:0}
+.fala{display:flex;gap:12px;align-items:flex-start}
+.fala svg{flex:0 0 58px;width:58px;height:58px}
+.balao{background:#0a1230;border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:10px 14px;min-height:46px;flex:1}
+.abas{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.abas button{flex:1 0 auto;min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:#0a1230;color:var(--mut);white-space:nowrap}
+.abas button[aria-selected=true]{background:var(--cy);border-color:var(--cy);color:#04121c;font-weight:700}
+.grade{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.grade>*{min-width:0}
+@media(max-width:600px){.gigante{width:170px;height:170px;right:-70px;bottom:-70px;opacity:.7}.sol{width:170px;height:170px}}
+@media(min-width:840px){.grade{grid-template-columns:320px 1fr;align-items:start}.previa{position:sticky;top:14px}}
+.previa{text-align:center}
+#robo svg{width:min(230px,70%);height:auto}
+.medidor{display:flex;gap:6px;justify-content:center;margin:8px 0}
+.medidor span{font-size:12px;padding:5px 10px;border-radius:999px;border:1.5px solid var(--line);color:var(--mut)}
+.medidor span.on{border-color:var(--ok);color:var(--ok)}
+.lista{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+.lista span{font-size:12px;background:#0a1230;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.opcoes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.op{text-align:left;background:#0a1230;border:1.5px solid var(--line);border-radius:14px;padding:12px;min-height:60px}
+.op b{display:block}
+.op small{color:var(--mut);display:block;margin-top:2px;line-height:1.3}
+.op[aria-pressed=true]{border-color:var(--cy);background:#0d2440;box-shadow:0 0 0 2px #5af0ff44 inset}
+.op svg{width:64px;height:64px;display:block;margin:0 auto 6px}
+.cores{display:flex;gap:10px;flex-wrap:wrap}
+.cor{width:46px;height:46px;border-radius:50%;border:3px solid transparent;padding:0}
+.cor[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 3px var(--cy)}
+
+/* Chat */
+#chat{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;padding:4px}
+.m{max-width:86%;padding:9px 13px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.m.bot{align-self:flex-start;background:#0a1230;border:1px solid var(--line);border-top-left-radius:4px}
+.m.eu{align-self:flex-end;background:#1d4fb0;border-top-right-radius:4px}
+.resp{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.resp input{flex:1 1 180px}
+
+/* Mapa */
+.mapa{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.planeta{background:#0a1230;border:1.5px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center;min-height:150px}
+.planeta i{display:block;width:62px;height:62px;border-radius:50%;margin:0 auto 8px;box-shadow:inset -10px -8px 16px #0009}
+.planeta b{display:block}
+.planeta small{color:var(--mut)}
+.planeta:disabled{opacity:.55;cursor:not-allowed}
+.planeta.aberto{border-color:var(--cy);box-shadow:0 0 22px #5af0ff33}
+.planeta.feito{border-color:var(--ok)}
+
+/* Aula */
+.itens,.caixas{display:flex;flex-wrap:wrap;gap:8px}
+.item{min-height:46px;padding:8px 14px;border-radius:12px;background:#0a1230;border:1.5px solid var(--blue);color:var(--txt)}
+.item[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#1d2433;font-weight:600}
+.cx{flex:1 1 130px;min-height:64px;border-radius:14px;background:transparent;border:2px dashed var(--cy);color:var(--txt);font-weight:600}
+.item:disabled,.cx:disabled{opacity:.45}
+#res{white-space:pre-wrap;font-size:14px;background:#0a1230;border-radius:12px;padding:12px;margin-top:10px}
+.certa{border-color:var(--ok)!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<canvas id="ceu" aria-hidden="true"></canvas>
+<div class="deco sol"></div><div class="deco gigante"></div><div class="deco lua"></div>
+
+<main>
+<!-- ENTRADA -->
+<section id="v-entrada" class="hero">
+  <h1>Bem-vindo ao <span>universo</span></h1>
+  <p class="sub">Aqui você monta o seu robô, escolhe os poderes dele e parte para as missões do computador infinito.</p>
+  <button id="abrir" class="lancar" aria-label="Entrar na espaçonave">
+    <svg viewBox="0 0 60 92" aria-hidden="true"><path d="M30 2C44 22 46 50 40 70H20C14 50 16 22 30 2Z" fill="#e6edff" stroke="#5aa2ff" stroke-width="2"/><circle cx="30" cy="36" r="8" fill="#0a1230" stroke="#5af0ff" stroke-width="3"/><path d="M20 60 7 80l15-6ZM40 60l13 20-15-6Z" fill="#ff7a59"/><path d="M23 72q7 22 14 0Z" fill="#ffd166"/></svg>
+    <b>Entrar na espaçonave</b>
+  </button>
+  <div class="profs" id="profs"></div>
+  <p class="mut" style="margin-top:14px">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
+</section>
+
+<!-- HANGAR -->
+<section id="v-hangar" hidden>
+  <div class="topo"><h2 id="ola"></h2><button id="sair" class="btn sec">Sair</button></div>
+  <div class="card fala"><span id="prof-h"></span><div class="balao" id="fala-h" aria-live="polite"></div></div>
+  <div class="grade">
+    <div class="card previa">
+      <div id="robo"></div>
+      <b id="robo-nome" style="font-size:18px"></b>
+      <div class="medidor" id="medidor"></div>
+      <div class="lista" id="lista-poderes"></div>
+      <p style="margin-top:12px"><button id="salvar" class="btn ok">Salvar robô</button></p>
+      <p id="msgsalvar" class="mut" aria-live="polite"></p>
+    </div>
+    <div>
+      <div class="abas" role="tablist" id="abas"></div>
+      <div class="card" id="t-modelo">
+        <h2>1. Escolha o modelo</h2>
+        <p class="mut">Todos estes robôs existem de verdade. Toque para ver o que cada um faz.</p>
+        <div class="opcoes" id="modelos"></div>
+        <h3>Cor</h3><div class="cores" id="cores"></div>
+        <h3>Nome do robô</h3>
+        <input id="nome-robo" type="text" maxlength="20" placeholder="Ex.: Faísca" autocomplete="off">
+      </div>
+      <div class="card" id="t-poderes" hidden>
+        <h2>2. Poderes e funções</h2>
+        <p class="mut">Um robô de verdade precisa de três coisas: <b>perceber</b> (sensores), <b>pensar</b> (cérebro) e <b>agir</b> (ação). Escolha até 2 de cada.</p>
+        <h3>Perceber · sensores</h3><div class="opcoes" id="p-sensor"></div>
+        <h3>Pensar · cérebro</h3><div class="opcoes" id="p-cerebro"></div>
+        <h3>Agir · ação</h3><div class="opcoes" id="p-acao"></div>
+      </div>
+      <div class="card" id="t-inventar" hidden>
+        <h2>3. Invente um poder</h2>
+        <p class="mut">Crie um poder que ainda não existe. Você pode inventar até 3.</p>
+        <div id="chat" aria-live="polite"></div>
+        <div class="resp" id="resp"></div>
+        <div class="lista" id="inventados" style="justify-content:flex-start;margin-top:12px"></div>
+      </div>
+      <div class="card" id="t-missoes" hidden>
+        <h2>4. Mapa de missões</h2>
+        <p class="mut" id="msg-mapa"></p>
+        <div class="mapa" id="mapa"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AULA 1 -->
+<section id="v-aula" hidden>
+  <div class="topo"><h2 id="aula-titulo"></h2><button id="voltar" class="btn sec">Voltar ao mapa</button></div>
+  <div class="card fala"><span id="prof-a"></span><div class="balao" id="fala-a" aria-live="polite"></div></div>
+  <div class="card" id="aula-corpo"></div>
+  <div class="card">
+    <button id="finalizar" class="btn ok">Finalizar aula</button>
+    <button id="copiar" class="btn sec">Copiar resultado</button>
+    <p id="msgcopia" class="mut" aria-live="polite" style="margin-top:8px"></p>
+    <div id="res" hidden></div>
+  </div>
+</section>
+</main>
+
+<div id="painel" class="painel" role="dialog" aria-modal="true" aria-labelledby="t-acesso"><div class="caixa">
+  <button class="fechar" id="fechar" aria-label="Fechar">×</button>
+  <h2 id="t-acesso">Identificação do tripulante</h2>
+  <form id="form-acesso">
+    <label for="a-user">Usuário</label><input id="a-user" type="text" required autocomplete="username" autocapitalize="off" spellcheck="false">
+    <label for="a-senha">Senha</label><input id="a-senha" type="password" required autocomplete="current-password">
+    <p style="margin-top:14px"><button id="a-enviar" class="btn" style="width:100%" type="submit">Decolar</button></p>
+    <p id="msgacesso" role="status"></p>
+  </form>
+</div></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-(function(){
-  const SUPABASE_URL='https://damgyslmdexmkkhojtmj.supabase.co';
-  const SUPABASE_KEY='sb_publishable_Ee1penIBv8waTVZHe4dSXg_dA98_hMz';
-  // Usuário digitado -> conta interna (o e-mail interno nunca recebe mensagem)
-  const CONTAS={kaique:'kaique@aulas.local',bernardo:'bernardo@aulas.local',joaolucas:'joaolucas@aulas.local',myrella:'myrella@aulas.local'};
-  const $$=id=>document.getElementById(id);
-  const sb=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
-  function fechar(){ $$('painel').classList.toggle('on',false); }
-  function say(t,ok){ $$('msgacesso').textContent=t; $$('msgacesso').style.color=ok?'#7fe0a0':'#ff8080'; }
-  $$('abrir').addEventListener('click',()=>{ $$('painel').classList.toggle('on',true); $$('a-user').focus(); });
-  $$('fechar').addEventListener('click',fechar);
-  $$('painel').addEventListener('click',e=>{ if(e.target.id==='painel') fechar(); });
-  $$('form-acesso').addEventListener('submit',async e=>{
-    e.preventDefault();
-    if(!sb){ say('Serviço indisponível agora. Tente mais tarde.',false); return; }
-    const usuario=$$('a-user').value.trim().toLowerCase();
-    const email=CONTAS[usuario];
-    if(!email){ say('Usuário ou senha incorretos.',false); return; }
-    const btn=$$('a-enviar'); btn.disabled=true;
-    try{
-      const r=await sb.auth.signInWithPassword({email,password:$$('a-senha').value});
-      if(r.error) throw r.error;
-      say('Entrou. Sua espaçonave será aberta aqui em breve.',true);
-    }catch(err){ say('Usuário ou senha incorretos.',false); }
-    btn.disabled=false;
+"use strict";
+/* ---------- Configuração ---------- */
+const SB_URL='https://damgyslmdexmkkhojtmj.supabase.co';
+const SB_KEY='sb_publishable_Ee1penIBv8waTVZHe4dSXg_dA98_hMz';
+const DOMINIO='@aulas.local';              // endereço interno, nunca recebe e-mail
+const ALUNOS={kaique:{nome:'Kaique',grupo:'B'},bernardo:{nome:'Bernardo',grupo:'B'},joaolucas:{nome:'João Lucas',grupo:'A'},myrella:{nome:'Myrella',grupo:'A'}};
+const $=id=>document.getElementById(id);
+const sb=window.supabase?window.supabase.createClient(SB_URL,SB_KEY):null;
+const S={key:null,aluno:null,uid:null,rowId:null,online:false,dados:{robo:null,aulas:{}}};
+
+/* ---------- Professores ---------- */
+const BYTE='<svg viewBox="0 0 200 200" role="img" aria-label="Byte"><line x1="100" y1="20" x2="100" y2="40" stroke="#3d8bff" stroke-width="5"/><circle cx="100" cy="15" r="8" fill="#ff7a59"/><rect x="42" y="38" width="116" height="104" rx="22" fill="#3d8bff"/><rect x="60" y="60" width="80" height="46" rx="12" fill="#e6f4ff"/><circle cx="82" cy="82" r="8" fill="#101a33"/><circle cx="118" cy="82" r="8" fill="#101a33"/><path d="M82 96q18 12 36 0" stroke="#101a33" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="62" y="146" width="76" height="30" rx="10" fill="#2460c4"/><circle cx="34" cy="92" r="9" fill="#2460c4"/><circle cx="166" cy="92" r="9" fill="#2460c4"/></svg>';
+const PIXEL='<svg viewBox="0 0 200 200" role="img" aria-label="Pixel"><line x1="100" y1="36" x2="100" y2="14" stroke="#2e9e8a" stroke-width="5"/><circle cx="100" cy="12" r="6" fill="#ffd166"/><circle cx="100" cy="100" r="64" fill="#5fd0b8"/><rect x="54" y="82" width="40" height="30" rx="9" fill="#eafffa" stroke="#101a33" stroke-width="5"/><rect x="106" y="82" width="40" height="30" rx="9" fill="#eafffa" stroke="#101a33" stroke-width="5"/><line x1="94" y1="94" x2="106" y2="94" stroke="#101a33" stroke-width="5"/><circle cx="76" cy="98" r="6" fill="#101a33"/><circle cx="124" cy="98" r="6" fill="#101a33"/><path d="M84 130q16 10 32-2" stroke="#101a33" stroke-width="4" fill="none" stroke-linecap="round"/></svg>';
+const prof=()=>S.aluno&&S.aluno.grupo==='B'?{nome:'Pixel',svg:PIXEL}:{nome:'Byte',svg:BYTE};
+$('profs').innerHTML='<figure>'+BYTE+'<figcaption>Byte</figcaption></figure><figure>'+PIXEL+'<figcaption>Pixel</figcaption></figure>';
+
+/* ---------- Catálogo ---------- */
+const MODELOS=[
+ {id:'rover',nome:'Rover explorador',fato:'Rovers como o Perseverance, da NASA, exploram Marte sobre seis rodas.'},
+ {id:'braco',nome:'Braço robótico',fato:'Braços robóticos montam carros nas fábricas e trabalham na Estação Espacial.'},
+ {id:'drone',nome:'Drone',fato:'Drones voam com hélices. Um pequeno helicóptero, o Ingenuity, já voou em Marte.'},
+ {id:'humanoide',nome:'Humanoide',fato:'Humanoides andam sobre duas pernas, como o ASIMO, da Honda.'},
+ {id:'aspirador',nome:'Robô aspirador',fato:'Usa sensores para desviar dos móveis e não cair da escada.'},
+ {id:'quadrupede',nome:'Cão-robô',fato:'Robôs de quatro patas, como o Spot, inspecionam lugares perigosos.'}];
+const CORES=['#3d8bff','#ff5d73','#3fd18c','#ffb800','#a78bfa','#ff8a3d','#e6edff'];
+const TIPOS={sensor:'Perceber',cerebro:'Pensar',acao:'Agir'};
+const PODERES=[
+ {id:'camera',t:'sensor',n:'Câmera',d:'Enxerga o que está à frente.'},
+ {id:'distancia',t:'sensor',n:'Sensor de distância',d:'Mede quão perto está um obstáculo.'},
+ {id:'microfone',t:'sensor',n:'Microfone',d:'Escuta sons e comandos de voz.'},
+ {id:'luz',t:'sensor',n:'Sensor de luz',d:'Sabe se está claro ou escuro.'},
+ {id:'temperatura',t:'sensor',n:'Termômetro',d:'Mede se está quente ou frio.'},
+ {id:'gps',t:'sensor',n:'GPS',d:'Sabe em que lugar do mapa está.'},
+ {id:'desviar',t:'cerebro',n:'Desviar de obstáculos',d:'Decide virar quando algo está perto.'},
+ {id:'linha',t:'cerebro',n:'Seguir linha',d:'Decide por onde andar seguindo uma faixa.'},
+ {id:'voz',t:'cerebro',n:'Entender comandos',d:'Transforma o que ouviu em ordens.'},
+ {id:'mapa',t:'cerebro',n:'Memória de mapa',d:'Guarda por onde já passou.'},
+ {id:'economia',t:'cerebro',n:'Modo economia',d:'Decide quando poupar bateria.'},
+ {id:'rodas',t:'acao',n:'Rodas com motor',d:'Anda para frente, para trás e vira.'},
+ {id:'garra',t:'acao',n:'Garra',d:'Pega e solta objetos.'},
+ {id:'helices',t:'acao',n:'Hélices',d:'Levanta voo.'},
+ {id:'altofalante',t:'acao',n:'Alto-falante',d:'Fala e toca sons.'},
+ {id:'luzes',t:'acao',n:'Luzes',d:'Acende sinais coloridos.'},
+ {id:'pernas',t:'acao',n:'Pernas',d:'Anda em terreno difícil.'}];
+const PLANETAS=[
+ {id:'maquina',n:'Máquina',d:'Como o computador funciona',c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)'},
+ {id:'logica',n:'Lógica',d:'Passo a passo e decisões',c:'radial-gradient(circle at 30% 30%,#ffe29a,#ff8a3d)'},
+ {id:'seguranca',n:'Internet segura',d:'Senhas, golpes e privacidade',c:'radial-gradient(circle at 30% 30%,#b8ffd9,#1f9d63)'},
+ {id:'codigo',n:'Código',d:'Programar de verdade',c:'radial-gradient(circle at 30% 30%,#e0c9ff,#7c4dff)'},
+ {id:'dados',n:'Dados',d:'Números, textos e memória',c:'radial-gradient(circle at 30% 30%,#ffd0dc,#ff5d73)'},
+ {id:'robotica',n:'Robótica',d:'Circuitos, sensores e motores',c:'radial-gradient(circle at 30% 30%,#d6f7ff,#22b8cf)'},
+ {id:'criacao',n:'Criação',d:'O seu próprio projeto',c:'radial-gradient(circle at 30% 30%,#fff6c2,#ffb800)'}];
+
+/* ---------- Desenho do robô ---------- */
+function roboSVG(m,c){
+  const d='#101a33',o='#5af0ff',g='#c9d6ff';
+  const P={
+  rover:`<rect x="92" y="38" width="8" height="52" fill="${g}"/><rect x="74" y="24" width="46" height="24" rx="6" fill="${c}"/><circle cx="88" cy="36" r="6" fill="${d}"/><circle cx="88" cy="36" r="3" fill="${o}"/><circle cx="108" cy="36" r="4" fill="${d}"/><rect x="34" y="86" width="132" height="40" rx="10" fill="${c}"/><rect x="118" y="66" width="54" height="16" rx="3" fill="#24407a" stroke="${g}" stroke-width="2"/><path d="M52 126v18M100 126v18M148 126v18" stroke="${g}" stroke-width="6"/><circle cx="52" cy="154" r="17" fill="${d}" stroke="${g}" stroke-width="5"/><circle cx="100" cy="154" r="17" fill="${d}" stroke="${g}" stroke-width="5"/><circle cx="148" cy="154" r="17" fill="${d}" stroke="${g}" stroke-width="5"/>`,
+  braco:`<rect x="50" y="156" width="100" height="20" rx="6" fill="${d}" stroke="${g}" stroke-width="3"/><rect x="82" y="132" width="36" height="28" rx="6" fill="${c}"/><path d="M100 136 70 78" stroke="${c}" stroke-width="20" stroke-linecap="round"/><path d="M70 78 132 52" stroke="${c}" stroke-width="16" stroke-linecap="round"/><circle cx="100" cy="136" r="9" fill="${d}" stroke="${o}" stroke-width="3"/><circle cx="70" cy="78" r="9" fill="${d}" stroke="${o}" stroke-width="3"/><circle cx="132" cy="52" r="8" fill="${d}" stroke="${o}" stroke-width="3"/><path d="M138 44l22-12M140 60l24 2" stroke="${g}" stroke-width="7" stroke-linecap="round"/>`,
+  drone:`<path d="M46 62 154 138M154 62 46 138" stroke="${g}" stroke-width="9" stroke-linecap="round"/><ellipse cx="46" cy="58" rx="30" ry="7" fill="${o}" opacity=".55"/><ellipse cx="154" cy="58" rx="30" ry="7" fill="${o}" opacity=".55"/><ellipse cx="46" cy="134" rx="30" ry="7" fill="${o}" opacity=".55"/><ellipse cx="154" cy="134" rx="30" ry="7" fill="${o}" opacity=".55"/><rect x="68" y="76" width="64" height="48" rx="16" fill="${c}"/><circle cx="100" cy="100" r="13" fill="${d}"/><circle cx="100" cy="100" r="6" fill="${o}"/>`,
+  humanoide:`<rect x="76" y="20" width="48" height="40" rx="12" fill="${c}"/><rect x="84" y="32" width="32" height="14" rx="6" fill="${d}"/><circle cx="93" cy="39" r="4" fill="${o}"/><circle cx="107" cy="39" r="4" fill="${o}"/><rect x="94" y="60" width="12" height="8" fill="${g}"/><rect x="66" y="68" width="68" height="60" rx="12" fill="${c}"/><circle cx="100" cy="92" r="9" fill="${d}" stroke="${o}" stroke-width="3"/><rect x="42" y="70" width="18" height="54" rx="9" fill="${g}"/><rect x="140" y="70" width="18" height="54" rx="9" fill="${g}"/><rect x="74" y="130" width="20" height="46" rx="8" fill="${g}"/><rect x="106" y="130" width="20" height="46" rx="8" fill="${g}"/><rect x="68" y="170" width="30" height="12" rx="5" fill="${d}"/><rect x="102" y="170" width="30" height="12" rx="5" fill="${d}"/>`,
+  aspirador:`<ellipse cx="100" cy="150" rx="78" ry="14" fill="#000" opacity=".35"/><path d="M24 126a76 34 0 0 1 152 0v10a76 22 0 0 1-152 0Z" fill="${c}"/><ellipse cx="100" cy="124" rx="76" ry="30" fill="${c}" stroke="${g}" stroke-width="3"/><ellipse cx="100" cy="118" rx="26" ry="10" fill="${d}"/><circle cx="100" cy="118" r="5" fill="${o}"/><path d="M30 132a72 22 0 0 0 140 0" stroke="${d}" stroke-width="5" fill="none"/><circle cx="52" cy="112" r="4" fill="${o}"/><circle cx="148" cy="112" r="4" fill="${o}"/>`,
+  quadrupede:`<rect x="44" y="76" width="104" height="38" rx="14" fill="${c}"/><rect x="138" y="52" width="38" height="30" rx="9" fill="${c}"/><circle cx="162" cy="66" r="6" fill="${d}"/><circle cx="162" cy="66" r="3" fill="${o}"/><path d="M60 112 50 142l8 30M82 112l8 30-6 30M118 112l-8 30 8 30M138 112l10 30-6 30" stroke="${g}" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 86 28 72" stroke="${g}" stroke-width="6" stroke-linecap="round"/>`};
+  return `<svg viewBox="0 0 200 200" role="img" aria-label="Seu robô">${P[m]||P.rover}</svg>`;
+}
+
+/* ---------- Estado do robô ---------- */
+function roboPadrao(){return {modelo:'rover',cor:CORES[0],nome:'',poderes:[],inventados:[]};}
+const R=()=>S.dados.robo;
+function tiposPresentes(){
+  const t={sensor:false,cerebro:false,acao:false};
+  R().poderes.forEach(id=>{const p=PODERES.find(x=>x.id===id); if(p) t[p.t]=true;});
+  R().inventados.forEach(p=>{t[p.tipo]=true;});
+  return t;
+}
+function completo(){const t=tiposPresentes();return !!R().nome.trim()&&t.sensor&&t.cerebro&&t.acao;}
+function falar(el,t){$(el).textContent=t;}
+
+/* ---------- Telas ---------- */
+function tela(v){['v-entrada','v-hangar','v-aula'].forEach(x=>{$(x).hidden=(x!==v);});window.scrollTo(0,0);}
+const ABAS=[['modelo','1 Modelo'],['poderes','2 Poderes'],['inventar','3 Inventar'],['missoes','4 Missões']];
+function aba(a){
+  ABAS.forEach(([k])=>{$('t-'+k).hidden=(k!==a);});
+  [...$('abas').children].forEach(b=>b.setAttribute('aria-selected',b.dataset.a===a?'true':'false'));
+  if(a==='inventar'&&!chat.passo) chatInicio();
+  if(a==='missoes') pintarMapa();
+  const B=S.aluno.grupo==='B';
+  const f={modelo:B?'Escolha o modelo. Todos existem de verdade, então nada de desculpa depois.':'Escolha o modelo do seu robô. Todos existem de verdade!',
+    poderes:B?'Sem sensor ele é cego, sem cérebro é só enfeite, sem ação não sai do lugar. Monte direito.':'Seu robô precisa perceber, pensar e agir. Escolha um de cada, pelo menos!',
+    inventar:'',missoes:completo()?(B?'Robô pronto. Agora vamos ver se o piloto está à altura.':'Seu robô está pronto para a primeira missão!'):'Antes de decolar: dê um nome ao robô e escolha um poder de cada tipo.'};
+  if(f[a]) falar('fala-h',f[a]);
+}
+function pintar(){
+  const r=R();
+  $('robo').innerHTML=roboSVG(r.modelo,r.cor);
+  $('robo-nome').textContent=r.nome.trim()||'Robô sem nome';
+  const t=tiposPresentes();
+  $('medidor').innerHTML=Object.keys(TIPOS).map(k=>`<span class="${t[k]?'on':''}">${t[k]?'✓ ':''}${TIPOS[k]}</span>`).join('');
+  const L=$('lista-poderes'); L.textContent='';
+  r.poderes.map(id=>PODERES.find(p=>p.id===id)).filter(Boolean).forEach(p=>{const s=document.createElement('span');s.textContent=p.n;L.appendChild(s);});
+  r.inventados.forEach(p=>{const s=document.createElement('span');s.textContent='★ '+p.nome;L.appendChild(s);});
+  [...$('modelos').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===r.modelo?'true':'false'));
+  [...$('cores').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===r.cor?'true':'false'));
+  document.querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed',r.poderes.includes(b.dataset.p)?'true':'false'));
+  const I=$('inventados'); I.textContent='';
+  r.inventados.forEach((p,i)=>{const s=document.createElement('span');s.textContent='★ '+p.nome+' ('+TIPOS[p.tipo]+') ';const x=document.createElement('button');x.textContent='×';x.setAttribute('aria-label','Remover '+p.nome);x.style.cssText='background:none;border:0;color:#ff9a9a;font-size:16px;padding:0 4px';x.onclick=()=>{r.inventados.splice(i,1);pintar();};s.appendChild(x);I.appendChild(s);});
+}
+function montarHangar(){
+  $('abas').innerHTML=ABAS.map(([k,n])=>`<button role="tab" data-a="${k}">${n}</button>`).join('');
+  $('abas').onclick=e=>{const b=e.target.closest('[data-a]'); if(b) aba(b.dataset.a);};
+  $('modelos').innerHTML=MODELOS.map(m=>`<button class="op" data-m="${m.id}" aria-pressed="false">${roboSVG(m.id,'#3d8bff')}<b>${m.nome}</b><small>${m.fato}</small></button>`).join('');
+  $('modelos').onclick=e=>{const b=e.target.closest('[data-m]'); if(!b) return; R().modelo=b.dataset.m; pintar(); falar('fala-h',MODELOS.find(m=>m.id===b.dataset.m).fato);};
+  $('cores').innerHTML=CORES.map(c=>`<button class="cor" data-c="${c}" style="background:${c}" aria-label="Cor ${c}" aria-pressed="false"></button>`).join('');
+  $('cores').onclick=e=>{const b=e.target.closest('[data-c]'); if(b){R().cor=b.dataset.c;pintar();}};
+  $('nome-robo').oninput=e=>{R().nome=e.target.value.slice(0,20);pintar();};
+  Object.keys(TIPOS).forEach(t=>{
+    $('p-'+t).innerHTML=PODERES.filter(p=>p.t===t).map(p=>`<button class="op" data-p="${p.id}" aria-pressed="false"><b>${p.n}</b><small>${p.d}</small></button>`).join('');
+    $('p-'+t).onclick=e=>{const b=e.target.closest('[data-p]'); if(!b) return; const r=R(),id=b.dataset.p;
+      if(r.poderes.includes(id)) r.poderes=r.poderes.filter(x=>x!==id);
+      else{ const n=r.poderes.filter(x=>PODERES.find(p=>p.id===x).t===t).length;
+        if(n>=2){falar('fala-h','Só cabem 2 em "'+TIPOS[t]+'". Tire um antes de colocar outro.');return;}
+        r.poderes.push(id); falar('fala-h',PODERES.find(p=>p.id===id).d); }
+      pintar();};
   });
-})();
-</script>
-<script>
+}
+
+/* ---------- Chat de invenção ---------- */
+const chat={passo:0,novo:null};
+function msg(t,quem){const d=document.createElement('div');d.className='m '+(quem||'bot');d.textContent=t;$('chat').appendChild(d);$('chat').scrollTop=$('chat').scrollHeight;}
+function campo(ph,max,fn){
+  const R_=$('resp'); R_.textContent='';
+  const i=document.createElement('input'); i.type='text'; i.maxLength=max; i.placeholder=ph; i.setAttribute('aria-label',ph); i.autocomplete='off';
+  const b=document.createElement('button'); b.className='btn'; b.textContent='Enviar';
+  const go=()=>{const v=i.value.trim(); if(!v) return; msg(v,'eu'); fn(v);};
+  b.onclick=go; i.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();go();}};
+  R_.append(i,b); i.focus({preventScroll:true});
+}
+function botoes(ops,fn){
+  const R_=$('resp'); R_.textContent='';
+  ops.forEach(([v,n])=>{const b=document.createElement('button');b.className='btn sec';b.textContent=n;b.onclick=()=>{msg(n,'eu');fn(v);};R_.appendChild(b);});
+}
+function chatInicio(){
+  const B=S.aluno.grupo==='B', p=prof().nome;
+  if(R().inventados.length>=3){ $('resp').textContent=''; msg('Seu robô já tem 3 poderes inventados. Remova um para criar outro.'); chat.passo=9; return; }
+  chat.passo=1; chat.novo={};
+  msg(B?`${p} na escuta. Missão: inventar um poder que nenhum robô tem. Como ele se chama?`:`Oi! Eu sou o ${p}. Vamos inventar um poder que nenhum robô tem? Qual é o nome dele?`);
+  campo('Nome do poder',30,v=>{chat.novo.nome=v;
+    msg(B?'Certo. E esse poder serve para o robô perceber, pensar ou agir? Escolha com calma, vale ponto.':'Legal! Esse poder serve para o robô perceber, pensar ou agir?');
+    botoes([['sensor','Perceber'],['cerebro','Pensar'],['acao','Agir']],t=>{chat.novo.tipo=t;
+      const q={sensor:'O que ele percebe no mundo?',cerebro:'O que ele decide ou calcula?',acao:'O que ele faz no mundo?'}[t];
+      msg(q);
+      campo('Escreva com as suas palavras',120,f=>{chat.novo.faz=f;
+        msg(B?'E que problema de verdade isso resolve? "Nenhum" não é resposta.':'E que problema isso ajuda a resolver?');
+        campo('Que problema resolve',120,pr=>{chat.novo.resolve=pr;
+          R().inventados.push(chat.novo);
+          const li={sensor:'Todo sensor é uma ENTRADA: ele traz informação para dentro do robô.',cerebro:'Isso é PROCESSAMENTO: o robô usa a informação para decidir.',acao:'Isso é uma SAÍDA: o robô muda alguma coisa no mundo.'}[chat.novo.tipo];
+          msg(`Poder registrado: ★ ${chat.novo.nome}\n${li}\n`+(B?'Nada mau. Não espalha que eu elogiei.':'Ficou muito bom!'));
+          pintar(); chat.passo=0;
+          botoes([['s','Inventar outro'],['n','Chega por hoje']],v=>{ if(v==='s') chatInicio(); else {$('resp').textContent=''; msg('Combinado. Não esqueça de salvar o robô.'); chat.passo=9;} });
+        });});});});
+}
+
+/* ---------- Mapa ---------- */
+function pintarMapa(){
+  const ok=completo(), feita=!!(S.dados.aulas&&S.dados.aulas['1']&&S.dados.aulas['1'].concluida);
+  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira missão: nome e um poder de cada tipo.':feita?'Missão 1 concluída. Na próxima aula você escolhe o caminho: Lógica ou Internet segura.':'Seu robô está pronto. A primeira missão é no planeta Máquina.';
+  const M=$('mapa'); M.textContent='';
+  PLANETAS.forEach((p,i)=>{
+    const b=document.createElement('button'); b.className='planeta';
+    const aberto=(i===0&&ok);
+    if(aberto) b.classList.add(feita?'feito':'aberto'); else b.disabled=true;
+    const ic=document.createElement('i'); ic.style.background=p.c;
+    const n=document.createElement('b'); n.textContent=p.n;
+    const s=document.createElement('small'); s.textContent=i===0?(feita?'✓ Missão 1 concluída':ok?'Missão 1 · toque para começar':'Termine o robô'):(i<3?'Abre depois da missão 1':'Em breve');
+    const d=document.createElement('small'); d.style.display='block'; d.textContent=p.d;
+    b.append(ic,n,d,s);
+    if(aberto) b.onclick=abrirAula;
+    M.appendChild(b);
+  });
+}
+
+/* ---------- Aula 1 ---------- */
+const A={log:[],acertos:0,total:0,fim:false,travada:false};
+const HOJE=()=>new Date().toLocaleDateString('pt-BR');
+function abrirAula(){
+  salvar(true);
+  A.log=[];A.acertos=0;A.fim=false;A.travada=false;
+  $('res').hidden=true;$('msgcopia').textContent='';$('finalizar').disabled=false;
+  $('prof-a').innerHTML=prof().svg;
+  const nome=S.aluno.nome, rn=R().nome.trim()||'seu robô';
+  if(S.aluno.grupo==='A'){
+    $('aula-titulo').textContent='Missão 1 · Planeta Máquina';
+    const LBL={e:'Entrada',p:'Processamento',s:'Saída'};
+    const RIGHT=['Sorte de principiante? Próxima!','Acertou. Não se empolga, ainda tem mais!','Boa! O '+rn+' ficou orgulhoso.'];
+    const WRONG=['Ahá! Achei que você ia cair nessa 😏 Tenta outra vez.','Quase! Eu sou um robô: eu não erro... a não ser de propósito 😜','Opa! Pensa: isso traz informação, decide ou mostra o resultado?'];
+    let resto=[['teclado','e'],['tela','s'],['mouse','e'],['caixa de som','s'],['microfone','e'],['processador','p'],['sensor de distância do robô','e'],['motor das rodas do robô','s']];
+    A.total=resto.length; let sel=null;
+    $('aula-corpo').innerHTML='<h2>Entrada, processamento ou saída?</h2><p class="mut">O computador e o seu robô funcionam igual: recebem informação (entrada), pensam (processamento) e mostram ou fazem algo (saída). Toque em um item e depois na caixa certa.</p><div class="itens" id="itens"></div><div class="caixas" id="caixas" style="margin-top:12px"></div>';
+    const desenha=()=>{const X=$('itens');X.textContent='';resto.forEach((it,i)=>{const b=document.createElement('button');b.className='item';b.textContent=it[0];b.setAttribute('aria-pressed',sel===i?'true':'false');b.disabled=A.travada;b.onclick=()=>{sel=i;falar('fala-a','Agora escolha a caixa. Sem pressa, eu espero 🙂');desenha();};X.appendChild(b);});};
+    Object.keys(LBL).forEach(c=>{const b=document.createElement('button');b.className='cx';b.textContent=LBL[c];b.onclick=()=>{
+      if(A.travada||!resto.length) return;
+      if(sel===null){falar('fala-a','Escolhe um item primeiro, não sou adivinho 😏');return;}
+      const it=resto[sel], ok=it[1]===c; A.log.push([it[0],LBL[c],ok]);
+      if(ok){A.acertos++;resto.splice(sel,1);sel=null;falar('fala-a',RIGHT[Math.floor(Math.random()*RIGHT.length)]);}
+      else falar('fala-a',WRONG[Math.floor(Math.random()*WRONG.length)]);
+      desenha();
+      if(!resto.length){A.fim=true;falar('fala-a',`Missão cumprida, ${nome}! Você classificou tudo. Agora toque em "Finalizar aula".`);}
+    };$('caixas').appendChild(b);});
+    desenha();
+    falar('fala-a',`Oi, ${nome}! Chegou a hora de provar o que você sabe 😏 O ${rn} está de olho.`);
+  } else {
+    $('aula-titulo').textContent='Missão 1 · Planeta Máquina';
+    const QS=[
+     {q:'Quando a energia acaba, o computador perde o que estava aberto. Qual parte explica isso?',o:['Armazenamento (HD ou SSD)','Memória RAM','Processador'],a:1,e:'A RAM é temporária: ela apaga quando a energia acaba.'},
+     {q:'Qual é maior: 1 GB ou 1 TB?',o:['1 GB','1 TB'],a:1,e:'1 TB equivale a 1000 GB.'},
+     {q:'Qual é o "gerente" que organiza o computador?',o:['Hardware','Programa de jogo','Sistema operacional'],a:2,e:'O sistema operacional organiza o hardware e os programas.'},
+     {q:'No seu robô, o sensor de distância faz o papel de quê?',o:['Entrada','Processamento','Saída'],a:0,e:'Sensor é entrada: traz informação do mundo para o robô.'},
+     {q:'Desafio: um disco de "512 GB" aparece com menos espaço no sistema. Por quê?',o:['Ele está quebrado','O fabricante conta em base 1000 e o sistema em base 1024','Os arquivos ocupam espaço'],a:1,e:'Por isso 512 GB aparecem como cerca de 477 GB no sistema.'}];
+    const RIGHT=['Acertou? Que sorte a sua. Agora tenta não estragar a sequência 😏','Resposta certa, mas com cara de palpite. A próxima precisa ser de quem sabe 😈','Registrado. Estou de olho na próxima 😏'];
+    const WRONG=['Essa resposta foi tão confiante que doeu. Errou com estilo 😂','A pegadinha te pegou. Eu não erro; só espero você errar 😜','Errar era previsível. Pensar antes de clicar é a próxima missão 😏'];
+    A.total=QS.length; let i=0;
+    $('aula-corpo').innerHTML='<p class="mut" id="qn"></p><h2 id="q"></h2><div class="itens" id="opts"></div><p id="expl" style="margin-top:10px"></p><button id="prox" class="btn" hidden>Próxima</button>';
+    const mostra=()=>{const q=QS[i];$('qn').textContent=`Pergunta ${i+1} de ${QS.length}`;$('q').textContent=q.q;$('expl').textContent='';$('prox').hidden=true;const X=$('opts');X.textContent='';
+      q.o.forEach((t,k)=>{const b=document.createElement('button');b.className='item';b.textContent=t;b.onclick=()=>{if(A.travada)return;const ok=k===q.a;if(ok)A.acertos++;A.log.push([q.q,t,ok]);[...X.children].forEach((x,n)=>{x.disabled=true;if(n===q.a)x.classList.add('certa');});falar('fala-a',(ok?RIGHT:WRONG)[Math.floor(Math.random()*3)]);$('expl').textContent=q.e;$('prox').hidden=false;};X.appendChild(b);});};
+    $('prox').onclick=()=>{i++;if(i<QS.length){mostra();return;}A.fim=true;$('qn').textContent='Fim do quiz';$('q').textContent=`Você acertou ${A.acertos} de ${QS.length}.`;$('opts').textContent='';$('expl').textContent='';$('prox').hidden=true;falar('fala-a',`${A.acertos} de ${QS.length}, ${nome}. A revanche fica aberta. Toque em "Finalizar aula" 😏`);};
+    mostra();
+    falar('fala-a',`Missão aceita, ${nome}! Vamos ver se o piloto do ${rn} sabe como a máquina funciona.`);
+  }
+  tela('v-aula');
+}
+function textoResultado(){
+  const g=S.aluno.grupo==='A'?'Grupo A com Byte':'Grupo B com Pixel';
+  const L=[`Aula 1 – ${S.aluno.nome}`,`Data: ${HOJE()} · ${g}`,`Robô: ${R().nome.trim()||'(sem nome)'}`,`Status: ${A.fim?'concluída':'incompleta'}`,`Acertos: ${A.acertos} de ${A.total}`,`Tentativas: ${A.log.length}`,'Respostas:'];
+  if(!A.log.length) L.push('(nenhuma resposta ainda)');
+  A.log.forEach((r,n)=>L.push(`${n+1}. ${r[0]} → ${r[1]} (${r[2]?'certo':'errado'})`));
+  return L.join('\n');
+}
+function copiar(){
+  const t=textoResultado(), ok=()=>{$('msgcopia').textContent='Resultado copiado. Cole na mensagem e envie.';}, falha=()=>{$('msgcopia').textContent='Não consegui copiar sozinho. Selecione o texto abaixo e copie.';};
+  $('res').textContent=t; $('res').hidden=false;
+  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(t).then(ok,falha); else falha();
+}
+async function finalizar(){
+  A.travada=true; $('finalizar').disabled=true;
+  document.querySelectorAll('#aula-corpo button').forEach(b=>b.disabled=true);
+  S.dados.aulas=S.dados.aulas||{};
+  S.dados.aulas['1']={data:HOJE(),concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log};
+  falar('fala-a',`Missão encerrada, ${S.aluno.nome}! Resultado guardado. Agora é só enviar.`);
+  copiar(); await salvar(true);
+}
+
+/* ---------- Guardar ---------- */
+function local(v){try{ if(v===undefined){const x=localStorage.getItem('nave-'+S.key);return x?JSON.parse(x):null;} localStorage.setItem('nave-'+S.key,JSON.stringify(v)); }catch(e){} return null;}
+async function carregar(){
+  S.online=false; S.rowId=null; let dados=null;
+  try{
+    const r=await sb.from('acessos_crianca').select('id,skin').limit(1);
+    if(r.error) throw r.error;
+    if(r.data&&r.data.length){S.rowId=r.data[0].id;dados=r.data[0].skin;}
+    else{
+      const n=await sb.from('acessos_crianca').insert({responsavel_id:S.uid,primeiro_nome:S.aluno.nome,skin:{},consentimento_em:new Date().toISOString(),consentimento_versao:'conta-criada-pelo-pai'}).select('id,skin');
+      if(n.error) throw n.error; S.rowId=n.data[0].id;
+    }
+    S.online=true;
+  }catch(e){ dados=null; }
+  if(!dados||!dados.robo) dados=local()||dados||{};
+  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{}};
+  if(!Array.isArray(S.dados.robo.poderes)) S.dados.robo.poderes=[];
+  if(!Array.isArray(S.dados.robo.inventados)) S.dados.robo.inventados=[];
+}
+async function salvar(silencio){
+  local(S.dados); let ok=false;
+  if(S.online&&S.rowId){ try{const r=await sb.from('acessos_crianca').update({skin:S.dados}).eq('id',S.rowId); ok=!r.error;}catch(e){} }
+  if(!silencio) $('msgsalvar').textContent=ok?'Robô salvo na sua conta.':'Salvo só neste aparelho (sem conexão com a base agora).';
+  return ok;
+}
+
+/* ---------- Entrada e saída ---------- */
+async function entrar(user){
+  S.uid=user.id; S.key=(user.email||'').split('@')[0];
+  S.aluno=ALUNOS[S.key]||{nome:S.key,grupo:'A'};
+  await carregar();
+  $('ola').textContent='Hangar de '+S.aluno.nome;
+  $('prof-h').innerHTML=prof().svg; $('prof-a').innerHTML=prof().svg;
+  $('nome-robo').value=R().nome; $('chat').textContent=''; $('resp').textContent=''; chat.passo=0; $('msgsalvar').textContent='';
+  pintar(); tela('v-hangar'); aba(completo()?'missoes':'modelo');
+  if(!completo()) falar('fala-h',S.aluno.grupo==='B'?`${S.aluno.nome}, bem-vindo ao hangar. Monte um robô que preste e depois a gente conversa.`:`Oi, ${S.aluno.nome}! Este é o seu hangar. Vamos montar o seu robô?`);
+}
+function fecharPainel(){ $('painel').classList.toggle('on',false); }
+$('abrir').onclick=()=>{ $('painel').classList.toggle('on',true); $('a-user').focus(); };
+$('fechar').onclick=fecharPainel;
+$('painel').onclick=e=>{ if(e.target.id==='painel') fecharPainel(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') fecharPainel(); });
+$('form-acesso').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const m=$('msgacesso'), diz=(t,ok)=>{m.textContent=t;m.style.color=ok?'var(--ok)':'var(--bad)';};
+  if(!sb){diz('Sem conexão com a base agora. Tente de novo em instantes.');return;}
+  const u=$('a-user').value.trim().toLowerCase().replace(/\s+/g,'');
+  if(!/^[a-z0-9._-]{2,30}$/.test(u)){diz('Usuário ou senha incorretos.');return;}
+  const b=$('a-enviar'); b.disabled=true; diz('Conferindo...',true);
+  try{
+    const r=await sb.auth.signInWithPassword({email:u+DOMINIO,password:$('a-senha').value});
+    if(r.error) throw r.error;
+    $('a-senha').value=''; diz('',true); fecharPainel(); await entrar(r.data.user);
+  }catch(err){diz('Usuário ou senha incorretos.');}
+  b.disabled=false;
+});
+$('sair').onclick=async()=>{ await salvar(true); try{await sb.auth.signOut();}catch(e){} S.key=S.aluno=S.uid=null; tela('v-entrada'); };
+$('salvar').onclick=()=>salvar(false);
+$('voltar').onclick=()=>{ tela('v-hangar'); aba('missoes'); };
+$('finalizar').onclick=finalizar;
+$('copiar').onclick=copiar;
+montarHangar();
+if(sb) sb.auth.getSession().then(r=>{ if(r&&r.data&&r.data.session) entrar(r.data.session.user); }).catch(()=>{});
+
+/* ---------- Céu ---------- */
 (function(){
-  const s=document.querySelector('#space'); if(!s) return;
-  for(let i=0;i<60;i++){const e=document.createElement('div');e.className='star';e.style.left=Math.random()*100+'%';e.style.top=Math.random()*100+'%';e.style.animationDelay=(Math.random()*3)+'s';s.appendChild(e);}
+  const c=$('ceu'),x=c.getContext('2d'); let w,h,st=[];
+  const calmo=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tam(){const d=Math.min(devicePixelRatio||1,2);w=c.width=innerWidth*d;h=c.height=innerHeight*d;
+    st=Array.from({length:Math.round(innerWidth*innerHeight/5200)},()=>({x:Math.random()*w,y:Math.random()*h,r:(Math.random()*1.3+.3)*d,f:Math.random()*6.28,v:.4+Math.random()*1.2,c:Math.random()<.12?'#9fd0ff':Math.random()<.1?'#ffe2a8':'#ffffff'}));des(0);}
+  function des(t){x.clearRect(0,0,w,h);for(const s of st){x.globalAlpha=calmo?.8:.45+.55*Math.sin(s.f+t*s.v);x.fillStyle=s.c;x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill();}}
+  tam(); addEventListener('resize',tam);
+  if(!calmo){let u=0;(function loop(n){if(n-u>50){u=n;des(n/1000);}requestAnimationFrame(loop);})(0);}
 })();
 </script>
 </body></html>
