@@ -11,8 +11,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple
 #ceu{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .deco{position:fixed;z-index:0;pointer-events:none;border-radius:50%}
 .sol{left:-90px;top:-90px;width:240px;height:240px;background:radial-gradient(circle at 60% 60%,#fff6c2,#ffb800 45%,#ff7a00 70%,transparent 72%);filter:blur(1px);opacity:.85;box-shadow:0 0 120px 40px #ff9d0033}
-.gigante{right:-70px;bottom:-60px;width:260px;height:260px;background:radial-gradient(circle at 32% 30%,#9fd0ff,#3d6fd6 45%,#16245e 75%);box-shadow:inset -30px -24px 60px #020414,0 0 60px #3d8bff33}
-.gigante::before{content:"";position:absolute;left:-28%;top:44%;width:156%;height:16%;border-radius:50%;border:6px solid #c9d8ff55;border-left-color:#c9d8ff22;transform:rotate(-18deg)}
+.gigante-img{position:fixed;right:-18vw;bottom:4vh;width:min(720px,88vw);height:auto;opacity:.5;mix-blend-mode:screen;pointer-events:none;z-index:0}
 .lua{right:12%;top:9%;width:54px;height:54px;background:radial-gradient(circle at 35% 30%,#f3f0e6,#a9a493 60%,#5d594d);box-shadow:inset -8px -6px 14px #0008;animation:flutua 9s ease-in-out infinite}
 @keyframes flutua{50%{transform:translateY(-10px)}}
 main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
@@ -63,7 +62,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .abas button[aria-selected=true]{background:var(--cy);border-color:var(--cy);color:#04121c;font-weight:700}
 .grade{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 .grade>*{min-width:0}
-@media(max-width:600px){.gigante{width:170px;height:170px;right:-70px;bottom:-70px;opacity:.7}.sol{width:170px;height:170px}}
+@media(max-width:600px){.gigante-img{right:-40vw;bottom:-2vh;opacity:.4}.sol{width:170px;height:170px}}
 @media(min-width:840px){.grade{grid-template-columns:320px 1fr;align-items:start}.previa{position:sticky;top:14px}}
 .previa{text-align:center}
 #robo svg{width:min(230px,70%);height:auto}
@@ -112,7 +111,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 </style></head>
 <body>
 <canvas id="ceu" aria-hidden="true"></canvas>
-<div class="deco sol"></div><div class="deco gigante"></div><div class="deco lua"></div>
+<div class="deco sol"></div><img class="gigante-img" src="espaconave/imagens/saturno.jpg" alt="" aria-hidden="true"><div class="deco lua"></div>
 
 <main>
 <!-- ENTRADA -->
@@ -245,7 +244,7 @@ const PODERES=[
  {id:'luzes',t:'acao',n:'Luzes',d:'Acende sinais coloridos.'},
  {id:'pernas',t:'acao',n:'Pernas',d:'Anda em terreno difícil.'}];
 const PLANETAS=[
- {id:'maquina',n:'Máquina',d:'Como o computador funciona',c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)'},
+ {id:'maquina',n:'Máquina',d:'Como o computador funciona',c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)',foto:'espaconave/imagens/terra.jpg'},
  {id:'logica',n:'Lógica',d:'Passo a passo e decisões',c:'radial-gradient(circle at 30% 30%,#ffe29a,#ff8a3d)'},
  {id:'seguranca',n:'Internet segura',d:'Senhas, golpes e privacidade',c:'radial-gradient(circle at 30% 30%,#b8ffd9,#1f9d63)'},
  {id:'codigo',n:'Código',d:'Programar de verdade',c:'radial-gradient(circle at 30% 30%,#e0c9ff,#7c4dff)'},
@@ -371,7 +370,7 @@ function pintarMapa(){
     const b=document.createElement('button'); b.className='planeta';
     const aberto=(i===0&&ok);
     if(aberto) b.classList.add(feita?'feito':'aberto'); else b.disabled=true;
-    const ic=document.createElement('i'); ic.style.background=p.c;
+    const ic=document.createElement('i'); ic.style.background=p.c; if(p.foto){ic.style.backgroundImage=`url(${p.foto})`;ic.style.backgroundSize='cover';}
     const n=document.createElement('b'); n.textContent=p.n;
     const s=document.createElement('small'); s.textContent=i===0?(feita?'✓ Missão 1 concluída':ok?'Missão 1 · toque para começar':'Termine o robô'):(i<3?'Abre depois da missão 1':'Em breve');
     const d=document.createElement('small'); d.style.display='block'; d.textContent=p.d;
