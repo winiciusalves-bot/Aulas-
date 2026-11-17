@@ -182,13 +182,10 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
   #v-entrada #caixa button:active{transform:translateY(1px)}
   #msgacesso{min-height:18px;margin-top:10px;font:500 11px/1.4 "Consolas","Courier New",monospace;letter-spacing:.04em;color:#7f93c4;text-align:center}
   @media (max-width:700px){#v-entrada #caixa{top:40%}}
-  #v-entrada #controles{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   #v-entrada #som{background:#e8501c !important}
-  #v-entrada #controles button{font-size:14px;padding:8px 14px;border:0;border-radius:10px;background:rgba(0,0,0,.45);color:#fff;cursor:pointer}
 
 #v-entrada{position:fixed;inset:0;z-index:20;margin:0;padding:0;max-width:none;background:#0b1530;overflow:hidden}
 #v-entrada #c{display:block;width:100%;height:100%}
-@media (max-width:700px){#v-entrada #controles{top:10px;bottom:auto;right:10px;left:10px;justify-content:center;gap:6px}#v-entrada #controles button{font-size:12px;padding:6px 10px}}
 #v-entrada #caixa{max-width:none;margin:0}
 #v-entrada #caixa .nota{margin:10px 0 0;font-size:11px;color:#7f93c4;text-align:center}
 #v-entrada .so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -228,7 +225,6 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
     </form>
     <p class="nota">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
   </div>
-  <div id="controles"><button id="som" type="button">🔈 Ligar som</button><button id="pular" type="button">Pular animação</button><button id="repetir" type="button">Ver de novo</button></div>
 </section>
 
 <!-- HANGAR -->
@@ -1164,7 +1160,7 @@ for(const ts of T_SAI){for(let k=Math.PI/7;k<D_SAIR+D_DESCER;k+=Math.PI/7)EVENTO
   EVENTOS.push([ts+D_SAIR+D_DESCER+D_PASSOS*.35,passoChao],[ts+D_SAIR+D_DESCER+D_PASSOS*.8,passoChao]);}
 EVENTOS.sort((a,b)=>a[0]-b[0]);
 function atualizarSom(){
-  while(prox<EVENTOS.length&&EVENTOS[prox][0]<=t){if(somLigado)EVENTOS[prox][1]();prox++;}
+  while(prox<EVENTOS.length&&EVENTOS[prox][0]<=t){if(somLigado&&AC)EVENTOS[prox][1]();prox++;}
   if(!AC)return;
   const pot=(somLigado&&t<T_POUSO)?clamp(.55+.45*(1-alturaFoguete()/(H*.6)),.4,1)*clamp(t/.4,0,1):0;
   gMotor.gain.setTargetAtTime(pot*.95,AC.currentTime,.06);gRugido.gain.setTargetAtTime(pot*.22,AC.currentTime,.06);}
@@ -1189,7 +1185,7 @@ function desenhar(){
 }
 const SEC=document.getElementById('v-entrada');
 function quadro(){
-  if(SEC.hidden){ultimo=undefined;if(somLigado){somLigado=false;document.getElementById('som').textContent='🔇 Som desligado';}if(AC){gMotor.gain.value=0;gRugido.gain.value=0;}requestAnimationFrame(quadro);return;}
+  if(SEC.hidden){ultimo=undefined;if(AC){gMotor.gain.value=0;gRugido.gain.value=0;}somLigado=false;requestAnimationFrame(quadro);return;}
   const agora=performance.now();
   const dt=parado?0:Math.max(0,Math.min(.08,(agora-(ultimo??agora))/1000));ultimo=agora;
   t+=dt;avancar(dt);atualizarSom();
@@ -1200,9 +1196,9 @@ function irPara(seg){t=0;particulas=[];loginMostrado=false;esconderLogin();
   prox=EVENTOS.findIndex(e=>e[0]>t);if(prox<0)prox=EVENTOS.length;
   if(t>=T_LOGIN){loginMostrado=true;mostrarLogin(true);}}
 
-document.getElementById('pular').onclick=()=>irPara(T_LOGIN+4);
-document.getElementById('repetir').onclick=()=>irPara(0);
-document.getElementById('som').onclick=alternarSom;
+somLigado=true;
+const armarSom=()=>{try{if(!AC)criarSom();if(AC.state==='suspended')AC.resume();}catch(e){}};
+['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,armarSom,{once:false,passive:true}));
 
 // atalho para testes: entrada.html#t=8 abre no segundo 8 (#t=8p abre parado)
 const m=/#t=([\d.]+)(p?)/.exec(location.hash);if(m)irPara(+m[1]);
