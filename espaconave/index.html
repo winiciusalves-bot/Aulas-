@@ -5,132 +5,55 @@ h1{font-size:24px;margin:8px 0}
 .card{background:#0f1830;border-radius:16px;padding:16px;margin:12px 0}
 a.btn,button{display:inline-block;background:#2a7de1;color:#fff;border:0;border-radius:12px;padding:12px 16px;font-size:16px;text-decoration:none;margin:4px;cursor:pointer}
 button.alt{background:transparent;border:2px solid #5aa2ff}
-.grid{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:#0f1830;border:2px solid #2a7de1;color:#e8f0ff;border-radius:12px;padding:8px 12px;cursor:pointer}
-.chip.on{background:#ffd54a;color:#1d2433}
-#space{position:fixed;inset:0;background:radial-gradient(#0a1230,#05070d);overflow:hidden;z-index:5;transition:opacity .8s}
-#space.gone{opacity:0;pointer-events:none}
-.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:warp 1.6s linear infinite}
-@keyframes warp{from{transform:scale(.2);opacity:0}to{transform:scale(4);opacity:1}}
-#ship{position:absolute;left:50%;top:60%;width:90px;transform:translate(-50%,-50%);animation:fly 3.2s ease-in forwards}
-@keyframes fly{to{transform:translate(-50%,-50%) scale(.05);opacity:0}}
-#grid{position:absolute;inset:0;background-image:linear-gradient(#1d3a6b 1px,transparent 1px),linear-gradient(90deg,#1d3a6b 1px,transparent 1px);background-size:40px 40px;opacity:.35;animation:zoom 3.2s ease-in forwards}
-@keyframes zoom{from{transform:scale(1)}to{transform:scale(4)}}
-#skip{position:fixed;bottom:16px;right:16px;z-index:6}
-.avatar{width:220px;max-width:100%;display:block;margin:0 auto}
 .help{opacity:.8;font-size:14px}
-
-#space .sun{position:absolute;left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:radial-gradient(#fff3a0,#ffb800 60%,#ff7a00);box-shadow:0 0 40px #ffb800aa}
-#space .orb{position:absolute;left:50%;top:50%;border:1px dashed #2b4a80;border-radius:50%;animation:spin linear infinite}
+#space{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(#0a1230,#05070d);overflow:hidden}
+#space .star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:warp 3s linear infinite}
+@keyframes warp{from{transform:scale(.2);opacity:0}to{transform:scale(4);opacity:1}}
+#space::before{content:"";position:absolute;inset:-50%;background-image:linear-gradient(rgba(90,240,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(90,240,255,.12) 1px,transparent 1px);background-size:48px 48px;transform:perspective(500px) rotateX(60deg);animation:gridmove 4s linear infinite}
+@keyframes gridmove{to{background-position:0 48px}}
+#space .sun{position:absolute;left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:radial-gradient(#fff3a0,#ffb800 60%,#ff7a00);box-shadow:0 0 60px #5af0ffaa,0 0 120px #2a7de1aa}
+#space .orb{position:absolute;left:50%;top:50%;border:1px dashed #5af0ff55;border-radius:50%;animation:spin linear infinite}
 #space .pl{position:absolute;top:-7px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%}
 @keyframes spin{to{transform:rotate(360deg)}}
 #space .o1{width:120px;height:120px;margin:-60px 0 0 -60px;animation-duration:6s}
 #space .o2{width:190px;height:190px;margin:-95px 0 0 -95px;animation-duration:10s}
 #space .o3{width:270px;height:270px;margin:-135px 0 0 -135px;animation-duration:15s}
 #space .o4{width:350px;height:350px;margin:-175px 0 0 -175px;animation-duration:22s}
-#rocket{position:absolute;left:12%;top:78%;width:48px;animation:go 3s ease-in .6s forwards}
-@keyframes go{to{transform:translate(52vw,-38vh) rotate(-35deg) scale(.4);opacity:.2}}
-#pc{position:absolute;left:58%;top:24%;width:140px;height:96px;border:4px solid #5aa2ff;border-radius:10px;background:#0a1830;box-shadow:0 0 30px #2a7de1aa;opacity:0;animation:show .6s ease-out 2.9s forwards}
-#pc::after{content:"";position:absolute;left:50%;bottom:-16px;width:30px;height:8px;margin-left:-15px;background:#5aa2ff}
-#pc span{position:absolute;inset:8px;border-radius:4px;background:repeating-linear-gradient(#0f2a55 0 4px,#15386e 4px 8px);animation:blink 1.4s steps(2) infinite}
-@keyframes show{to{opacity:1}}
-@keyframes blink{50%{opacity:.6}}
-@media (prefers-reduced-motion: reduce){#space *{animation:none!important}#rocket{opacity:.2}#pc{opacity:1}}
-
-#space::before{content:"";position:absolute;inset:-50%;background-image:linear-gradient(rgba(90,240,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(90,240,255,.12) 1px,transparent 1px);background-size:48px 48px;transform:perspective(500px) rotateX(60deg);animation:gridmove 4s linear infinite}
-@keyframes gridmove{to{background-position:0 48px}}
-#space::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(rgba(0,0,0,.18) 0 1px,transparent 1px 3px);pointer-events:none}
-#space .sun{box-shadow:0 0 60px #5af0ffaa,0 0 120px #2a7de1aa}
-#space .orb{border-color:#5af0ff55}
-#pc span{background:linear-gradient(#06142e,#0b2a55);box-shadow:inset 0 0 20px #5af0ff55}
-#pc span::before{content:"> ACESSO CONCEDIDO_";position:absolute;left:8px;top:8px;color:#5af0ff;font:12px monospace;white-space:nowrap}
-#pc span::after{content:"";position:absolute;left:8px;right:8px;top:30px;height:44px;background:repeating-linear-gradient(90deg,#5af0ff 0 6px,transparent 6px 10px);opacity:.5}
-#rocket{filter:drop-shadow(0 0 8px #5af0ff)}
-
-#rain{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none}
-.bonecos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.bonecos figure{margin:0;width:150px}.boneco{width:140px;height:auto;animation:bob 2.4s ease-in-out infinite}figcaption{margin-top:6px}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@media (prefers-reduced-motion: reduce){.boneco{animation:none}}
+body>*:not(#space):not(.painel){position:relative;z-index:1}
+.bonecos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.bonecos figure{margin:0;width:150px}.boneco{width:140px;height:auto;animation:bob 2.4s ease-in-out infinite}figcaption{margin-top:6px}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .foguete-btn{display:block;margin:12px auto;background:none;border:0;cursor:pointer;width:110px;color:#e8f0ff}
 .foguete-btn svg{width:110px;animation:bob 2.4s ease-in-out infinite;filter:drop-shadow(0 0 10px #5af0ff)}
-.painel{position:fixed;inset:0;background:#05070ddd;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+@media (prefers-reduced-motion: reduce){#space *,.boneco,.foguete-btn svg{animation:none!important}}
+.painel{position:fixed;inset:0;z-index:9;background:#05070ddd;display:none;align-items:center;justify-content:center;padding:16px}
 .painel.on{display:flex}
 .caixa{background:#0a1830;border:2px solid #5af0ff;border-radius:16px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:90vh;overflow:auto}
-.caixa input[type=text],.caixa input[type=email],.caixa input[type=password]{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #2b4a80;background:#0f1830;color:#e8f0ff;font-size:16px;margin:4px 0 10px}
-.abas{display:flex;gap:8px;margin-bottom:12px}
-.abas button{flex:1;background:transparent;border:2px solid #5af0ff;color:#e8f0ff;border-radius:10px;padding:10px;cursor:pointer}
-.abas button.on{background:#5af0ff;color:#05070d}
-.caixa .consent{font-size:13px;line-height:1.45;background:#0f1830;border-radius:10px;padding:10px;margin:8px 0}
-.caixa .consent label{display:flex;gap:8px;align-items:flex-start}
+.caixa input[type=text],.caixa input[type=password]{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #2b4a80;background:#0f1830;color:#e8f0ff;font-size:16px;margin:4px 0 10px}
 .caixa button.go{width:100%;background:#2a7de1;color:#fff;border:0;border-radius:10px;padding:12px;font-size:16px;cursor:pointer}
 .caixa button.go:disabled{opacity:.5}
 .caixa .x{float:right;background:none;border:0;color:#e8f0ff;font-size:22px;cursor:pointer}
 #msgacesso{min-height:1.4em;font-size:14px}
-/* Universo fixo atrás de tudo: a página inteira fica dentro dele */
-#space{position:fixed;inset:0;z-index:0;opacity:1!important;pointer-events:none;background:radial-gradient(#0a1230,#05070d)}
-#space.gone{opacity:1!important}
-#space #rocket,#space #pc,#space #skip,#space #rain{display:none}
-body>*:not(#space):not(.painel){position:relative;z-index:1}
-body>.painel{position:fixed;z-index:9}
-#space .orb,#space .sun{animation-play-state:running}
-#space .star{animation-duration:3s}</style></head><body>
-<div id="space"><canvas id="rain"></canvas><div class="sun"></div>
+</style></head><body>
+<div id="space"><div class="sun"></div>
 <div class="orb o1"><i class="pl" style="background:#b5b5b5"></i></div>
 <div class="orb o2"><i class="pl" style="background:#e0a86b"></i></div>
 <div class="orb o3"><i class="pl" style="background:#4a9fe8"></i></div>
-<div class="orb o4"><i class="pl" style="background:#d9573b"></i></div>
-<svg id="rocket" viewBox="0 0 60 90"><path d="M30 2 C44 22 46 50 40 70 L20 70 C14 50 16 22 30 2Z" fill="#dfe8ff" stroke="#5aa2ff" stroke-width="2"/><circle cx="30" cy="38" r="7" fill="#2a7de1"/><path d="M20 62 L8 80 L22 74Z M40 62 L52 80 L38 74Z" fill="#ff7a59"/><path d="M24 72 Q30 92 36 72Z" fill="#ffb800"/></svg>
-<div id="pc"><span></span></div>
-<button id="skip" class="alt">Pular</button></div>
+<div class="orb o4"><i class="pl" style="background:#d9573b"></i></div></div>
 <h1>Espaçonave</h1>
 <p class="help">Entre no computador infinito. Entre direto, sem login.</p>
 <div class="card" style="text-align:center"><div class="bonecos">
-<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Byte, robô azul"><line x1="100" y1="20" x2="100" y2="40" stroke="#2a7de1" stroke-width="4"/><circle class="blinkl" cx="100" cy="16" r="6" fill="#ff7a59"/><rect x="45" y="40" width="110" height="100" rx="18" fill="#2a7de1"/><rect x="62" y="62" width="76" height="40" rx="8" fill="#dff1ff"/><circle class="eye" cx="82" cy="82" r="7" fill="#1d2433"/><circle class="eye" cx="118" cy="82" r="7" fill="#1d2433"/><path d="M80 95 Q100 107 120 95" stroke="#1d2433" stroke-width="4" fill="none"/><rect x="60" y="142" width="80" height="28" rx="8" fill="#1f5fb3"/></svg><figcaption>Byte<br><span class="help">Grupo A · terça 16h</span></figcaption></figure>
-<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Pixel, boneca verde-água"><line x1="100" y1="35" x2="100" y2="16" stroke="#2e9e8a" stroke-width="4"/><circle cx="100" cy="95" r="60" fill="#5fd0b8"/><rect x="58" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><rect x="106" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><line x1="94" y1="90" x2="106" y2="90" stroke="#1d2433" stroke-width="4"/><circle class="eye" cx="76" cy="93" r="5" fill="#1d2433"/><circle class="eye" cx="124" cy="93" r="5" fill="#1d2433"/><path d="M86 120 Q100 130 114 120" stroke="#1d2433" stroke-width="4" fill="none"/><line class="gleam" x1="66" y1="70" x2="78" y2="62" stroke="#ffffff" stroke-width="4"/></svg><figcaption>Pixel<br><span class="help">Grupo B · terça 15h</span></figcaption></figure>
+<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Byte, robô azul"><line x1="100" y1="20" x2="100" y2="40" stroke="#2a7de1" stroke-width="4"/><circle cx="100" cy="16" r="6" fill="#ff7a59"/><rect x="45" y="40" width="110" height="100" rx="18" fill="#2a7de1"/><rect x="62" y="62" width="76" height="40" rx="8" fill="#dff1ff"/><circle cx="82" cy="82" r="7" fill="#1d2433"/><circle cx="118" cy="82" r="7" fill="#1d2433"/><path d="M80 95 Q100 107 120 95" stroke="#1d2433" stroke-width="4" fill="none"/><rect x="60" y="142" width="80" height="28" rx="8" fill="#1f5fb3"/></svg><figcaption>Byte<br><span class="help">Grupo A · terça 16h</span></figcaption></figure>
+<figure><svg class="boneco" viewBox="0 0 200 200" role="img" aria-label="Pixel, boneca verde-água"><line x1="100" y1="35" x2="100" y2="16" stroke="#2e9e8a" stroke-width="4"/><circle cx="100" cy="95" r="60" fill="#5fd0b8"/><rect x="58" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><rect x="106" y="80" width="36" height="26" rx="8" fill="none" stroke="#1d2433" stroke-width="4"/><line x1="94" y1="90" x2="106" y2="90" stroke="#1d2433" stroke-width="4"/><circle cx="76" cy="93" r="5" fill="#1d2433"/><circle cx="124" cy="93" r="5" fill="#1d2433"/><path d="M86 120 Q100 130 114 120" stroke="#1d2433" stroke-width="4" fill="none"/></svg><figcaption>Pixel<br><span class="help">Grupo B · terça 15h</span></figcaption></figure>
 </div><p class="help">Os professores do computador infinito.</p></div>
-<button id="abrir" class="foguete-btn" aria-label="Abrir acesso"><svg viewBox="0 0 60 90"><path d="M30 2 C44 22 46 50 40 70 L20 70 C14 50 16 22 30 2Z" fill="#dfe8ff" stroke="#5aa2ff" stroke-width="2"/><circle cx="30" cy="38" r="7" fill="#2a7de1"/><path d="M20 62 L8 80 L22 74Z M40 62 L52 80 L38 74Z" fill="#ff7a59"/><path d="M24 72 Q30 92 36 72Z" fill="#ffb800"/></svg><span class="help">Entrar ou criar acesso</span></button>
+<button id="abrir" class="foguete-btn" aria-label="Entrar na espaçonave"><svg viewBox="0 0 60 90"><path d="M30 2 C44 22 46 50 40 70 L20 70 C14 50 16 22 30 2Z" fill="#dfe8ff" stroke="#5aa2ff" stroke-width="2"/><circle cx="30" cy="38" r="7" fill="#2a7de1"/><path d="M20 62 L8 80 L22 74Z M40 62 L52 80 L38 74Z" fill="#ff7a59"/><path d="M24 72 Q30 92 36 72Z" fill="#ffb800"/></svg><span class="help">Entrar</span></button>
 <div class="card"><p>Use o link que você recebeu para entrar na sua espaçonave.</p></div>
 <p class="help">Nada é coletado. A skin fica salva só no aparelho onde você a criou.</p>
-<script>
-const $=id=>document.getElementById(id);
-function enter(){ $('space').classList.add('gone'); }
-window.addEventListener('DOMContentLoaded',()=>{
-  const s=$('space'); for(let i=0;i<60;i++){const e=document.createElement('div');e.className='star';e.style.left=Math.random()*100+'%';e.style.top=Math.random()*100+'%';e.style.animationDelay=(Math.random()*1.6)+'s';s.appendChild(e);}
-  setTimeout(enter,3600); $('skip').onclick=enter;
-});
-</script><script>
-(function(){
-  const c=document.getElementById('rain'); if(!c) return;
-  const x=c.getContext('2d'); let w,h,cols,drops,raf,stop=false;
-  const chars='01アイウエオカキクケコサシスセソタチツテトナニヌネノ<>{}[]#$%&=+ABCDEF';
-  function size(){ w=c.width=innerWidth; h=c.height=innerHeight; cols=Math.floor(w/16); drops=Array.from({length:cols},()=>Math.random()*h/16); }
-  function draw(){
-    x.fillStyle='rgba(5,7,13,.12)'; x.fillRect(0,0,w,h);
-    x.font='15px monospace';
-    for(let i=0;i<cols;i++){
-      const ch=chars[Math.floor(Math.random()*chars.length)];
-      x.fillStyle=Math.random()<.05?'#dfffff':'#3cff9a';
-      x.fillText(ch,i*16,drops[i]*16);
-      if(drops[i]*16>h && Math.random()>.975) drops[i]=0;
-      drops[i]+=1;
-    }
-    if(!stop) raf=setTimeout(()=>requestAnimationFrame(draw),45);
-  }
-  size(); addEventListener('resize',size);
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce){ draw(); }
-  setTimeout(()=>{ stop=true; c.style.transition='opacity .8s'; c.style.opacity='0'; },2600);
-})();
-</script>
+
 <div id="painel" class="painel" role="dialog" aria-modal="true" aria-labelledby="titulo-acesso"><div class="caixa">
 <button class="x" id="fechar" aria-label="Fechar">×</button>
-<h2 id="titulo-acesso" style="font-size:20px;margin:0 0 12px">Acesso</h2>
-<div class="abas"><button id="aba-entrar" class="on" type="button">Entrar</button><button id="aba-criar" type="button">Criar conta</button></div>
+<h2 id="titulo-acesso" style="font-size:20px;margin:0 0 12px">Entrar</h2>
 <form id="form-acesso">
-  <label for="a-email">E-mail do responsável</label><input id="a-email" type="email" required autocomplete="email">
-  <label for="a-senha">Senha</label><input id="a-senha" type="password" minlength="8" required autocomplete="current-password">
-  <div id="bloco-criar" hidden>
-    <label for="a-nome">Primeiro nome da criança (até 30 letras)</label><input id="a-nome" type="text" maxlength="30">
-    <div class="consent"><label><input id="a-aceite" type="checkbox"> <span>Autorizo a criação do acesso desta criança à espaçonave, nos termos do art. 14 da LGPD. Entendo que: (1) o site é público; (2) ficam guardados apenas o primeiro nome e a skin; (3) os dados ficam no Supabase, em servidor nos Estados Unidos (us-east-1); (4) posso pedir a exclusão a qualquer momento. A conta é minha, do responsável, não da criança.</span></label></div>
-  </div>
+  <label for="a-user">Usuário</label><input id="a-user" type="text" required autocomplete="username" autocapitalize="off" spellcheck="false">
+  <label for="a-senha">Senha</label><input id="a-senha" type="password" required autocomplete="current-password">
   <button id="a-enviar" class="go" type="submit">Entrar</button>
   <p id="msgacesso" role="status"></p>
 </form></div></div>
@@ -139,42 +62,35 @@ window.addEventListener('DOMContentLoaded',()=>{
 (function(){
   const SUPABASE_URL='https://damgyslmdexmkkhojtmj.supabase.co';
   const SUPABASE_KEY='sb_publishable_Ee1penIBv8waTVZHe4dSXg_dA98_hMz';
-  const VERSAO='v1-2026-11-16';
-  let modo='entrar';
+  // Usuário digitado -> conta interna (o e-mail interno nunca recebe mensagem)
+  const CONTAS={kaique:'kaique@aulas.local',bernardo:'bernardo@aulas.local',joao:'joaolucas@aulas.local',mirela:'myrella@aulas.local'};
   const $$=id=>document.getElementById(id);
   const sb=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
   function fechar(){ $$('painel').classList.toggle('on',false); }
-  function setModo(m){ modo=m; $$('aba-entrar').classList.toggle('on',m==='entrar'); $$('aba-criar').classList.toggle('on',m==='criar'); $$('bloco-criar').hidden=(m!=='criar'); $$('a-enviar').textContent=m==='criar'?'Criar conta':'Entrar'; $$('a-nome').required=(m==='criar'); $$('a-aceite').required=(m==='criar'); $$('a-senha').autocomplete=(m==='criar'?'new-password':'current-password'); $$('msgacesso').textContent=''; }
   function say(t,ok){ $$('msgacesso').textContent=t; $$('msgacesso').style.color=ok?'#7fe0a0':'#ff8080'; }
-  $$('abrir').addEventListener('click',()=>{ $$('painel').classList.toggle('on',true); $$('a-email').focus(); });
+  $$('abrir').addEventListener('click',()=>{ $$('painel').classList.toggle('on',true); $$('a-user').focus(); });
   $$('fechar').addEventListener('click',fechar);
   $$('painel').addEventListener('click',e=>{ if(e.target.id==='painel') fechar(); });
-  $$('aba-entrar').addEventListener('click',()=>setModo('entrar'));
-  $$('aba-criar').addEventListener('click',()=>setModo('criar'));
   $$('form-acesso').addEventListener('submit',async e=>{
     e.preventDefault();
-    if(!sb){ say('Serviço de acesso indisponível agora. Tente mais tarde.',false); return; }
+    if(!sb){ say('Serviço indisponível agora. Tente mais tarde.',false); return; }
+    const usuario=$$('a-user').value.trim().toLowerCase();
+    const email=CONTAS[usuario];
+    if(!email){ say('Usuário ou senha incorretos.',false); return; }
     const btn=$$('a-enviar'); btn.disabled=true;
-    const email=$$('a-email').value.trim(), senha=$$('a-senha').value;
     try{
-      if(modo==='entrar'){
-        const r=await sb.auth.signInWithPassword({email,password:senha});
-        if(r.error) throw r.error;
-        say('Entrou. Sua espaçonave será aberta aqui em breve.',true);
-      } else {
-        const nome=$$('a-nome').value.trim();
-        if(!$$('a-aceite').checked){ say('Marque a autorização para continuar.',false); btn.disabled=false; return; }
-        const r=await sb.auth.signUp({email,password:senha});
-        if(r.error) throw r.error;
-        const l=await sb.auth.signInWithPassword({email,password:senha});
-        if(l.error){ say('Conta criada. Confirme o e-mail e depois clique em Entrar.',true); btn.disabled=false; return; }
-        const ins=await sb.from('acessos_crianca').insert({responsavel_id:l.data.user.id,primeiro_nome:nome,skin:{},consentimento_em:new Date().toISOString(),consentimento_versao:VERSAO});
-        if(ins.error) throw ins.error;
-        say('Acesso criado. Guarde seu e-mail e senha.',true);
-      }
-    }catch(err){ say('Não foi possível concluir. Confira os dados e tente de novo.',false); }
+      const r=await sb.auth.signInWithPassword({email,password:$$('a-senha').value});
+      if(r.error) throw r.error;
+      say('Entrou. Sua espaçonave será aberta aqui em breve.',true);
+    }catch(err){ say('Usuário ou senha incorretos.',false); }
     btn.disabled=false;
   });
+})();
+</script>
+<script>
+(function(){
+  const s=document.querySelector('#space'); if(!s) return;
+  for(let i=0;i<60;i++){const e=document.createElement('div');e.className='star';e.style.left=Math.random()*100+'%';e.style.top=Math.random()*100+'%';e.style.animationDelay=(Math.random()*3)+'s';s.appendChild(e);}
 })();
 </script>
 </body></html>
