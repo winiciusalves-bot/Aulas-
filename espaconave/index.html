@@ -524,7 +524,7 @@ async function finalizar(){
   A.travada=true; $('finalizar').disabled=true;
   document.querySelectorAll('#aula-corpo button').forEach(b=>b.disabled=true);
   S.dados.aulas=S.dados.aulas||{};
-  S.dados.aulas['1']={data:HOJE(),concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log};
+  S.dados.aulas['1']={data:HOJE(),fim:new Date().toISOString(),concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log};
   falar('fala-a',`Missão encerrada, ${S.aluno.nome}! Resultado guardado. Agora é só enviar.`);
   copiar(); await salvar(true);
 }
@@ -544,7 +544,7 @@ async function carregar(){
     S.online=true;
   }catch(e){ dados=null; }
   if(!dados||!dados.robo) dados=local()||dados||{};
-  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{}};
+  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{},acessos:Array.isArray(dados.acessos)?dados.acessos:[]};
   if(!Array.isArray(S.dados.robo.poderes)) S.dados.robo.poderes=[];
   if(!Array.isArray(S.dados.robo.inventados)) S.dados.robo.inventados=[];
 }
@@ -560,6 +560,7 @@ async function entrar(user){
   S.uid=user.id; S.key=(user.email||'').split('@')[0];
   S.aluno=ALUNOS[S.key]||{nome:S.key,grupo:'A'};
   await carregar();
+  S.dados.acessos.push(new Date().toISOString()); if(S.dados.acessos.length>300) S.dados.acessos=S.dados.acessos.slice(-300); salvar(true);
   $('ola').textContent='Hangar de '+S.aluno.nome;
   $('prof-h').innerHTML=prof().svg; $('prof-a').innerHTML=prof().svg;
   $('nome-robo').value=R().nome; $('chat').textContent=''; $('resp').textContent=''; chat.passo=0; $('msgsalvar').textContent='';
