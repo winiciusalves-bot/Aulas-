@@ -109,19 +109,35 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .certa{border-color:var(--ok)!important}
 
 /* Cena de pouso */
-.cena{--dx:205px;position:relative;height:600px;max-width:780px;width:100%;margin:8px auto 0}
-.foguete{position:absolute;left:50%;bottom:0;width:170px;transform:translateX(-50%);animation:pousa 3.4s cubic-bezier(.2,.7,.3,1) both}
+.cena{--dx:205px;position:relative;height:600px;max-width:780px;width:100%;margin:8px auto 84px}
+.foguete{position:absolute;left:50%;bottom:0;width:170px;z-index:2;transform:translateX(-50%);animation:pousa 3.4s cubic-bezier(.25,.6,.3,1) both}
 .foguete svg{width:100%;height:auto;filter:drop-shadow(0 0 16px #5af0ff88)}
 .foguete path[fill="url(#chama)"]{animation:apaga .8s 3.3s forwards}
-@keyframes pousa{0%{transform:translate(-50%,-120vh)}100%{transform:translate(-50%,0)}}
+@keyframes pousa{0%{transform:translate(-50%,-120vh)}80%{transform:translate(-50%,-14px)}90%{transform:translate(-50%,3px)}95%{transform:translate(-50%,-2px)}100%{transform:translate(-50%,0)}}
 @keyframes apaga{to{opacity:0}}
-.cena .prof{position:absolute;bottom:40px;margin:0;width:96px;text-align:center;font-size:13px;color:var(--mut);opacity:0;transform:translateX(-50%) scale(.2)}
-.cena .prof svg{width:96px;height:96px;display:block;margin:0 auto 4px;animation:flutua 3.2s ease-in-out infinite}
-.cena .prof.esq{left:calc(50% - var(--dx));animation:sai .9s 3.4s forwards}
-.cena .prof.dir{left:calc(50% + var(--dx));animation:sai .9s 3.6s forwards}
-@keyframes sai{to{opacity:1;transform:translateX(-50%) scale(1)}}
-.cena .caixa{position:absolute;left:50%;bottom:300px;transform:translateX(-50%);width:min(360px,92%);margin:0;opacity:0;animation:aparece .8s 4.6s forwards}
+.cena .prof{position:absolute;bottom:40px;margin:0;width:96px;text-align:center;font-size:13px;color:#fff;text-shadow:0 1px 4px #000;opacity:0;z-index:1}
+.cena .prof svg{width:96px;height:96px;display:block;margin:0 auto 4px;animation:passo .45s ease-in-out 3.3s 4}
+.cena .prof.esq{animation:sairEsq 2s 3.3s forwards}
+.cena .prof.dir{animation:sairDir 2s 3.5s forwards}
+@keyframes sairEsq{0%{left:50%;bottom:70px;opacity:0;transform:translateX(-50%) scale(.4)}15%{opacity:1}60%{left:calc(50% - var(--dx) * .6);bottom:40px;opacity:1;transform:translateX(-50%) scale(1)}100%{left:calc(50% - var(--dx));bottom:40px;opacity:1;transform:translateX(-50%) scale(1)}}
+@keyframes sairDir{0%{left:50%;bottom:70px;opacity:0;transform:translateX(-50%) scale(.4)}15%{opacity:1}60%{left:calc(50% + var(--dx) * .6);bottom:40px;opacity:1;transform:translateX(-50%) scale(1)}100%{left:calc(50% + var(--dx));bottom:40px;opacity:1;transform:translateX(-50%) scale(1)}}
+@keyframes passo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cena .caixa{position:absolute;left:50%;bottom:300px;transform:translateX(-50%);width:min(360px,92%);margin:0;opacity:0;animation:aparece .8s 5.4s forwards}
 @keyframes aparece{to{opacity:1}}
+
+.solo{position:absolute;left:50%;bottom:-70px;width:100vw;height:150px;transform:translateX(-50%);z-index:0;border-radius:50% 50% 0 0/38px 38px 0 0;
+ background:radial-gradient(ellipse 60px 9px at 44% 30px,#0006,transparent 70%),radial-gradient(ellipse 90px 12px at 58% 58px,#0005,transparent 70%),radial-gradient(ellipse 40px 6px at 52% 80px,#0005,transparent 70%),radial-gradient(ellipse 160px 14px at 50% 22px,#0008,transparent 70%),linear-gradient(180deg,#8b90a0,#4a4f60 40%,#1a1d2a);box-shadow:0 -2px 30px #9fb4ff22}
+.poeira{position:absolute;bottom:6px;left:50%;width:150px;height:46px;border-radius:50%;background:radial-gradient(ellipse,#d9dce6cc,#d9dce600 70%);opacity:0;z-index:3;pointer-events:none}
+.poeira.p1{animation:poeiraE 1.8s 2.6s ease-out forwards}
+.poeira.p2{animation:poeiraD 1.8s 2.6s ease-out forwards}
+@keyframes poeiraE{0%{opacity:0;transform:translateX(-50%) scale(.3)}30%{opacity:.9}90%{opacity:0;transform:translateX(-120%) scale(1.8)}100%{opacity:0;transform:translateX(-50%) scale(0)}}
+@keyframes poeiraD{0%{opacity:0;transform:translateX(-50%) scale(.3)}30%{opacity:.9}90%{opacity:0;transform:translateX(20%) scale(1.8)}100%{opacity:0;transform:translateX(-50%) scale(0)}}
+.rampa{position:absolute;left:50%;bottom:26px;width:0;height:6px;transform:translateX(-50%);background:linear-gradient(90deg,#5b6785,#c9d6ff,#5b6785);border-radius:3px;z-index:1;animation:rampa .5s 3.2s forwards}
+@keyframes rampa{to{width:calc(var(--dx) * 2 + 40px)}}
+.porta{opacity:0;animation:aparece .4s 3.2s forwards}
+.cena .prof::after{content:"";position:absolute;left:50%;bottom:20px;width:70px;height:10px;transform:translateX(-50%);border-radius:50%;background:#0009;z-index:-1}
+.foguete::after{content:"";position:absolute;left:50%;bottom:6px;width:190px;height:16px;transform:translateX(-50%);border-radius:50%;background:#000a;z-index:-1}
+@media (prefers-reduced-motion:reduce){.poeira{display:none}.rampa{width:calc(var(--dx) * 2 + 40px)}.porta{opacity:1}.cena .prof.esq{left:calc(50% - var(--dx))}.cena .prof.dir{left:calc(50% + var(--dx))}}
 @media(max-width:600px){.cena{--dx:112px;height:640px}.cena .caixa{bottom:300px}.cena .prof{width:84px}.cena .prof svg{width:84px;height:84px}.foguete{width:130px}}
 @media (prefers-reduced-motion:reduce){.foguete,.cena .prof,.cena .caixa{animation:none!important;opacity:1}.foguete path[fill="url(#chama)"]{opacity:0}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -136,6 +152,9 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
   <h1>Bem-vindo ao <span>universo</span></h1>
   <p class="sub">Aqui você monta o seu robô, escolhe os poderes dele e parte para as missões do computador infinito.</p>
   <div class="cena">
+    <div class="solo"></div>
+    <i class="poeira p1"></i><i class="poeira p2"></i>
+    <div class="rampa"></div>
     <figure class="prof esq" id="prof-esq"></figure>
     <figure class="prof dir" id="prof-dir"></figure>
     <div class="caixa" id="caixa">
@@ -170,7 +189,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
       <path d="M61 30h6v16h-6Z" fill="#7d8aa6"/>
       <rect x="66" y="44" width="4" height="46" rx="2" fill="#5b6785"/>
       <path d="M60 84h14v4H60Z" fill="#3a4460"/>
-    </svg></div>
+    <g class="porta"><rect x="33" y="64" width="14" height="24" rx="3" fill="#06122e" stroke="#5af0ff" stroke-width="1.2"/><rect x="33" y="64" width="14" height="24" rx="3" fill="#5af0ff" opacity=".35"/></g><path d="M24 88 14 104M56 88l10 16" stroke="#5b6785" stroke-width="3" stroke-linecap="round"/><path d="M9 104h10M61 104h10" stroke="#3a4460" stroke-width="3" stroke-linecap="round"/></svg></div>
   </div>
   <p class="mut">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
 </section>
