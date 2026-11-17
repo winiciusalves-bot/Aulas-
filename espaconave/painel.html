@@ -27,6 +27,8 @@ button.sec{background:#243461}
 .marcas i{width:14px;height:14px;border-radius:4px;display:inline-block}
 .certo{background:var(--ok)} .errado{background:#ff6b6b}
 .vazio{color:var(--mut);font-size:14px}
+.sec-t{font-size:17px;margin:22px 0 10px;color:var(--ac)}
+.card p{margin:6px 0}
 </style>
 </head>
 <body>
@@ -41,7 +43,26 @@ button.sec{background:#243461}
 <div id="msg" class="msg"></div>
 <div id="painel" hidden>
   <div class="bar"><button id="atualizar" class="sec">Atualizar</button><button id="sair" class="sec">Sair</button></div>
+  <h2 class="sec-t">Tripulantes</h2>
   <div id="lista" class="grid"></div>
+  <h2 class="sec-t">Matérias e tarefas</h2>
+  <div class="grid">
+    <div class="card"><h2>Montar o robô</h2>
+      <p class="vazio">Dar um nome, escolher um modelo, e escolher um poder de cada tipo: perceber, pensar e agir.</p>
+      <p class="vazio">Depois, inventar um poder novo pelo chat, com nome, o que ele faz e o que resolve.</p></div>
+    <div class="card"><h2>Missão 1 · Planeta Máquina</h2>
+      <p class="vazio"><b>Grupo A (Byte):</b> classificar 8 itens do computador e do robô em Entrada, Processamento ou Saída.</p>
+      <p class="vazio"><b>Grupo B (Pixel):</b> 5 perguntas de múltipla escolha sobre como o computador funciona (RAM, armazenamento, unidades de medida).</p></div>
+    <div class="card"><h2>Os 7 planetas</h2>
+      <div class="kv"><span>1 · Máquina</span><span>Como o computador funciona</span></div>
+      <div class="kv"><span>2 · Lógica</span><span>Passo a passo e decisões</span></div>
+      <div class="kv"><span>3 · Internet segura</span><span>Senhas, golpes e privacidade</span></div>
+      <div class="kv"><span>4 · Código</span><span>Programar de verdade</span></div>
+      <div class="kv"><span>5 · Dados</span><span>Números, textos e memória</span></div>
+      <div class="kv"><span>6 · Robótica</span><span>Circuitos, sensores e motores</span></div>
+      <div class="kv"><span>7 · Criação</span><span>O seu próprio projeto</span></div>
+      <p class="vazio">Só a Missão 1 está liberada no site. As demais aparecem como "Em breve".</p></div>
+  </div>
 </div>
 
 <script>
