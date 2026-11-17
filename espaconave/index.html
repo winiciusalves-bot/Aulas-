@@ -189,6 +189,23 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 #v-entrada #caixa{max-width:none;margin:0}
 #v-entrada #caixa .nota{margin:10px 0 0;font-size:11px;color:#7f93c4;text-align:center}
 #v-entrada .so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.aula-topo{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.aula-parte{font-weight:700;color:var(--cy);text-transform:uppercase;letter-spacing:.08em;font-size:13px}
+.aula-barra{height:8px;border-radius:99px;background:#0a1230;border:1px solid var(--line);margin:8px 0 14px;overflow:hidden}
+.aula-barra i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cy));border-radius:99px;transition:width .3s}
+.aula-h{font-size:21px;line-height:1.3;margin:4px 0 12px}
+.aula-ic{font-size:30px;vertical-align:middle}
+.aula-p{font-size:17px;line-height:1.6;margin:0 0 12px;max-width:62ch}
+.aula-robo{background:#0a1230;border-left:4px solid var(--gold);border-radius:10px;padding:10px 14px;margin:6px 0 14px;font-size:16px;line-height:1.5}
+.aula-robo b{color:var(--gold)}
+.aula-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.aula-expl{margin:12px 0 0;font-size:16px;line-height:1.5;min-height:24px}
+.aula-ta{width:100%;font:inherit;font-size:17px;padding:12px;border-radius:12px;background:#0a1230;border:1.5px solid var(--blue);color:var(--txt);resize:vertical}
+.item.errada{border-color:var(--bad)!important}
+.prof-det{margin-top:8px;font-size:14px}.prof-det summary{cursor:pointer;color:var(--cy)}.prof-det li{margin:4px 0;color:var(--mut)}.prof-det b{color:var(--txt)}
+.aluno-aula{border-top:1px solid #1b2a52;margin-top:8px;padding-top:8px}
+.aluno-aula h3{font-size:15px;margin:0 0 4px}
+.resp-ab{font-size:13px;color:var(--mut);margin:4px 0;font-style:italic}
 #v-prof{max-width:980px;margin:0 auto;padding:12px 0;text-align:left}
 .prof-h{font-size:24px;margin:6px 0 2px}
 .prof-menu{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:18px 0}
@@ -284,19 +301,8 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
   </div>
   <div id="p-materias-box" hidden>
     <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button></div>
-    <div class="grade-p">
-      <div class="card"><h2>Montar o robô</h2><p>Dar um nome, escolher um modelo e um poder de cada tipo: perceber, pensar e agir.</p><p>Depois, inventar um poder novo pelo chat, com nome, o que ele faz e o que resolve.</p></div>
-      <div class="card"><h2>Missão 1 · Planeta Máquina</h2><p><b>Grupo A (Byte):</b> classificar 8 itens do computador e do robô em Entrada, Processamento ou Saída.</p><p><b>Grupo B (Pixel):</b> 5 perguntas de múltipla escolha sobre como o computador funciona (RAM, armazenamento, unidades de medida).</p></div>
-      <div class="card"><h2>Os 7 planetas</h2>
-        <div class="kv"><span>1 · Máquina</span><span>Como o computador funciona</span></div>
-        <div class="kv"><span>2 · Lógica</span><span>Passo a passo e decisões</span></div>
-        <div class="kv"><span>3 · Internet segura</span><span>Senhas, golpes e privacidade</span></div>
-        <div class="kv"><span>4 · Código</span><span>Programar de verdade</span></div>
-        <div class="kv"><span>5 · Dados</span><span>Números, textos e memória</span></div>
-        <div class="kv"><span>6 · Robótica</span><span>Circuitos, sensores e motores</span></div>
-        <div class="kv"><span>7 · Criação</span><span>O seu próprio projeto</span></div>
-        <p>Só a Missão 1 está liberada no site. As demais aparecem como "Em breve".</p></div>
-    </div>
+    <p class="sub">Conteúdo completo de cada aula, como o aluno vê. Toque em um grupo para abrir.</p>
+    <div id="p-materias-lista" class="grade-p"></div>
   </div>
   <div id="p-alunos-box" hidden>
     <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button><button class="btn sec" id="p-atualizar" type="button">Atualizar</button></div>
@@ -310,10 +316,8 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
   <div class="card fala"><span id="prof-a"></span><div class="balao" id="fala-a" aria-live="polite"></div></div>
   <div class="card" id="aula-corpo"></div>
   <div class="card">
-    <button id="finalizar" class="btn ok">Finalizar aula</button>
-    <button id="copiar" class="btn sec">Copiar resultado</button>
-    <p id="msgcopia" class="mut" aria-live="polite" style="margin-top:8px"></p>
-    <div id="res" hidden></div>
+    <button id="finalizar" class="btn sec">Guardar e continuar depois</button>
+    
   </div>
 </section>
 </main>
@@ -364,13 +368,13 @@ const PODERES=[
  {id:'luzes',t:'acao',n:'Luzes',d:'Acende sinais coloridos.'},
  {id:'pernas',t:'acao',n:'Pernas',d:'Anda em terreno difícil.'}];
 const PLANETAS=[
- {id:'maquina',n:'Máquina',d:'Como o computador funciona',c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)',foto:'espaconave/imagens/terra.jpg'},
- {id:'logica',n:'Lógica',d:'Passo a passo e decisões',c:'radial-gradient(circle at 30% 30%,#ffe29a,#ff8a3d)'},
- {id:'seguranca',n:'Internet segura',d:'Senhas, golpes e privacidade',c:'radial-gradient(circle at 30% 30%,#b8ffd9,#1f9d63)'},
- {id:'codigo',n:'Código',d:'Programar de verdade',c:'radial-gradient(circle at 30% 30%,#e0c9ff,#7c4dff)'},
- {id:'dados',n:'Dados',d:'Números, textos e memória',c:'radial-gradient(circle at 30% 30%,#ffd0dc,#ff5d73)'},
- {id:'robotica',n:'Robótica',d:'Circuitos, sensores e motores',c:'radial-gradient(circle at 30% 30%,#d6f7ff,#22b8cf)'},
- {id:'criacao',n:'Criação',d:'O seu próprio projeto',c:'radial-gradient(circle at 30% 30%,#fff6c2,#ffb800)'}];
+ {id:'maquina',n:'Máquina',d:'O computador por fora e por dentro',aulas:[1,2,3,4],c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)',foto:'espaconave/imagens/terra.jpg'},
+ {id:'dados',n:'Dados',d:'Como tudo vira número',aulas:[5],c:'radial-gradient(circle at 30% 30%,#ffd0dc,#ff5d73)'},
+ {id:'seguranca',n:'Internet',d:'Redes, segurança e vida digital',aulas:[6,7],c:'radial-gradient(circle at 30% 30%,#b8ffd9,#1f9d63)'},
+ {id:'logica',n:'Lógica',d:'Passo a passo, decisão e repetição',aulas:[8,9],c:'radial-gradient(circle at 30% 30%,#ffe29a,#ff8a3d)'},
+ {id:'codigo',n:'Código',d:'Programar de verdade',aulas:[10],c:'radial-gradient(circle at 30% 30%,#e0c9ff,#7c4dff)'},
+ {id:'robotica',n:'Robótica',d:'Sensores, cérebro e motores',aulas:[11],c:'radial-gradient(circle at 30% 30%,#d6f7ff,#22b8cf)'},
+ {id:'criacao',n:'Criação',d:'O seu próprio projeto',aulas:[12],c:'radial-gradient(circle at 30% 30%,#fff6c2,#ffb800)'}];
 
 /* ---------- Desenho do robô ---------- */
 function roboSVG(m,c){
@@ -483,91 +487,224 @@ function chatInicio(){
 
 /* ---------- Mapa ---------- */
 function pintarMapa(){
-  const ok=completo(), feita=!!(S.dados.aulas&&S.dados.aulas['1']&&S.dados.aulas['1'].concluida);
-  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira missão: nome e um poder de cada tipo.':feita?'Missão 1 concluída. Na próxima aula você escolhe o caminho: Lógica ou Internet segura.':'Seu robô está pronto. A primeira missão é no planeta Máquina e é feita no computador.';
+  const ok=completo(); const feitas=Object.keys(AULAS).filter(n=>feitaAula(+n)).length;
+  const prox=Object.keys(AULAS).map(Number).find(n=>liberada(n)&&!feitaAula(n));
+  $('msg-mapa').textContent=!ok?'Termine o robô para liberar a primeira aula: nome e um poder de cada tipo.':prox?`Sua próxima aula é a ${prox}: ${AULAS[prox].titulo}. Ela é feita no ${AULAS[prox].ap.replace(/^\S+\s/,'').toLowerCase()}.`:`Você concluiu ${feitas} aula(s). A próxima ainda está sendo preparada.`;
   const M=$('mapa'); M.textContent='';
-  PLANETAS.forEach((p,i)=>{
+  PLANETAS.forEach(p=>{
     const b=document.createElement('button'); b.className='planeta';
-    const aberto=(i===0&&ok);
-    if(aberto) b.classList.add(feita?'feito':'aberto'); else b.disabled=true;
+    const prontas=p.aulas.filter(n=>AULAS[n]);
+    const alvo=prontas.find(n=>liberada(n)&&!feitaAula(n));
+    const todas=p.aulas.length&&p.aulas.every(n=>feitaAula(n));
+    const feitasP=prontas.filter(n=>feitaAula(n));
+    let txt;
+    if(alvo){ const sv=(S.dados.aulas||{})[alvo]; b.classList.add('aberto'); b.onclick=()=>abrirAula(alvo);
+      txt=`Aula ${alvo} · ${AULAS[alvo].ap} · ${sv&&sv.passo>0?'toque para continuar':'toque para começar'}`; }
+    else if(feitasP.length){ b.classList.add('feito'); const ult=feitasP[feitasP.length-1]; b.onclick=()=>abrirAula(ult);
+      txt=todas?'✓ Planeta concluído · toque para rever':`✓ ${feitasP.length} de ${p.aulas.length} aulas · a próxima está chegando`; }
+    else{ b.disabled=true; txt=!ok&&p.aulas[0]===1?'Termine o robô':prontas.length?`Abre depois da aula ${prontas[0]-1}`:'Em breve'; }
     const ic=document.createElement('i'); ic.style.background=p.c; if(p.foto){ic.style.backgroundImage=`url(${p.foto})`;ic.style.backgroundSize='cover';}
     const n=document.createElement('b'); n.textContent=p.n;
-    const s=document.createElement('small'); s.textContent=i===0?(feita?'✓ Missão 1 concluída':ok?'Missão 1 · 💻 Computador · toque para começar':'Termine o robô'):(i<3?'Abre depois da missão 1':'Em breve');
     const d=document.createElement('small'); d.style.display='block'; d.textContent=p.d;
-    b.append(ic,n,d,s);
-    if(aberto) b.onclick=abrirAula;
-    M.appendChild(b);
+    const q=document.createElement('small'); q.style.display='block'; q.textContent=p.aulas.length>1?`Aulas ${p.aulas[0]} a ${p.aulas[p.aulas.length-1]}`:`Aula ${p.aulas[0]}`;
+    const st=document.createElement('small'); st.textContent=txt;
+    b.append(ic,n,d,q,st); M.appendChild(b);
   });
 }
 
-/* ---------- Aula 1 ---------- */
-const A={log:[],acertos:0,total:0,fim:false,travada:false,ini:null,marcas:[]};
+/* ---------- Conteúdo das aulas ----------
+   Cada passo: s = parte da aula; t = tipo (info, q, classe, papel, aberta, auto).
+   g:'A' ou g:'B' = só aquele grupo. B:{...} = troca campos para o Grupo B.
+   c = conceito medido (aparece no painel do professor). */
+const AULAS={
+1:{titulo:'O que é um computador',curto:'O que é um computador',ap:'💻 Computador',min:{A:60,B:90},passos:[
+ {s:'Início',t:'info',ic:'🚀',h:'Bem-vindo à primeira aula',txt:['Nesta aula você vai descobrir o que é um computador de verdade, do zero. Não precisa saber nada antes.','No fim, você vai conseguir olhar para qualquer máquina e dizer como ela funciona por dentro.'],robo:'Tudo o que você aprender aqui vale também para o seu robô.'},
+ {s:'Início',t:'aberta',q:'Antes de começar: o que você acha que um computador faz? Escreva do seu jeito. Aqui não existe resposta errada.',c:'ideia inicial',min:5},
+ {s:'Explicação',t:'info',ic:'🖥️',h:'O que é um computador?',txt:['Computador é uma máquina que segue instruções. Ele recebe uma informação, faz alguma coisa com ela e devolve um resultado.','Ele não pensa sozinho. Quem diz o que ele deve fazer é o programa, que é uma lista de instruções escrita por uma pessoa.','Por isso existe a profissão de programador: é quem escreve essas instruções.'],robo:'O seu robô também só faz o que foi programado para fazer.',
+  B:{txt:['Computador é uma máquina que segue instruções. Ele recebe dados, processa esses dados e devolve um resultado.','Ele não pensa sozinho. Tudo o que ele faz está escrito em um programa, que é uma lista de instruções criada por uma pessoa.','A grande vantagem dele é a velocidade: um processador comum executa bilhões de operações simples por segundo, sem cansar e sem errar a conta.']}},
+ {s:'Explicação',t:'info',ic:'📱',h:'Tem computador em todo lugar',txt:['Computador não é só aquele de mesa. Também são computadores: o notebook, o celular, o tablet, o videogame e a smart TV.','Até o caixa eletrônico do banco, o painel de um carro novo e um robô aspirador têm um computador dentro.','Eles têm tamanhos diferentes, mas todos funcionam do mesmo jeito. É esse jeito que você vai aprender agora.'],robo:'O robô que você montou no hangar é um computador com rodas, braços ou hélices.'},
+ {s:'Explicação',t:'q',q:'Qual destes NÃO é um computador?',o:['Celular','Videogame','Uma lâmpada comum de casa','Notebook'],a:2,e:'A lâmpada comum só acende e apaga. Ela não segue um programa. Celular, videogame e notebook são computadores.',c:'o que é computador'},
+ {s:'Explicação',t:'info',ic:'👀',h:'Parte 1: Entrada',txt:['Entrada é por onde a informação entra no computador. É como os seus olhos e ouvidos.','Exemplos de entrada: o teclado (você digita), o mouse (você aponta e clica), o microfone (você fala), a câmera (ela enxerga) e a tela de toque do celular (você encosta o dedo).','Sem entrada, o computador não sabe o que você quer.'],robo:'No robô, a entrada são os sensores: de distância, de luz, de toque e a câmera.'},
+ {s:'Explicação',t:'info',ic:'🧠',h:'Parte 2: Processamento',txt:['Processamento é a parte que pensa. É como o seu cérebro.','A peça que faz isso se chama processador. Ele faz contas e toma decisões seguindo as instruções do programa.','Exemplo: você aperta a tecla A. O processador recebe esse sinal, descobre que é a letra A e manda mostrar na tela.'],robo:'No robô, o processamento fica na placa controladora. É ela que decide: "tem parede na frente, vou virar".',
+  B:{txt:['Processamento é a parte que calcula e decide. A peça que faz isso é o processador, também chamado de CPU.','Ele trabalha junto com a memória: busca uma instrução, executa e vai para a próxima, bilhões de vezes por segundo.','Exemplo: você aperta a tecla A. O processador recebe o sinal do teclado, identifica o código da letra e manda a placa de vídeo desenhar o A na tela.']}},
+ {s:'Explicação',t:'info',ic:'📢',h:'Parte 3: Saída',txt:['Saída é por onde o computador mostra o resultado ou faz alguma coisa. É como as suas mãos e a sua boca.','Exemplos de saída: a tela (mostra imagem), a caixa de som e o fone (tocam som) e a impressora (coloca no papel).','Sem saída, o computador até pensaria, mas você nunca ficaria sabendo o resultado.'],robo:'No robô, a saída são os motores que giram as rodas, as luzes que acendem e o alto-falante.'},
+ {s:'Explicação',t:'info',ic:'🔁',h:'O ciclo completo',txt:['Todo computador repete sempre o mesmo ciclo: ENTRADA, depois PROCESSAMENTO, depois SAÍDA.','No computador: você clica no botão de play (entrada), o processador abre o vídeo (processamento) e a tela mostra o vídeo com som (saída).','Guarde essa ordem. Ela vai aparecer em todas as aulas, até quando você estiver programando.'],robo:'No robô: o sensor percebe a parede (entrada), a placa decide virar (processamento) e o motor gira a roda (saída).'},
+ {s:'Explicação',t:'q',q:'Você fala "que horas são?" para o celular e ele responde em voz alta. Qual parte foi a ENTRADA?',o:['O alto-falante que respondeu','O microfone que ouviu a sua voz','O processador que descobriu a hora'],a:1,e:'O microfone trouxe a sua voz para dentro do celular. Isso é entrada. O alto-falante é saída e o processador faz o processamento.',c:'entrada'},
+ {s:'Explicação',t:'q',q:'E qual parte foi a SAÍDA?',o:['O alto-falante que respondeu','O microfone que ouviu a sua voz','O processador que descobriu a hora'],a:0,e:'O alto-falante levou a resposta para fora do celular. Isso é saída.',c:'saída'},
+ {s:'Explicação',t:'info',ic:'🧩',h:'Hardware e software',txt:['Hardware é tudo o que você consegue tocar: a tela, o teclado, as peças de dentro.','Software são os programas: os jogos, os aplicativos, o navegador. Você não consegue tocar, mas é o que faz o hardware funcionar.','Um não serve sem o outro. Um videogame sem jogo não faz nada. Um jogo sem videogame também não.'],robo:'No robô, o corpo, as rodas e os sensores são hardware. As regras que você vai programar são software.',
+  B:{txt:['Hardware é a parte física: tudo o que você consegue tocar, como a tela, o teclado e as placas de dentro.','Software é a parte lógica: os programas, que são listas de instruções guardadas na máquina. O software mais importante é o sistema operacional (Windows, Android, Linux), que organiza todo o resto.','Quando algo dá errado, a primeira pergunta de um técnico é: o problema é de hardware (uma peça) ou de software (um programa)?']}},
+ {s:'Explicação',t:'q',q:'Um jogo instalado no celular é hardware ou software?',o:['Hardware','Software'],a:1,e:'O jogo é um programa, então é software. O celular onde ele roda é hardware.',c:'hardware e software'},
+ {s:'Explicação',g:'B',t:'info',ic:'🗄️',h:'Memória e armazenamento',txt:['O computador tem dois lugares para guardar informação, e eles são bem diferentes.','A memória RAM é a mesa de trabalho: é rápida e guarda só o que está sendo usado agora. Quando a energia acaba, tudo o que estava nela se apaga.','O armazenamento (HD ou SSD) é a estante: é mais lento, mas guarda fotos, jogos e arquivos mesmo com o computador desligado.','Por isso você perde um texto que não salvou quando a luz cai: ele estava só na RAM.'],robo:'No robô, o programa fica no armazenamento da placa. Os valores que os sensores leem a cada instante ficam na memória.'},
+ {s:'Explicação',g:'B',t:'q',q:'A luz caiu e você perdeu o texto que estava digitando sem salvar. Onde esse texto estava?',o:['No armazenamento (HD ou SSD)','Na memória RAM','No processador'],a:1,e:'O texto estava só na RAM, que apaga sem energia. Salvar é copiar da RAM para o armazenamento.',c:'memória e armazenamento'},
+ {s:'Explicação',g:'B',t:'info',ic:'📏',h:'Unidades de medida',txt:['A quantidade de informação é medida em bytes. Um byte guarda, por exemplo, uma letra.','As unidades sobem assim: KB (quilobyte), MB (megabyte), GB (gigabyte) e TB (terabyte). Cada uma vale cerca de mil vezes a anterior.','Para ter ideia: uma foto do celular tem alguns MB. Um jogo grande tem dezenas de GB.','Curiosidade: o fabricante conta 1 GB como 1 bilhão de bytes, mas o sistema conta de 1024 em 1024. Por isso um disco vendido como 512 GB aparece no computador com cerca de 477 GB.'],robo:'A placa de um robô simples tem pouquíssima memória, medida em KB. Por isso o programa dele precisa ser enxuto.'},
+ {s:'Explicação',g:'B',t:'q',q:'Coloque em ordem do menor para o maior.',o:['GB, MB, KB, TB','KB, MB, GB, TB','MB, KB, TB, GB'],a:1,e:'A ordem é KB, MB, GB, TB. Cada uma vale cerca de mil vezes a anterior.',c:'unidades de medida'},
+ {s:'Prática',t:'classe',h:'Entrada, processamento ou saída?',txt:'Toque em um item e depois na caixa certa. Antes de tocar, diga em voz alta o porquê.',cats:{e:'Entrada',p:'Processamento',s:'Saída'},c:'classificar entrada, processamento e saída',
+  itens:[['teclado','e'],['tela','s'],['mouse','e'],['caixa de som','s'],['microfone','e'],['processador','p'],['sensor de distância do robô','e'],['motor das rodas do robô','s']],
+  B:{itens:[['teclado','e'],['monitor','s'],['mouse','e'],['fone de ouvido','s'],['microfone','e'],['processador','p'],['webcam','e'],['impressora','s'],['controle do videogame','e'],['sensor de distância do robô','e'],['placa controladora do robô','p'],['motor das rodas do robô','s'],['luz de aviso do robô','s']]}},
+ {s:'Prática',t:'q',q:'Um robô aspirador encosta na parede e muda de direção. Qual é a ordem certa do que aconteceu?',o:['O motor gira, o sensor sente, a placa decide','O sensor sente a parede, a placa decide virar, o motor gira','A placa decide, o motor gira, o sensor sente'],a:1,e:'Sempre nesta ordem: entrada (sensor), processamento (placa) e saída (motor).',c:'ciclo completo'},
+ {s:'Prática',t:'q',q:'O que acontece com um computador que não tem nenhum programa?',o:['Funciona normalmente','Não faz nada de útil, porque ninguém disse a ele o que fazer','Pensa sozinho no que fazer'],a:1,e:'Sem programa, o hardware não sabe o que fazer. O computador só segue instruções.',c:'o que é computador'},
+ {s:'Prática',g:'A',t:'q',q:'Qual destes é uma SAÍDA?',o:['Teclado','Impressora','Microfone'],a:1,e:'A impressora leva o resultado para o papel. Teclado e microfone são entradas.',c:'saída'},
+ {s:'Prática',g:'A',t:'q',q:'A tela do computador é hardware ou software?',o:['Hardware, porque dá para tocar','Software, porque mostra os programas'],a:0,e:'A tela é uma peça, então é hardware. O que aparece nela são os programas, que são software.',c:'hardware e software'},
+ {s:'Prática',g:'B',t:'q',q:'O computador está lento com muitos programas abertos ao mesmo tempo. Qual peça provavelmente ficou cheia?',o:['A memória RAM','A caixa de som','O teclado'],a:0,e:'Cada programa aberto ocupa espaço na RAM. Quando ela enche, tudo fica lento.',c:'memória e armazenamento'},
+ {s:'Prática',g:'B',t:'q',q:'Um disco vendido como "512 GB" aparece com cerca de 477 GB no sistema. Por quê?',o:['O disco veio com defeito','O fabricante conta de 1000 em 1000 e o sistema conta de 1024 em 1024','Os programas já ocuparam o resto'],a:1,e:'É só uma diferença no jeito de contar. O espaço real é o mesmo.',c:'unidades de medida'},
+ {s:'Prática',g:'B',t:'q',q:'O sistema operacional (Windows, Android) é o quê?',o:['Uma peça de hardware','O software que organiza o hardware e os outros programas','Um tipo de memória'],a:1,e:'O sistema operacional é o programa "gerente": ele controla as peças e deixa os outros programas rodarem.',c:'hardware e software'},
+ {s:'Desafio',t:'papel',ic:'✏️',h:'Desafio no papel: o robô aspirador',txt:['Pegue uma folha e desenhe um robô aspirador.','Marque com setas: onde fica a ENTRADA, onde fica o PROCESSAMENTO e onde fica a SAÍDA.','Depois escreva embaixo o que acontece, passo a passo, quando ele encontra uma cadeira no caminho.','Mostre o desenho para o professor e explique.'],
+  B:{h:'Desafio no papel: projete um robô',txt:['Escolha um robô: aspirador, drone de entrega ou braço de fábrica.','Desenhe e marque as entradas, o processamento e as saídas. Coloque pelo menos três entradas e duas saídas.','Escreva o que fica na memória e o que fica no armazenamento desse robô.','Depois descreva, passo a passo, uma situação: o que ele percebe, o que decide e o que faz.','Mostre para o professor e defenda as suas escolhas.']}},
+ {s:'Fechamento',t:'aberta',q:'Explique com as suas palavras, como se fosse para um amigo: o que é entrada, o que é processamento e o que é saída?',c:'explicação final',min:20},
+ {s:'Fechamento',t:'auto',q:'Como você se sentiu nesta aula?'}
+]},
+
+2:{titulo:'As peças de fora',curto:'As peças de fora',ap:'💻 Computador',min:{A:60,B:90},passos:[
+ {s:'Início',t:'info',ic:'🔎',h:'Hoje vamos olhar o computador por fora',txt:['Na aula passada você aprendeu o ciclo: entrada, processamento e saída.','Hoje você vai conhecer cada peça que fica do lado de fora do computador, uma por uma: o nome, para que serve e de que tipo ela é.','Se tiver um computador por perto, vá apontando para cada peça enquanto lê.'],robo:'No fim, você vai escolher quais peças de fora o seu robô precisaria ter.'},
+ {s:'Início',t:'q',q:'Revisão: qual é a ordem do ciclo do computador?',o:['Saída, entrada, processamento','Entrada, processamento, saída','Processamento, saída, entrada'],a:1,e:'Entrada, processamento, saída. Sempre nessa ordem.',c:'revisão do ciclo'},
+ {s:'Início',t:'q',q:'Revisão: o teclado é o quê?',o:['Entrada','Processamento','Saída'],a:0,e:'O teclado leva o que você digita para dentro do computador. É entrada.',c:'revisão do ciclo'},
+ {s:'Explicação',t:'info',ic:'🗃️',h:'Gabinete: a caixa do computador',txt:['O gabinete é a caixa que guarda as peças de dentro, como o processador. Muita gente chama essa caixa de "CPU", mas o nome certo é gabinete.','No notebook e no celular não existe gabinete separado: as peças de dentro ficam embaixo do teclado ou atrás da tela.','É no gabinete que fica o botão de ligar.'],robo:'No robô, o gabinete é o corpo: a carcaça que protege a placa e a bateria.'},
+ {s:'Explicação',t:'info',ic:'🖥️',h:'Monitor: a tela',txt:['O monitor mostra a imagem. É a principal peça de SAÍDA.','A imagem é feita de pontinhos de luz muito pequenos, chamados pixels. Quanto mais pixels, mais nítida a imagem.','A tela do celular também recebe o toque do dedo. Por isso ela é entrada e saída ao mesmo tempo.'],robo:'Alguns robôs têm uma telinha para mostrar o "rosto" ou avisos.',
+  B:{txt:['O monitor mostra a imagem. É a principal peça de SAÍDA.','A imagem é formada por pixels, pontinhos que acendem em cores diferentes. A quantidade de pixels é a resolução: uma tela Full HD tem 1920 pixels de largura por 1080 de altura, o que dá mais de 2 milhões de pixels.','A tela de toque do celular é entrada e saída ao mesmo tempo: mostra a imagem e sente o dedo.']}},
+ {s:'Explicação',t:'info',ic:'⌨️',h:'Teclado',txt:['O teclado serve para digitar letras, números e comandos. É uma peça de ENTRADA.','Teclas que você precisa conhecer: Enter (confirma ou pula linha), Espaço (separa as palavras), Backspace (apaga a letra anterior) e Shift (segure para fazer letra maiúscula).','No celular, o teclado aparece desenhado na tela.'],robo:'Robôs não costumam ter teclado. Você digita o programa no computador e envia para o robô.',
+  B:{txt:['O teclado serve para digitar letras, números e comandos. É uma peça de ENTRADA.','Além de Enter, Espaço, Backspace e Shift, existem teclas de comando: Ctrl, Alt e Tab. Combinadas, elas viram atalhos.','Atalhos que todo programador usa: Ctrl+C copia, Ctrl+V cola, Ctrl+Z desfaz e Ctrl+S salva.']}},
+ {s:'Explicação',t:'info',ic:'🖱️',h:'Mouse e touchpad',txt:['O mouse move a setinha da tela, que se chama cursor. É uma peça de ENTRADA.','Botão esquerdo: escolhe e abre as coisas. Botão direito: abre um menu com mais opções. Rodinha do meio: sobe e desce a página.','No notebook, o mouse é aquele quadrado liso abaixo do teclado, chamado touchpad.'],robo:'Um controle remoto com alavanca faz no robô o papel que o mouse faz no computador.'},
+ {s:'Explicação',t:'q',q:'Qual tecla apaga a letra que você acabou de digitar?',o:['Enter','Backspace','Shift'],a:1,e:'Backspace apaga a letra anterior. Enter confirma e Shift faz maiúscula.',c:'teclado e mouse'},
+ {s:'Explicação',t:'info',ic:'🔊',h:'Caixa de som e fone de ouvido',txt:['A caixa de som e o fone transformam o sinal do computador em som. São peças de SAÍDA.','A caixa de som toca para todo mundo ouvir. O fone toca só para você.'],robo:'Robôs usam um pequeno alto-falante para apitar ou falar.'},
+ {s:'Explicação',t:'info',ic:'🎤',h:'Microfone e webcam',txt:['O microfone capta o som da sua voz. A webcam capta a sua imagem. As duas são peças de ENTRADA.','No notebook e no celular, as duas já vêm embutidas, perto da tela.','Uma luzinha acesa ao lado da câmera avisa que ela está ligada.'],robo:'A câmera é um dos sensores mais poderosos de um robô: é com ela que ele reconhece objetos.',
+  B:{txt:['O microfone capta som e a webcam capta imagem. As duas são peças de ENTRADA.','Um fone com microfone, chamado headset, junta entrada (microfone) e saída (fone) na mesma peça.','No notebook e no celular, as duas já vêm embutidas. A luz ao lado da câmera indica que ela está ligada, e é um bom hábito conferir isso.']}},
+ {s:'Explicação',t:'info',ic:'🖨️',h:'Impressora e scanner',txt:['A impressora passa para o papel o que está no computador. É SAÍDA.','O scanner faz o caminho contrário: copia um papel para dentro do computador. É ENTRADA.','Muitas impressoras fazem as duas coisas no mesmo aparelho.'],robo:'Uma impressora 3D é um tipo de robô: ela fabrica peças de plástico, camada por camada.'},
+ {s:'Explicação',t:'info',ic:'💾',h:'Pendrive e cartão de memória',txt:['O pendrive e o cartão de memória servem para GUARDAR arquivos e levar de um aparelho para outro.','Eles não são entrada nem saída comuns: são armazenamento. O computador tanto lê o que está neles quanto grava coisas novas.','As fotos do celular costumam ficar guardadas na memória dele ou em um cartão desses.'],robo:'Em muitos robôs, o programa é enviado por um cabo USB e fica guardado em uma memória parecida com a do pendrive.'},
+ {s:'Explicação',t:'q',q:'O scanner copia um desenho do papel para o computador. Ele é o quê?',o:['Entrada','Saída','Armazenamento'],a:0,e:'O scanner leva informação para dentro do computador. É entrada. A impressora, que faz o contrário, é saída.',c:'peças de entrada e saída'},
+ {s:'Explicação',t:'info',ic:'🔌',h:'Os encaixes: USB, HDMI e fone',txt:['Os buracos na lateral do computador se chamam portas ou entradas. Cada formato serve para uma coisa.','USB: é a mais comum. Liga mouse, teclado, pendrive e carrega o celular.','HDMI: leva imagem e som para um monitor ou uma TV.','Entrada de fone: é o furinho redondo onde se encaixa o fone de ouvido.'],robo:'A placa do robô também tem porta USB. É por ela que o seu programa chega até ele.',
+  B:{txt:['Os encaixes na lateral se chamam portas. Cada formato transporta um tipo de coisa.','USB: transporta dados e energia. Existem formatos diferentes, como o USB-A (retangular) e o USB-C (pequeno e oval, que encaixa dos dois lados).','HDMI: transporta imagem e som digitais para um monitor ou TV.','Entrada de fone (conector P2): transporta som. Porta de rede: liga o computador à internet por cabo.']}},
+ {s:'Explicação',t:'info',ic:'🔋',h:'Energia: tomada, carregador e bateria',txt:['Nenhum computador funciona sem energia elétrica.','O computador de mesa fica ligado na tomada o tempo todo. O notebook e o celular têm bateria, que guarda energia para usar longe da tomada.','O carregador enche a bateria de novo.'],robo:'O robô anda com bateria. Quando ela acaba, ele para, mesmo com o programa perfeito.'},
+ {s:'Explicação',g:'B',t:'info',ic:'📶',h:'Com fio e sem fio',txt:['As peças de fora podem se ligar ao computador por cabo ou sem fio.','Bluetooth: liga peças que estão perto, como fone, mouse e controle, sem cabo.','Wi-Fi: liga o computador à internet sem cabo.','O cabo costuma ser mais estável e não precisa de bateria. O sem fio dá mais liberdade de movimento.'],robo:'Muitos robôs são controlados pelo celular por Bluetooth ou Wi-Fi.'},
+ {s:'Explicação',g:'B',t:'q',q:'Qual porta leva imagem e som do computador para uma TV?',o:['USB','HDMI','Entrada de fone'],a:1,e:'O HDMI transporta imagem e som juntos. A entrada de fone leva só som.',c:'portas e conexões'},
+ {s:'Prática',t:'classe',h:'Que tipo de peça é esta?',txt:'Toque em uma peça e depois na caixa certa. Diga o porquê antes de tocar.',cats:{e:'Entrada',s:'Saída',g:'Guarda arquivos'},c:'classificar as peças de fora',
+  itens:[['teclado','e'],['monitor','s'],['mouse','e'],['pendrive','g'],['caixa de som','s'],['microfone','e'],['impressora','s'],['webcam','e'],['cartão de memória','g'],['fone de ouvido','s']],
+  B:{itens:[['teclado','e'],['monitor','s'],['mouse','e'],['pendrive','g'],['caixa de som','s'],['microfone','e'],['impressora','s'],['webcam','e'],['cartão de memória','g'],['fone de ouvido','s'],['scanner','e'],['touchpad','e'],['projetor','s'],['HD externo','g'],['controle do videogame','e']]}},
+ {s:'Prática',t:'q',q:'Você quer ligar um pendrive no computador. Qual porta você usa?',o:['HDMI','USB','Entrada de fone'],a:1,e:'O pendrive encaixa na porta USB.',c:'portas e conexões'},
+ {s:'Prática',t:'q',q:'Qual botão do mouse abre um menu com mais opções?',o:['O esquerdo','O direito','A rodinha'],a:1,e:'O botão direito abre o menu de opções. O esquerdo escolhe e abre.',c:'teclado e mouse'},
+ {s:'Prática',t:'q',q:'Por que a tela do celular é entrada e saída ao mesmo tempo?',o:['Porque ela é pequena','Porque mostra a imagem e também sente o toque do dedo','Porque tem bateria'],a:1,e:'Mostrar imagem é saída. Sentir o toque é entrada. A tela de toque faz as duas coisas.',c:'peças de entrada e saída'},
+ {s:'Prática',g:'A',t:'q',q:'O notebook funciona longe da tomada por causa de qual peça?',o:['Do teclado','Da bateria','Da webcam'],a:1,e:'A bateria guarda energia para usar longe da tomada.',c:'energia'},
+ {s:'Prática',g:'B',t:'q',q:'Qual atalho de teclado salva o trabalho na maioria dos programas?',o:['Ctrl+C','Ctrl+S','Ctrl+Z'],a:1,e:'Ctrl+S salva. Ctrl+C copia e Ctrl+Z desfaz.',c:'teclado e mouse'},
+ {s:'Prática',g:'B',t:'q',q:'Uma tela Full HD tem 1920 por 1080 pixels. O que isso quer dizer?',o:['Que ela pesa 1920 gramas','Que a imagem é formada por 1920 pontos na largura e 1080 na altura','Que ela tem 1920 cores'],a:1,e:'É a resolução: a quantidade de pixels que formam a imagem.',c:'monitor e pixels'},
+ {s:'Prática',g:'B',t:'q',q:'Um headset (fone com microfone) é o quê?',o:['Só entrada','Só saída','Entrada e saída na mesma peça'],a:2,e:'O microfone é entrada e o fone é saída. O headset junta os dois.',c:'peças de entrada e saída'},
+ {s:'Desafio',t:'papel',ic:'✏️',h:'Desafio no papel: monte o computador certo',txt:['Três pessoas precisam de um computador: um jogador de videogame, uma escritora e um músico.','Para cada um, faça uma lista das peças de fora que não podem faltar.','Depois explique para o professor por que a lista de cada um ficou diferente.'],
+  B:{txt:['Três pessoas precisam de um computador: um jogador profissional, uma escritora que viaja muito e um músico que grava em casa.','Para cada um, liste as peças de fora, diga se cada peça é entrada, saída ou armazenamento e por qual porta ou conexão ela se liga.','Depois escolha as peças de fora do seu próprio robô e justifique cada uma para o professor.']}},
+ {s:'Fechamento',t:'aberta',q:'Escolha três peças de fora do computador e explique, com as suas palavras, para que serve cada uma.',c:'explicação final',min:20},
+ {s:'Fechamento',t:'auto',q:'Como você se sentiu nesta aula?'}
+]}
+};
+
+/* ---------- Motor das aulas ---------- */
+const A={n:1,log:[],acertos:0,total:0,fim:false,travada:false,ini:null,marcas:[],conc:{},abertas:[],auto:null,i:0,passos:[],revisao:false};
 const HOJE=()=>new Date().toLocaleDateString('pt-BR');
-function abrirAula(){
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;};
+function passosDe(n,grupo){return AULAS[n].passos.filter(p=>!p.g||p.g===grupo).map(p=>Object.assign({},p,(grupo==='B'&&p.B)?p.B:{}));}
+function contaTotal(ps){return ps.reduce((s,p)=>s+(p.t==='q'?1:p.t==='classe'?p.itens.length:0),0);}
+function feitaAula(n){return !!(S.dados.aulas&&S.dados.aulas[n]&&S.dados.aulas[n].concluida&&S.dados.aulas[n].nPassos);}
+function liberada(n){return completo()&&!!AULAS[n]&&(n===1||feitaAula(n-1));}
+function abrirAula(n){
+  n=n||1; if(!AULAS[n]) return;
   salvar(true);
-  A.log=[];A.acertos=0;A.fim=false;A.travada=false;A.ini=new Date().toISOString();A.marcas=[];
-  $('res').hidden=true;$('msgcopia').textContent='';$('finalizar').disabled=false;
-  $('prof-a').innerHTML=prof().svg;
-  const nome=S.aluno.nome, rn=R().nome.trim()||'seu robô';
-  if(S.aluno.grupo==='A'){
-    $('aula-titulo').textContent='Missão 1 · Planeta Máquina · 💻 Computador';
-    const LBL={e:'Entrada',p:'Processamento',s:'Saída'};
-    const RIGHT=['Sorte de principiante? Próxima!','Acertou. Não se empolga, ainda tem mais!','Boa! O '+rn+' ficou orgulhoso.'];
-    const WRONG=['Ahá! Achei que você ia cair nessa 😏 Tenta outra vez.','Quase! Eu sou um robô: eu não erro... a não ser de propósito 😜','Opa! Pensa: isso traz informação, decide ou mostra o resultado?'];
-    let resto=[['teclado','e'],['tela','s'],['mouse','e'],['caixa de som','s'],['microfone','e'],['processador','p'],['sensor de distância do robô','e'],['motor das rodas do robô','s']];
-    A.total=resto.length; let sel=null;
-    $('aula-corpo').innerHTML='<h2>Entrada, processamento ou saída?</h2><p class="mut">O computador e o seu robô funcionam igual: recebem informação (entrada), pensam (processamento) e mostram ou fazem algo (saída). Toque em um item e depois na caixa certa.</p><div class="itens" id="itens"></div><div class="caixas" id="caixas" style="margin-top:12px"></div>';
-    const desenha=()=>{const X=$('itens');X.textContent='';resto.forEach((it,i)=>{const b=document.createElement('button');b.className='item';b.textContent=it[0];b.setAttribute('aria-pressed',sel===i?'true':'false');b.disabled=A.travada;b.onclick=()=>{sel=i;falar('fala-a','Agora escolha a caixa. Sem pressa, eu espero 🙂');desenha();};X.appendChild(b);});};
-    Object.keys(LBL).forEach(c=>{const b=document.createElement('button');b.className='cx';b.textContent=LBL[c];b.onclick=()=>{
-      if(A.travada||!resto.length) return;
-      if(sel===null){falar('fala-a','Escolhe um item primeiro, não sou adivinho 😏');return;}
-      const it=resto[sel], ok=it[1]===c; A.log.push([it[0],LBL[c],ok]);A.marcas.push({p:A.log.length,em:new Date().toISOString(),acerto:ok});
-      if(ok){A.acertos++;resto.splice(sel,1);sel=null;falar('fala-a',RIGHT[Math.floor(Math.random()*RIGHT.length)]);}
-      else falar('fala-a',WRONG[Math.floor(Math.random()*WRONG.length)]);
-      desenha();
-      if(!resto.length){A.fim=true;falar('fala-a',`Missão cumprida, ${nome}! Você classificou tudo. Agora toque em "Finalizar aula".`);}
-    };$('caixas').appendChild(b);});
-    desenha();
-    falar('fala-a',`Oi, ${nome}! Chegou a hora de provar o que você sabe 😏 O ${rn} está de olho.`);
-  } else {
-    $('aula-titulo').textContent='Missão 1 · Planeta Máquina · 💻 Computador';
-    const QS=[
-     {q:'Quando a energia acaba, o computador perde o que estava aberto. Qual parte explica isso?',o:['Armazenamento (HD ou SSD)','Memória RAM','Processador'],a:1,e:'A RAM é temporária: ela apaga quando a energia acaba.'},
-     {q:'Qual é maior: 1 GB ou 1 TB?',o:['1 GB','1 TB'],a:1,e:'1 TB equivale a 1000 GB.'},
-     {q:'Qual é o "gerente" que organiza o computador?',o:['Hardware','Programa de jogo','Sistema operacional'],a:2,e:'O sistema operacional organiza o hardware e os programas.'},
-     {q:'No seu robô, o sensor de distância faz o papel de quê?',o:['Entrada','Processamento','Saída'],a:0,e:'Sensor é entrada: traz informação do mundo para o robô.'},
-     {q:'Desafio: um disco de "512 GB" aparece com menos espaço no sistema. Por quê?',o:['Ele está quebrado','O fabricante conta em base 1000 e o sistema em base 1024','Os arquivos ocupam espaço'],a:1,e:'Por isso 512 GB aparecem como cerca de 477 GB no sistema.'}];
-    const RIGHT=['Acertou? Que sorte a sua. Agora tenta não estragar a sequência 😏','Resposta certa, mas com cara de palpite. A próxima precisa ser de quem sabe 😈','Registrado. Estou de olho na próxima 😏'];
-    const WRONG=['Essa resposta foi tão confiante que doeu. Errou com estilo 😂','A pegadinha te pegou. Eu não erro; só espero você errar 😜','Errar era previsível. Pensar antes de clicar é a próxima missão 😏'];
-    A.total=QS.length; let i=0;
-    $('aula-corpo').innerHTML='<p class="mut" id="qn"></p><h2 id="q"></h2><div class="itens" id="opts"></div><p id="expl" style="margin-top:10px"></p><button id="prox" class="btn" hidden>Próxima</button>';
-    const mostra=()=>{const q=QS[i];$('qn').textContent=`Pergunta ${i+1} de ${QS.length}`;$('q').textContent=q.q;$('expl').textContent='';$('prox').hidden=true;const X=$('opts');X.textContent='';
-      q.o.forEach((t,k)=>{const b=document.createElement('button');b.className='item';b.textContent=t;b.onclick=()=>{if(A.travada)return;const ok=k===q.a;if(ok)A.acertos++;A.log.push([q.q,t,ok]);A.marcas.push({p:A.log.length,em:new Date().toISOString(),acerto:ok});[...X.children].forEach((x,n)=>{x.disabled=true;if(n===q.a)x.classList.add('certa');});falar('fala-a',(ok?RIGHT:WRONG)[Math.floor(Math.random()*3)]);$('expl').textContent=q.e;$('prox').hidden=false;};X.appendChild(b);});};
-    $('prox').onclick=()=>{i++;if(i<QS.length){mostra();return;}A.fim=true;$('qn').textContent='Fim do quiz';$('q').textContent=`Você acertou ${A.acertos} de ${QS.length}.`;$('opts').textContent='';$('expl').textContent='';$('prox').hidden=true;falar('fala-a',`${A.acertos} de ${QS.length}, ${nome}. A revanche fica aberta. Toque em "Finalizar aula" 😏`);};
-    mostra();
-    falar('fala-a',`Missão aceita, ${nome}! Vamos ver se o piloto do ${rn} sabe como a máquina funciona.`);
+  A.n=n; A.passos=passosDe(n,S.aluno.grupo); A.total=contaTotal(A.passos);
+  let sv=(S.dados.aulas||{})[n];
+  if(sv&&!sv.nPassos){ S.dados.antigas=S.dados.antigas||{}; S.dados.antigas[n]=sv; delete S.dados.aulas[n]; sv=null; } // resultado da versão curta fica guardado à parte
+  A.revisao=!!(sv&&sv.concluida); A.fim=false; A.travada=false;
+  if(sv&&!sv.concluida&&sv.passo>0&&sv.passo<A.passos.length&&sv.nPassos===A.passos.length){
+    A.i=sv.passo; A.log=sv.respostas||[]; A.acertos=sv.acertos||0; A.marcas=sv.marcas||[]; A.conc=sv.conceitos||{}; A.abertas=sv.abertas||[]; A.auto=sv.auto||null; A.ini=sv.inicio||new Date().toISOString();
+  }else{
+    A.i=0; A.log=[]; A.acertos=0; A.marcas=[]; A.conc={}; A.abertas=[]; A.auto=null; A.ini=new Date().toISOString();
   }
-  tela('v-aula');
+  $('finalizar').disabled=false;$('finalizar').hidden=false;
+  $('prof-a').innerHTML=prof().svg;
+  $('aula-titulo').textContent=`Aula ${n} · ${AULAS[n].titulo} · ${AULAS[n].ap}`;
+  const nome=S.aluno.nome;
+  falar('fala-a',A.i>0?`Bem-vindo de volta, ${nome}! Continuamos de onde você parou.`:(S.aluno.grupo==='B'?`${nome}, aula ${n}. Leia com atenção: depois eu cobro tudo 😏`:`Oi, ${nome}! Vamos para a aula ${n}. Leia com calma, sem pressa.`));
+  tela('v-aula'); passo();
 }
-function textoResultado(){
-  const g=S.aluno.grupo==='A'?'Grupo A com Byte':'Grupo B com Pixel';
-  const L=[`Aula 1 – ${S.aluno.nome}`,`Data: ${HOJE()} · ${g}`,`Robô: ${R().nome.trim()||'(sem nome)'}`,`Status: ${A.fim?'concluída':'incompleta'}`,`Acertos: ${A.acertos} de ${A.total}`,`Tentativas: ${A.log.length}`,'Respostas:'];
-  if(!A.log.length) L.push('(nenhuma resposta ainda)');
-  A.log.forEach((r,n)=>L.push(`${n+1}. ${r[0]} → ${r[1]} (${r[2]?'certo':'errado'})`));
-  return L.join('\n');
+function marcar(c,ok,rot,resp,conta){
+  A.log.push([rot,resp,ok]); A.marcas.push({p:A.log.length,em:new Date().toISOString(),acerto:ok,c:c||''});
+  if(conta){ const k=c||'geral'; A.conc[k]=A.conc[k]||[0,0]; A.conc[k][1]++; if(ok){A.conc[k][0]++;A.acertos++;} }
 }
-function copiar(){
-  const t=textoResultado(), ok=()=>{$('msgcopia').textContent='Resultado copiado. Cole na mensagem e envie.';}, falha=()=>{$('msgcopia').textContent='Não consegui copiar sozinho. Selecione o texto abaixo e copie.';};
-  $('res').textContent=t; $('res').hidden=false;
-  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(t).then(ok,falha); else falha();
+function registro(fim){
+  return {data:HOJE(),titulo:AULAS[A.n].titulo,inicio:A.ini,fim:fim?new Date().toISOString():null,marcas:A.marcas,concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log,conceitos:A.conc,abertas:A.abertas,auto:A.auto,passo:A.i,nPassos:A.passos.length};
+}
+function guardarAndamento(){ if(A.revisao) return; S.dados.aulas=S.dados.aulas||{}; S.dados.aulas[A.n]=registro(false); salvar(true); }
+function avancar(){
+  A.i++;
+  if(A.i>=A.passos.length){ A.fim=true; telaFim(); finalizar(); return; }
+  guardarAndamento(); passo(); window.scrollTo(0,0);
+}
+const FRASES={
+ A:{ok:['Isso mesmo! Mandou bem.','Acertou! O seu robô ficou orgulhoso.','Boa! Você está pegando o jeito.'],no:['Quase! Leia a explicação e siga em frente.','Não foi dessa vez. Errar faz parte de aprender.','Opa! Pensa: isso traz informação, decide ou mostra o resultado?']},
+ B:{ok:['Acertou. Não se empolga, ainda tem mais 😏','Resposta certa. Agora mantém o nível.','Registrado. Estou de olho na próxima 😏'],no:['Essa pegou você. Leia a explicação antes de seguir.','Errou com confiança. Pelo menos agora não esquece mais 😜','Pensar antes de clicar é a próxima missão 😏']}};
+const frase=ok=>{const f=FRASES[S.aluno.grupo==='B'?'B':'A'][ok?'ok':'no'];return f[Math.floor(Math.random()*f.length)];};
+function passo(){
+  const p=A.passos[A.i], C=$('aula-corpo'); C.textContent='';
+  const pct=Math.round(A.i/A.passos.length*100);
+  $('finalizar').hidden=(A.i>=A.passos.length-1); const topo=el('div','aula-topo'); topo.append(el('span','aula-parte',p.s||''),el('span','mut',`Passo ${A.i+1} de ${A.passos.length}`));
+  const barra=el('div','aula-barra'); const fill=el('i'); fill.style.width=pct+'%'; barra.appendChild(fill);
+  C.append(topo,barra);
+  const seguir=(txt)=>{const b=el('button','btn',txt||'Próximo'); b.id='passo-prox'; b.onclick=avancar; return b;};
+  if(p.t==='info'||p.t==='papel'){
+    const h=el('h2','aula-h'); h.append(el('span','aula-ic',p.ic||'📘'),document.createTextNode(' '+p.h)); C.appendChild(h);
+    p.txt.forEach(t=>C.appendChild(el('p','aula-p',t)));
+    if(p.robo){const r=el('div','aula-robo'); r.append(el('b','','No seu robô: '),document.createTextNode(p.robo)); C.appendChild(r);}
+    const nav=el('div','aula-nav');
+    if(A.i>0&&A.passos[A.i-1].t==='info'){const v=el('button','btn sec','← Voltar'); v.onclick=()=>{A.i--;passo();window.scrollTo(0,0);}; nav.appendChild(v);}
+    nav.appendChild(seguir(p.t==='papel'?'Fiz no papel e mostrei ao professor':'Entendi, próximo'));
+    C.appendChild(nav);
+    if(p.t==='papel') falar('fala-a','Agora é longe da tela. Capricha no desenho e explica para o professor.');
+  }else if(p.t==='q'){
+    C.appendChild(el('h2','aula-h',p.q));
+    const X=el('div','itens'); X.id='opts'; const ex=el('p','aula-expl'); const nav=el('div','aula-nav');
+    p.o.forEach((t,k)=>{const b=el('button','item',t); b.onclick=()=>{
+      if(A.travada) return; const ok=k===p.a; marcar(p.c,ok,p.q,t,true);
+      [...X.children].forEach((x,n)=>{x.disabled=true;if(n===p.a)x.classList.add('certa');else if(n===k)x.classList.add('errada');});
+      falar('fala-a',frase(ok)); ex.textContent=(ok?'✓ Certo. ':'✗ Não é essa. ')+p.e; nav.appendChild(seguir());
+    }; X.appendChild(b);});
+    C.append(X,ex,nav);
+  }else if(p.t==='classe'){
+    C.appendChild(el('h2','aula-h',p.h)); C.appendChild(el('p','mut',p.txt));
+    let resto=p.itens.slice(), sel=null; const errou=new Set();
+    const I=el('div','itens'); I.id='itens'; const K=el('div','caixas'); K.id='caixas'; K.style.marginTop='12px'; const nav=el('div','aula-nav');
+    const desenha=()=>{I.textContent='';resto.forEach((it,i)=>{const b=el('button','item',it[0]);b.setAttribute('aria-pressed',sel===i?'true':'false');b.onclick=()=>{sel=i;falar('fala-a','Agora escolha a caixa. Diga o porquê em voz alta.');desenha();};I.appendChild(b);});};
+    Object.keys(p.cats).forEach(c=>{const b=el('button','cx',p.cats[c]); b.onclick=()=>{
+      if(A.travada||!resto.length) return;
+      if(sel===null){falar('fala-a','Escolha um item primeiro.');return;}
+      const it=resto[sel], ok=it[1]===c;
+      if(ok){ marcar(p.c,!errou.has(it[0]),it[0],p.cats[c]+(errou.has(it[0])?' (acertou depois de errar)':''),true); resto.splice(sel,1); sel=null; falar('fala-a',frase(true)); }
+      else{ errou.add(it[0]); marcar(p.c,false,it[0],p.cats[c],false); falar('fala-a',frase(false)); }
+      desenha();
+      if(!resto.length){ falar('fala-a','Classificou tudo! Pode seguir.'); nav.appendChild(seguir()); }
+    }; K.appendChild(b);});
+    C.append(I,K,nav); desenha();
+  }else if(p.t==='aberta'){
+    C.appendChild(el('h2','aula-h',p.q));
+    const ta=el('textarea','aula-ta'); ta.id='aberta'; ta.rows=5; ta.maxLength=600; ta.setAttribute('aria-label','Sua resposta');
+    const av=el('p','mut','Escreva com as suas palavras. O professor vai ler a sua resposta.'); const nav=el('div','aula-nav');
+    const b=el('button','btn','Enviar resposta'); b.id='passo-prox'; b.onclick=()=>{
+      const v=ta.value.trim(); if(v.length<(p.min||5)){av.textContent='Escreva um pouco mais para o professor entender o que você pensou.';av.style.color='var(--gold)';return;}
+      A.abertas.push({q:p.q,r:v,c:p.c||'',em:new Date().toISOString()}); avancar();
+    }; nav.appendChild(b); C.append(ta,av,nav);
+  }else if(p.t==='auto'){
+    C.appendChild(el('h2','aula-h',p.q)); const X=el('div','itens');
+    [['entendi','😀 Entendi tudo'],['parcial','🙂 Entendi uma parte'],['perdido','😕 Fiquei perdido']].forEach(([v,t])=>{const b=el('button','item',t); b.onclick=()=>{A.auto=v;avancar();}; X.appendChild(b);});
+    C.appendChild(X);
+  }
+}
+function telaFim(){
+  const C=$('aula-corpo'); C.textContent='';
+  C.appendChild(el('h2','aula-h','🎉 Aula concluída!'));
+  C.appendChild(el('p','aula-p',`Você acertou ${A.acertos} de ${A.total} exercícios na primeira tentativa.`));
+  C.appendChild(el('p','aula-p','Agora explique para o professor, com as suas palavras, o que você aprendeu hoje.'));
+  $('finalizar').hidden=true;
 }
 async function finalizar(){
   A.travada=true; $('finalizar').disabled=true;
-  document.querySelectorAll('#aula-corpo button').forEach(b=>b.disabled=true);
+  document.querySelectorAll('#aula-corpo button, #aula-corpo textarea').forEach(b=>b.disabled=true);
   S.dados.aulas=S.dados.aulas||{};
-  S.dados.aulas['1']={data:HOJE(),inicio:A.ini,fim:new Date().toISOString(),marcas:A.marcas,concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log};
-  falar('fala-a',`Missão encerrada, ${S.aluno.nome}! Resultado guardado. Agora é só enviar.`);
-  copiar(); await salvar(true);
+  if(A.fim||!A.revisao) S.dados.aulas[A.n]=registro(true);
+  falar('fala-a',A.fim?`Aula ${A.n} concluída, ${S.aluno.nome}! Resultado guardado.`:`Guardei até onde você chegou, ${S.aluno.nome}. Na próxima vez continuamos daqui.`);
+  await salvar(true);
 }
 
 /* ---------- Guardar ---------- */
@@ -585,7 +722,7 @@ async function carregar(){
     S.online=true;
   }catch(e){ dados=null; }
   if(!dados||!dados.robo) dados=local()||dados||{};
-  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{},acessos:Array.isArray(dados.acessos)?dados.acessos:[]};
+  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{},acessos:Array.isArray(dados.acessos)?dados.acessos:[],sessoes:Array.isArray(dados.sessoes)?dados.sessoes:[],antigas:dados.antigas||{}};
   if(!Array.isArray(S.dados.robo.poderes)) S.dados.robo.poderes=[];
   if(!Array.isArray(S.dados.robo.inventados)) S.dados.robo.inventados=[];
 }
@@ -643,7 +780,7 @@ function abrirMenuProf(){
   $('v-prof').hidden=false; $('p-materias-box').hidden=true; $('p-alunos-box').hidden=true; $('prof-menu').hidden=false;
   ['v-entrada','v-hangar','v-aula'].forEach(x=>$(x).hidden=true); window.scrollTo(0,0);
 }
-document.getElementById('p-materias').onclick=()=>{$('prof-menu').hidden=true;$('p-materias-box').hidden=false;};
+document.getElementById('p-materias').onclick=()=>{$('prof-menu').hidden=true;$('p-materias-box').hidden=false;pintarMaterias();};
 document.getElementById('p-alunos').onclick=()=>{$('prof-menu').hidden=true;$('p-alunos-box').hidden=false;carregarAlunos();};
 document.getElementById('p-atualizar').onclick=carregarAlunos;
 document.querySelectorAll('#v-prof [data-voltar]').forEach(b=>b.onclick=abrirMenuProf);
@@ -651,21 +788,44 @@ document.getElementById('p-sair').onclick=async()=>{ try{await sb.auth.signOut()
 const pmin=s=>{s=Math.round((s||0)/60);return s<60?s+' min':Math.floor(s/60)+' h '+(s%60)+' min';};
 const pdata=iso=>iso?new Date(iso).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}):'—';
 const pesc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function pintarMaterias(){
+  const L=$('p-materias-lista'); L.textContent='';
+  const intro=el('div','card'); intro.append(el('h2','','Antes das aulas: montar o robô'),el('p','','O aluno dá um nome, escolhe um modelo e um poder de cada tipo (perceber, pensar e agir). Depois inventa um poder novo pelo chat. Só então a aula 1 abre.')); L.appendChild(intro);
+  Object.keys(AULAS).forEach(n=>{const a=AULAS[n]; const c=el('div','card');
+    c.append(el('h2','',`Aula ${n} · ${a.titulo}`),el('p','',`${a.ap} · mínimo ${a.min.A} min no Grupo A e ${a.min.B} min no Grupo B`));
+    ['A','B'].forEach(g=>{const d=el('details','prof-det'); const ps=passosDe(+n,g); d.appendChild(el('summary','',`Grupo ${g}: ${ps.length} passos, ${contaTotal(ps)} exercícios`)); const ul=el('ol');
+      ps.forEach(p=>{const li=el('li'); const tipo={info:'Explicação',q:'Pergunta',classe:'Classificar',papel:'Desafio no papel',aberta:'Resposta escrita',auto:'Autoavaliação'}[p.t];
+        li.append(el('b','',`[${p.s}] ${tipo}: `),document.createTextNode(p.h||p.q||''));
+        if(p.t==='info'||p.t==='papel') li.appendChild(el('div','',p.txt.join(' ')));
+        if(p.t==='q') li.appendChild(el('div','',`Resposta: ${p.o[p.a]}. ${p.e}`));
+        if(p.t==='classe') li.appendChild(el('div','',p.itens.map(i=>`${i[0]} = ${p.cats[i[1]]}`).join('; ')));
+        ul.appendChild(li);});
+      d.appendChild(ul); c.appendChild(d);});
+    L.appendChild(c);});
+  const fut=el('div','card'); fut.append(el('h2','','Aulas 3 a 12'),el('p','','Em preparação: peças de dentro, programas e arquivos, dados, internet, segurança, lógica, programação, robótica e projeto final.')); L.appendChild(fut);
+}
 function cartaoAluno(r){
-  const k=r.skin||{}, aulas=k.aulas||{}, a1=aulas['1']||null, ses=Array.isArray(k.sessoes)?k.sessoes:[];
+  const k=r.skin||{}, aulas=k.aulas||{}, ses=Array.isArray(k.sessoes)?k.sessoes:[];
   const tempo=ses.reduce((s,x)=>s+(x.ativo||0),0)/1000;
   const ultima=ses.length?ses[ses.length-1].ini:(Array.isArray(k.acessos)&&k.acessos.length?k.acessos[k.acessos.length-1]:null);
-  const marcas=(a1&&Array.isArray(a1.marcas))?a1.marcas:[];
-  const feita=a1&&a1.concluida;
-  return `<div class="card"><h2>${pesc(r.primeiro_nome)}<span class="bola ${feita?'feito':'falta'}">${feita?'missão 1 concluída':'missão 1 pendente'}</span></h2>
+  const ns=Object.keys(aulas).sort((a,b)=>a-b); const feitas=ns.filter(n=>aulas[n].concluida).length;
+  const AUTO={entendi:'entendi tudo',parcial:'entendi uma parte',perdido:'fiquei perdido'};
+  const blocos=ns.map(n=>{const a=aulas[n]; const conc=a.conceitos||{}; const marcas=Array.isArray(a.marcas)?a.marcas:[];
+    const dur=(a.inicio&&a.fim)?Math.round((new Date(a.fim)-new Date(a.inicio))/60000)+' min':'—';
+    return `<div class="aluno-aula"><h3>Aula ${pesc(n)}${a.titulo?' · '+pesc(a.titulo):''}<span class="bola ${a.concluida?'feito':'falta'}">${a.concluida?'concluída':'em andamento'+(a.nPassos?' ('+(a.passo||0)+' de '+a.nPassos+')':'')}</span></h3>
+    <div class="kv"><span>Início</span><span>${pdata(a.inicio)}</span></div>
+    <div class="kv"><span>Fim</span><span>${pdata(a.fim)}</span></div>
+    <div class="kv"><span>Duração</span><span>${dur}</span></div>
+    <div class="kv"><span>Acertos de primeira</span><span>${a.acertos??'—'} de ${a.total??'—'}</span></div>
+    ${Object.keys(conc).map(c=>`<div class="kv"><span>${pesc(c)}</span><span>${conc[c][0]} de ${conc[c][1]}</span></div>`).join('')}
+    ${a.auto?`<div class="kv"><span>Autoavaliação</span><span>${AUTO[a.auto]||pesc(a.auto)}</span></div>`:''}
+    ${(a.abertas||[]).map(x=>`<p class="resp-ab"><b>${pesc(x.q)}</b><br>${pesc(x.r)}</p>`).join('')}
+    <div class="marcas" title="cada quadrinho é uma resposta: verde acerto, vermelho erro">${marcas.map(m=>`<i class="${m.acerto?'certo':'errado'}" title="${pdata(m.em)}"></i>`).join('')}</div></div>`;}).join('');
+  return `<div class="card"><h2>${pesc(r.primeiro_nome)}<span class="bola ${feitas?'feito':'falta'}">${feitas} aula(s) concluída(s)</span></h2>
     <div class="kv"><span>Robô</span><span>${pesc((k.robo&&k.robo.nome)||'sem robô')}</span></div>
     <div class="kv"><span>Sessões</span><span>${ses.length||(k.acessos||[]).length}</span></div>
     <div class="kv"><span>Tempo de uso</span><span>${pmin(tempo)}</span></div>
-    <div class="kv"><span>Último acesso</span><span>${pdata(ultima)}</span></div>
-    <div class="kv"><span>Início da missão 1</span><span>${pdata(a1&&a1.inicio)}</span></div>
-    <div class="kv"><span>Fim da missão 1</span><span>${pdata(a1&&a1.fim)}</span></div>
-    <div class="kv"><span>Acertos</span><span>${a1?a1.acertos+' de '+a1.total:'—'}</span></div>
-    <div class="marcas" title="cada quadrinho é uma resposta: verde acerto, vermelho erro">${marcas.map(m=>`<i class="${m.acerto?'certo':'errado'}" title="${pdata(m.em)}"></i>`).join('')}</div></div>`;
+    <div class="kv"><span>Último acesso</span><span>${pdata(ultima)}</span></div>${blocos||'<p class="resp-ab">Nenhuma aula iniciada.</p>'}</div>`;
 }
 async function carregarAlunos(){
   $('p-msg').textContent='Carregando…';
@@ -693,7 +853,7 @@ $('sair').onclick=async()=>{ await salvar(true); try{await sb.auth.signOut();}ca
 $('salvar').onclick=()=>salvar(false);
 $('voltar').onclick=()=>{ tela('v-hangar'); aba('missoes'); };
 $('finalizar').onclick=finalizar;
-$('copiar').onclick=copiar;
+
 montarHangar();
 if(sb) sb.auth.getSession().then(r=>{ if(r&&r.data&&r.data.session) entrar(r.data.session.user); }).catch(()=>{});
 
