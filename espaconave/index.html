@@ -244,7 +244,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
     </form>
     <p class="nota">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
   </div>
-  <p id="credito-entrada" style="position:fixed;left:0;right:0;bottom:6px;margin:0;font-size:11px;color:#9fb0d8;text-align:center;pointer-events:none;z-index:3">Fundo: decolagem da Apollo 11, NASA, domínio público (commons.wikimedia.org/wiki/File:Apollo_11_Launch2.jpg). Lua: NASA/GSFC/ASU, sonda LRO, domínio público (cópia redimensionada).</p>
+  <p id="credito-entrada" style="position:fixed;left:0;right:0;bottom:6px;margin:0;font-size:11px;color:#9fb0d8;text-align:center;pointer-events:none;z-index:3">A Terra: Apollo 17, NASA, domínio público (commons.wikimedia.org/wiki/File:The_Blue_Marble,_AS17-148-22727.jpg). Chão: foto da Lua, sonda LRO, NASA/GSFC/ASU, domínio público (cópia redimensionada).</p>
 </section>
 
 <!-- HANGAR -->
@@ -996,49 +996,52 @@ const PORTA=()=>{const u=U();return {x:W/2,topo:BASE()-19*u,pe:BASE()-6*u,larg:7
 function alturaFoguete(){if(t>=T_POUSO)return 0;const k=t/T_POUSO;return (1-ease(Math.pow(k,0.85)))*H*1.15;}
 function inclinacao(){if(t>=T_POUSO)return 0;return Math.sin(t*1.7)*0.03*(1-t/T_POUSO);}
 
-// ---------- cenário (céu = foto real da NASA; Lua = foto real da sonda LRO) ----------
-// Tudo que é fixo (céu, Lua, morros, chão, granulado e vinheta) é pintado UMA vez num canvas
+// ---------- cenário: pouso na Lua (Terra = foto real da Apollo 17; chão = foto real da Lua, sonda LRO) ----------
+// Tudo que é fixo (céu, Terra, morros, chão, granulado e vinheta) é pintado UMA vez num canvas
 // separado e só reaproveitado a cada quadro. Isso deixa a animação leve em computadores comuns.
-const FUNDO=new Image();FUNDO.src='imagens/nova-05-web.jpg';
+const TERRA=new Image();TERRA.src='imagens/nova-13-web.jpg';
 const LUA=new Image();LUA.src='imagens/nova-14-web.jpg';
-FUNDO.onload=()=>{fundoCV=null;};LUA.onload=()=>{fundoCV=null;};
+TERRA.onload=()=>{fundoCV=null;};LUA.onload=()=>{fundoCV=null;};
 const pronta=i=>i.complete&&i.naturalWidth>0;
-const HORIZONTE=0.5;   // na foto, o horizonte fica na metade da altura; usamos só o céu
 const RUIDO=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),d=g.createImageData(128,128);
   for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}g.putImageData(d,0,0);return c;})();
+const FIXAS=Array.from({length:260},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.1+.2,a:Math.random()*.6+.2}));
 let padrao=null,fundoCV=null,fundoW=0,fundoH=0;
 function montarFundo(){
-  const ch=CHAO(),u=U(),foto=pronta(FUNDO);
+  const ch=CHAO(),u=U();
   fundoW=W;fundoH=H;
   fundoCV=document.createElement('canvas');const d=Math.min(devicePixelRatio||1,2);fundoCV.width=W*d;fundoCV.height=H*d;
   const g=fundoCV.getContext('2d');g.setTransform(d,0,0,d,0,0);
-  if(foto){
-    const iw=FUNDO.naturalWidth,sh=FUNDO.naturalHeight*HORIZONTE,esc=Math.max(W/iw,ch/sh)*1.02,dw=iw*esc,dh=sh*esc;
-    g.drawImage(FUNDO,0,0,iw,sh,(W-dw)/2,ch-dh+1,dw,dh);
-    const gt=g.createLinearGradient(0,0,0,ch*.6);gt.addColorStop(0,'rgba(10,14,34,.5)');gt.addColorStop(1,'rgba(10,14,34,0)');g.fillStyle=gt;g.fillRect(0,0,W,ch*.6);
-  }else{
-    const gg=g.createLinearGradient(0,0,0,ch);gg.addColorStop(0,'#0a1634');gg.addColorStop(.45,'#283d76');gg.addColorStop(.8,'#c46a5a');gg.addColorStop(1,'#f0a55c');
-    g.fillStyle=gg;g.fillRect(0,0,W,ch);}
-  // Lua
-  const lx=W*.84,ly=H*.15,lr=H*.05;
-  if(pronta(LUA)){g.save();g.globalCompositeOperation='screen';g.globalAlpha=.9;g.drawImage(LUA,lx-lr,ly-lr,lr*2,lr*2);g.restore();}
-  else{g.fillStyle='#f4ecd6';g.beginPath();g.arc(lx,ly,lr,0,7);g.fill();}
-  // morros em silhueta e névoa quente no horizonte
-  g.fillStyle=foto?'#17131f':'#352f50';for(const m of morros){g.beginPath();g.ellipse(m.x*W,ch,m.w*W,m.h*H*1.3,0,Math.PI,0);g.fill();}
-  const gn=g.createLinearGradient(0,ch-u*14,0,ch);gn.addColorStop(0,'rgba(255,150,90,0)');gn.addColorStop(1,'rgba(255,150,90,.28)');g.fillStyle=gn;g.fillRect(0,ch-u*14,W,u*14);
-  // chão ao entardecer
-  const gc=g.createLinearGradient(0,ch,0,H);gc.addColorStop(0,'#3f4a33');gc.addColorStop(1,'#141a11');g.fillStyle=gc;g.fillRect(0,ch,W,H-ch);
+  // céu do espaço: preto, sem atmosfera
+  const gg=g.createLinearGradient(0,0,0,ch);gg.addColorStop(0,'#02030a');gg.addColorStop(1,'#070b1c');g.fillStyle=gg;g.fillRect(0,0,W,ch);
+  for(const s of FIXAS){g.fillStyle=`rgba(255,255,255,${s.a})`;g.beginPath();g.arc(s.x*W,s.y*ch,s.r,0,7);g.fill();}
+  // a Terra vista da Lua (foto real, Apollo 17)
+  const tr=Math.min(W,H)*.13,tx=W*.8,ty=H*.2;
+  if(pronta(TERRA)){
+    const gh=g.createRadialGradient(tx,ty,tr*.9,tx,ty,tr*1.7);gh.addColorStop(0,'rgba(90,150,255,.22)');gh.addColorStop(1,'rgba(90,150,255,0)');g.fillStyle=gh;g.fillRect(tx-tr*2,ty-tr*2,tr*4,tr*4);
+    g.save();g.beginPath();g.arc(tx,ty,tr,0,7);g.clip();const k=1.07;g.drawImage(TERRA,tx-tr*k,ty-tr*k,tr*2*k,tr*2*k);g.restore();
+  }else{g.fillStyle='#3f7fd8';g.beginPath();g.arc(tx,ty,tr,0,7);g.fill();}
+  // morros lunares: cinza claro em cima (luz do Sol), escuro embaixo
+  for(const m of morros){const mh=m.h*H*1.1,gm=g.createLinearGradient(0,ch-mh,0,ch);gm.addColorStop(0,'#a9a9ad');gm.addColorStop(1,'#4b4b50');
+    g.fillStyle=gm;g.beginPath();g.ellipse(m.x*W,ch,m.w*W,mh,0,Math.PI,0);g.fill();}
+  // chão lunar: faixa central da foto real da Lua, achatada para dar perspectiva
+  if(pronta(LUA)){const n=LUA.naturalWidth,nh=LUA.naturalHeight;
+    g.drawImage(LUA,n*.16,nh*.36,n*.68,nh*.2,0,ch,W,H-ch);
+    g.save();g.globalCompositeOperation='screen';g.fillStyle='rgba(120,120,125,.35)';g.fillRect(0,ch,W,H-ch);g.restore();
+  }else{g.fillStyle='#77777b';g.fillRect(0,ch,W,H-ch);}
+  const gc=g.createLinearGradient(0,ch,0,H);gc.addColorStop(0,'rgba(0,0,0,.05)');gc.addColorStop(1,'rgba(0,0,0,.5)');g.fillStyle=gc;g.fillRect(0,ch,W,H-ch);
+  g.fillStyle='rgba(20,20,24,.55)';g.fillRect(0,ch-1,W,2);
   // granulado e vinheta, uma vez só
   if(!padrao)padrao=ctx.createPattern(RUIDO,'repeat');
-  g.save();g.globalAlpha=.1;g.globalCompositeOperation='overlay';g.fillStyle=padrao;g.fillRect(0,0,W,H);g.restore();
+  g.save();g.globalAlpha=.07;g.globalCompositeOperation='overlay';g.fillStyle=padrao;g.fillRect(0,0,W,H);g.restore();
   const gv=g.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.75);gv.addColorStop(0,'rgba(0,0,0,0)');gv.addColorStop(1,'rgba(0,0,0,.4)');g.fillStyle=gv;g.fillRect(0,0,W,H);
 }
 function cenario(){
   const u=U(),ch=CHAO();
   if(!fundoCV||fundoW!==W||fundoH!==H)montarFundo();
   ctx.drawImage(fundoCV,0,0,W,H);
-  // poucas estrelas, só no alto
-  for(const s of estrelas){if(s.y>.22)continue;ctx.fillStyle=`rgba(255,255,255,${(.2+.3*Math.sin(t*2+s.f)**2)*(1-s.y/.22)})`;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r*.8,0,7);ctx.fill();}
+  // estrelas que piscam
+  for(const s of estrelas){ctx.fillStyle=`rgba(255,255,255,${.15+.45*Math.sin(t*2+s.f)**2})`;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r*.8,0,7);ctx.fill();}
   // plataforma de pouso (com marca de queimado depois do pouso)
   const py=ch+u*1.2;
   ctx.fillStyle='#777a7f';ctx.beginPath();ctx.ellipse(W/2,py,u*27,u*3.3,0,0,7);ctx.fill();
