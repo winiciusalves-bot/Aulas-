@@ -1136,9 +1136,12 @@ function montarFundo(){
   for(const m of morros){const mh=m.h*H*1.1,gm=g.createLinearGradient(0,ch-mh,0,ch);gm.addColorStop(0,'#a9a9ad');gm.addColorStop(1,'#4b4b50');
     g.fillStyle=gm;g.beginPath();g.ellipse(m.x*W,ch,m.w*W,mh,0,Math.PI,0);g.fill();}
   // chão lunar: faixa central da foto real da Lua, achatada para dar perspectiva
-  if(pronta(LUA)){const n=LUA.naturalWidth,nh=LUA.naturalHeight;
-    g.drawImage(LUA,n*.16,nh*.36,n*.68,nh*.2,0,ch,W,H-ch);
-    g.save();g.globalCompositeOperation='screen';g.fillStyle='rgba(120,120,125,.35)';g.fillRect(0,ch,W,H-ch);g.restore();
+  if(pronta(LUA)){const n=LUA.naturalWidth,nh=LUA.naturalHeight,gh=H-ch;
+    // recorte sem esticar: mesma proporção da faixa do chão, tirado da parte de baixo da Lua (crateras)
+    const sw=Math.min(n*.8,W*1.1), sh=Math.min(nh*.8,sw*gh/W), sx=n*.1+(n*.8-sw)/2, sy=nh*.9-sh;
+    g.drawImage(LUA,sx,sy,sw,sh,0,ch,W,gh);
+    const gs=g.createLinearGradient(0,ch,0,H);gs.addColorStop(0,'rgba(10,12,20,.55)');gs.addColorStop(.35,'rgba(10,12,20,.1)');gs.addColorStop(1,'rgba(0,0,0,.45)');g.fillStyle=gs;g.fillRect(0,ch,W,gh);
+    const gh2=g.createLinearGradient(0,ch,0,ch+gh*.25);gh2.addColorStop(0,'rgba(180,180,190,.22)');gh2.addColorStop(1,'rgba(180,180,190,0)');g.fillStyle=gh2;g.fillRect(0,ch,W,gh*.25);
   }else{g.fillStyle='#77777b';g.fillRect(0,ch,W,H-ch);}
   const gc=g.createLinearGradient(0,ch,0,H);gc.addColorStop(0,'rgba(0,0,0,.05)');gc.addColorStop(1,'rgba(0,0,0,.5)');g.fillStyle=gc;g.fillRect(0,ch,W,H-ch);
   g.fillStyle='rgba(20,20,24,.55)';g.fillRect(0,ch-1,W,2);
