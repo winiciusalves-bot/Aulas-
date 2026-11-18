@@ -596,11 +596,81 @@ const AULAS={
 ]}
 };
 
+/* ---------- Variantes para quem refaz a aula: mesmos conceitos, outros exemplos ----------
+   Chave = pergunta ou título do exercício. A ordem das respostas também gira a cada refação. */
+const ALT_Q={
+'Qual destes NÃO é um computador?':[
+ {q:'Qual destes NÃO é um computador?',o:['Tablet','Smart TV','Um pote de vidro'],a:2,e:'O pote não segue programa nenhum. Tablet e smart TV são computadores.'}],
+'Você fala "que horas são?" para o celular e ele responde em voz alta. Qual parte foi a ENTRADA?':[
+ {q:'Você aperta o botão de ligar e a tela acende. Qual parte foi a ENTRADA?',o:['A tela que acendeu','O botão que você apertou','O processador que carregou o sistema'],a:1,e:'O botão levou o seu comando para dentro do aparelho. Isso é entrada.'}],
+'E qual parte foi a SAÍDA?':[
+ {q:'Na mesma situação, qual parte foi a SAÍDA?',o:['O processador que carregou o sistema','A tela que acendeu','O botão que você apertou'],a:1,e:'A tela mostrou o resultado para você. Isso é saída.'}],
+'Um jogo instalado no celular é hardware ou software?':[
+ {q:'A tela do celular é hardware ou software?',o:['Hardware, porque dá para tocar','Software, porque mostra programas'],a:0,e:'A tela é peça, então é hardware. O que aparece nela é software.'}],
+'Quando a energia acaba, o computador perde o que estava aberto. Qual parte explica isso?':[
+ {q:'Você desligou o computador sem salvar um desenho. Onde o desenho estava?',o:['No armazenamento (HD ou SSD)','Na memória RAM','No processador'],a:1,e:'Estava só na RAM, que apaga sem energia. Salvar copia para o armazenamento.'}],
+'Coloque em ordem do menor para o maior.':[
+ {q:'Coloque em ordem do menor para o maior.',o:['TB, GB, MB','MB, TB, GB','MB, GB, TB'],a:2,e:'A ordem é MB, GB, TB. Cada uma vale cerca de mil vezes a anterior.'}],
+'Um robô aspirador encosta na parede e muda de direção. Qual é a ordem certa do que aconteceu?':[
+ {q:'Um robô de jardim para ao ver uma pedra. Qual é a ordem certa?',o:['O motor gira, o sensor sente, a placa decide','O sensor sente a pedra, a placa decide parar, o motor para','A placa decide, o motor para, o sensor sente'],a:1,e:'Entrada (sensor), processamento (placa) e saída (motor), nessa ordem.'}],
+'O que acontece com um computador que não tem nenhum programa?':[
+ {q:'Um celular ligado, sem nenhum aplicativo extra instalado: o que acontece?',o:['Ele decide sozinho o que instalar','Liga e mostra o que o sistema tem, mas não faz tarefas extras','Envia mensagens sozinho'],a:1,e:'Sem programa extra, ele só faz o que o sistema já faz. Não pensa sozinho.'}],
+'Qual destes é uma SAÍDA?':[
+ {q:'Qual destes é uma SAÍDA?',o:['Webcam','Caixa de som','Mouse'],a:1,e:'A caixa de som leva o som para fora. Webcam e mouse são entradas.'}],
+'A tela do computador é hardware ou software?':[
+ {q:'O teclado é hardware ou software?',o:['Hardware, é uma peça','Software, é um programa'],a:0,e:'O teclado é uma peça, então é hardware.'}],
+'O computador está lento com muitos programas abertos ao mesmo tempo. Qual peça provavelmente ficou cheia?':[
+ {q:'O celular fica lento com muitos apps abertos. Qual peça encheu?',o:['A memória RAM','O alto-falante','A bateria'],a:0,e:'Cada app aberto ocupa RAM. Quando ela enche, tudo fica lento.'}],
+'Um disco vendido como "512 GB" aparece com cerca de 477 GB no sistema. Por quê?':[
+ {q:'Um pendrive de 64 GB mostra cerca de 59 GB livres. Por quê?',o:['O pendrive está quebrado','O fabricante conta de 1000 em 1000 e o sistema de 1024 em 1024','Os arquivos sumiram'],a:1,e:'É a mesma diferença de contagem. O espaço real é o mesmo.'}],
+'O sistema operacional (Windows, Android) é o quê?':[
+ {q:'O Android do celular é o quê?',o:['Uma peça de hardware','O software que organiza as peças e os outros programas','Um tipo de memória'],a:1,e:'É o programa que organiza as peças e os outros programas.'}],
+'Revisão: qual é a ordem do ciclo do computador?':[
+ {q:'Revisão: qual é a ordem do ciclo do computador?',o:['Processamento, entrada, saída','Entrada, processamento, saída','Saída, processamento, entrada'],a:1,e:'Entrada, processamento, saída.'}],
+'Revisão: o teclado é o quê?':[
+ {q:'Revisão: a tela é o quê?',o:['Entrada','Processamento','Saída'],a:2,e:'A tela mostra o resultado. É saída.'}],
+'Qual tecla apaga a letra que você acabou de digitar?':[
+ {q:'Qual tecla confirma o que você digitou e pula linha?',o:['Backspace','Enter','Shift'],a:1,e:'Enter confirma. Backspace apaga e Shift faz maiúscula.'}],
+'Qual botão do mouse abre um menu com mais opções?':[
+ {q:'Qual botão do mouse escolhe e abre o item?',o:['O direito','O esquerdo','A rodinha'],a:1,e:'O esquerdo escolhe e abre. O direito abre o menu.'}],
+'O scanner copia um desenho do papel para o computador. Ele é o quê?':[
+ {q:'A impressora leva um texto do computador para o papel. Ela é o quê?',o:['Entrada','Saída','Armazenamento'],a:1,e:'Leva informação para fora do computador. É saída.'}],
+'Você quer ligar um pendrive no computador. Qual porta você usa?':[
+ {q:'Você quer ligar um fone de ouvido com fio. Qual porta usa?',o:['HDMI','USB','Entrada de fone'],a:2,e:'O fone encaixa na entrada de fone (P2).'}],
+'Por que a tela do celular é entrada e saída ao mesmo tempo?':[
+ {q:'Por que um fone com microfone é entrada e saída ao mesmo tempo?',o:['Porque é pequeno','Porque o microfone é entrada e o fone é saída','Porque tem bateria'],a:1,e:'O microfone traz o som para dentro e o fone leva o som para fora.'}],
+'O notebook funciona longe da tomada por causa de qual peça?':[
+ {q:'O que permite o celular funcionar longe da tomada?',o:['O teclado','A bateria','A webcam'],a:1,e:'A bateria guarda energia.'}],
+'Qual atalho de teclado salva o trabalho na maioria dos programas?':[
+ {q:'Qual atalho copia um texto selecionado?',o:['Ctrl+C','Ctrl+S','Ctrl+Z'],a:0,e:'Ctrl+C copia. Ctrl+S salva e Ctrl+Z desfaz.'}],
+'Uma tela Full HD tem 1920 por 1080 pixels. O que isso quer dizer?':[
+ {q:'Uma tela 4K tem 3840 pixels de largura. O que isso quer dizer?',o:['Que ela tem 3840 cores','Que a imagem tem 3840 pontos na largura','Que ela pesa 3840 gramas'],a:1,e:'É a resolução: quantos pontos formam a imagem.'}]
+};
+const ALT_C={
+'Entrada, processamento ou saída?':[
+ [['impressora','s'],['câmera','e'],['processador','p'],['alto-falante do robô','s'],['sensor de toque do robô','e'],['tela de toque','e'],['luz de aviso do robô','s'],['placa do robô que decide','p']]],
+'Que tipo de peça é esta?':[
+ [['impressora','s'],['câmera','e'],['cartão de memória','g'],['fone de ouvido','s'],['scanner','e'],['HD externo','g'],['caixa de som','s'],['touchpad','e'],['pendrive','g'],['monitor','s']]]
+};
+function variante(p,v){
+  if(!v) return p;
+  if(p.t==='q'&&ALT_Q[p.q]){
+    const lista=ALT_Q[p.q], alt=lista[(v-1)%lista.length];
+    const n=alt.o.length, rot=v%n;
+    return Object.assign({},p,{q:alt.q,e:alt.e,o:alt.o.slice(rot).concat(alt.o.slice(0,rot)),a:(alt.a-rot+n)%n});
+  }
+  if(p.t==='classe'&&ALT_C[p.h]){
+    const lista=ALT_C[p.h], itens=lista[(v-1)%lista.length][0];
+    const r=v%itens.length; return Object.assign({},p,{itens:itens.slice(r).concat(itens.slice(0,r))});
+  }
+  return p;
+}
+
 /* ---------- Motor das aulas ---------- */
 const A={n:1,log:[],acertos:0,total:0,fim:false,travada:false,ini:null,marcas:[],conc:{},abertas:[],auto:null,i:0,passos:[],revisao:false};
 const HOJE=()=>new Date().toLocaleDateString('pt-BR');
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;};
-function passosDe(n,grupo){return AULAS[n].passos.filter(p=>!p.g||p.g===grupo).map(p=>Object.assign({},p,(grupo==='B'&&p.B)?p.B:{}));}
+function passosDe(n,grupo,v){return AULAS[n].passos.filter(p=>!p.g||p.g===grupo).map(p=>variante(Object.assign({},p,(grupo==='B'&&p.B)?p.B:{}),v||0));}
 function contaTotal(ps){return ps.reduce((s,p)=>s+(p.t==='q'?1:p.t==='classe'?p.itens.length:0),0);}
 function feitaAula(n){return !!(S.dados.aulas&&S.dados.aulas[n]&&S.dados.aulas[n].concluida&&S.dados.aulas[n].nPassos);}
 const NOTA_MIN=0.8; // regra do plano: 80% nos exercícios objetivos para avançar
@@ -610,9 +680,14 @@ function liberada(n){return completo()&&!!AULAS[n]&&(n===1||aprovada(n-1));}
 function abrirAula(n){
   n=n||1; if(!AULAS[n]) return;
   salvar(true);
-  A.n=n; A.passos=passosDe(n,S.aluno.grupo); A.total=contaTotal(A.passos);
   let sv=(S.dados.aulas||{})[n];
-  if(sv&&sv.concluida&&!(sv.nPassos&&sv.total&&sv.acertos/sv.total>=NOTA_MIN)){ /* refazer: começa do zero */ sv=null; }
+  const reprovadaAntes=!!(sv&&sv.concluida&&!(sv.nPassos&&sv.total&&sv.acertos/sv.total>=NOTA_MIN));
+  S.dados.tentativas=S.dados.tentativas||{};
+  if(reprovadaAntes) S.dados.tentativas[n]=(S.dados.tentativas[n]||0)+1;
+  const versao=reprovadaAntes?S.dados.tentativas[n]:(sv&&!sv.concluida&&sv.v)||0;
+  A.v=versao;
+  A.n=n; A.passos=passosDe(n,S.aluno.grupo,versao); A.total=contaTotal(A.passos);
+  if(reprovadaAntes){ sv=null; } /* refazer: começa do zero, com outra versão */
   if(sv&&!sv.nPassos){ S.dados.antigas=S.dados.antigas||{}; S.dados.antigas[n]=sv; delete S.dados.aulas[n]; sv=null; } // resultado da versão curta fica guardado à parte
   A.revisao=!!(sv&&sv.concluida&&sv.nPassos&&sv.total&&sv.acertos/sv.total>=NOTA_MIN); // aula aprovada: só revisão; reprovada: refaz do zero
   A.fim=false; A.travada=false;
@@ -633,7 +708,7 @@ function marcar(c,ok,rot,resp,conta){
   if(conta){ const k=c||'geral'; A.conc[k]=A.conc[k]||[0,0]; A.conc[k][1]++; if(ok){A.conc[k][0]++;A.acertos++;} }
 }
 function registro(fim){
-  return {data:HOJE(),titulo:AULAS[A.n].titulo,inicio:A.ini,fim:fim?new Date().toISOString():null,marcas:A.marcas,concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log,conceitos:A.conc,abertas:A.abertas,auto:A.auto,passo:A.i,nPassos:A.passos.length};
+  return {v:A.v||0,data:HOJE(),titulo:AULAS[A.n].titulo,inicio:A.ini,fim:fim?new Date().toISOString():null,marcas:A.marcas,concluida:A.fim,acertos:A.acertos,total:A.total,tentativas:A.log.length,respostas:A.log,conceitos:A.conc,abertas:A.abertas,auto:A.auto,passo:A.i,nPassos:A.passos.length};
 }
 function guardarAndamento(){ if(A.revisao) return; S.dados.aulas=S.dados.aulas||{}; S.dados.aulas[A.n]=registro(false); salvar(true); }
 function avancar(){
@@ -730,7 +805,7 @@ async function carregar(){
     S.online=true;
   }catch(e){ dados=null; }
   if(!dados||!dados.robo) dados=local()||dados||{};
-  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{},acessos:Array.isArray(dados.acessos)?dados.acessos:[],sessoes:Array.isArray(dados.sessoes)?dados.sessoes:[],antigas:dados.antigas||{}};
+  S.dados={robo:Object.assign(roboPadrao(),dados.robo||{}),aulas:dados.aulas||{},tentativas:dados.tentativas||{},acessos:Array.isArray(dados.acessos)?dados.acessos:[],sessoes:Array.isArray(dados.sessoes)?dados.sessoes:[],antigas:dados.antigas||{}};
   if(!Array.isArray(S.dados.robo.poderes)) S.dados.robo.poderes=[];
   if(!Array.isArray(S.dados.robo.inventados)) S.dados.robo.inventados=[];
 }
