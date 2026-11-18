@@ -220,12 +220,12 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .marcas{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
 .marcas i{width:14px;height:14px;border-radius:4px;display:inline-block}
 .certo{background:#3ddc97}.errado{background:#ff6b6b}
-#v-aula{background:linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('espaconave/imagens/nova-12.jpg') center/cover fixed no-repeat;border-radius:16px;padding:12px}
-#v-aula.fundo-b{background:linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('espaconave/imagens/nova-11.jpg') center/cover fixed no-repeat}
+#v-aula{background:linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('imagens/nova-12.jpg') center/cover fixed no-repeat;border-radius:16px;padding:12px}
+#v-aula.fundo-b{background:linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('imagens/nova-11.jpg') center/cover fixed no-repeat}
 </style></head>
 <body>
 <canvas id="ceu" aria-hidden="true"></canvas>
-<div class="deco sol"></div><img class="gigante-img" src="espaconave/imagens/saturno.jpg" alt="" aria-hidden="true"><div class="deco lua"></div>
+<div class="deco sol"></div><img class="gigante-img" src="imagens/saturno.jpg" alt="" aria-hidden="true"><div class="deco lua"></div>
 
 <main>
 <!-- ENTRADA -->
@@ -244,7 +244,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
     </form>
     <p class="nota">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
   </div>
-  <p id="credito-entrada" style="position:fixed;left:0;right:0;bottom:6px;margin:0;font-size:11px;color:#9fb0d8;text-align:center;pointer-events:none;z-index:3">A Terra: Apollo 17, NASA, domínio público (commons.wikimedia.org/wiki/File:The_Blue_Marble,_AS17-148-22727.jpg). Chão: foto da Lua, sonda LRO, NASA/GSFC/ASU, domínio público (cópia redimensionada).</p>
+  <p id="credito-entrada" style="position:fixed;left:0;right:0;bottom:6px;margin:0;font-size:11px;color:#9fb0d8;text-align:center;pointer-events:none;z-index:3">Fotos reais da NASA, em domínio público: a Terra (Apollo 17), a Lua (sonda LRO), Saturno (Cassini), Júpiter (Juno) e Marte (Viking).</p>
 </section>
 
 <!-- HANGAR -->
@@ -358,7 +358,7 @@ const MODELOS=[
  {id:'rover',nome:'Rover explorador',fato:'Rovers como o Perseverance, da NASA, exploram Marte sobre seis rodas.'},
  {id:'braco',nome:'Braço robótico',fato:'Braços robóticos montam carros nas fábricas e trabalham na Estação Espacial.'},
  {id:'drone',nome:'Drone',fato:'Drones voam com hélices. Um pequeno helicóptero, o Ingenuity, já voou em Marte.'},
- {id:'humanoide',nome:'Humanoide',fato:'O Robonaut 2, da NASA, é um humanoide com braços e mãos de alta precisão. Foi testado na Estação Espacial Internacional. Foto: NASA.',foto:'espaconave/imagens/robonaut-2.jpg'},
+ {id:'humanoide',nome:'Humanoide',fato:'O Robonaut 2, da NASA, é um humanoide com braços e mãos de alta precisão. Foi testado na Estação Espacial Internacional. Foto: NASA.',foto:'imagens/robonaut-2.jpg'},
  {id:'aspirador',nome:'Robô aspirador',fato:'Usa sensores para desviar dos móveis e não cair da escada.'},
  {id:'quadrupede',nome:'Cão-robô',fato:'Robôs de quatro patas, como o Spot, inspecionam lugares perigosos.'}];
 const CORES=['#3d8bff','#ff5d73','#3fd18c','#ffb800','#a78bfa','#ff8a3d','#e6edff'];
@@ -382,7 +382,7 @@ const PODERES=[
  {id:'luzes',t:'acao',n:'Luzes',d:'Acende sinais coloridos.'},
  {id:'pernas',t:'acao',n:'Pernas',d:'Anda em terreno difícil.'}];
 const PLANETAS=[
- {id:'maquina',n:'Máquina',d:'O computador por fora e por dentro',aulas:[1,2,3,4],c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)',foto:'espaconave/imagens/terra.jpg'},
+ {id:'maquina',n:'Máquina',d:'O computador por fora e por dentro',aulas:[1,2,3,4],c:'radial-gradient(circle at 30% 30%,#8fd3ff,#2a6fe0)',foto:'imagens/terra.jpg'},
  {id:'dados',n:'Dados',d:'Como tudo vira número',aulas:[5],c:'radial-gradient(circle at 30% 30%,#ffd0dc,#ff5d73)'},
  {id:'seguranca',n:'Internet',d:'Redes, segurança e vida digital',aulas:[6,7],c:'radial-gradient(circle at 30% 30%,#b8ffd9,#1f9d63)'},
  {id:'logica',n:'Lógica',d:'Passo a passo, decisão e repetição',aulas:[8,9],c:'radial-gradient(circle at 30% 30%,#ffe29a,#ff8a3d)'},
@@ -416,7 +416,7 @@ function completo(){const t=tiposPresentes();return !!R().nome.trim()&&t.sensor&
 function falar(el,t){$(el).textContent=t;}
 
 /* ---------- Telas ---------- */
-const FUNDOS=[{img:"espaconave/imagens/nova-12.jpg",c:"Júpiter: NASA/JPL-Caltech/ASU (sonda Juno). Domínio público. commons.wikimedia.org/wiki/File:Jupiter_-_Juno.jpg"},{img:"espaconave/imagens/nova-11-web.jpg",c:"Marte: NASA/JPL/USGS (mosaico Viking, PIA00407). Domínio público. commons.wikimedia.org/wiki/File:MARS-Viking.jpg"},{img:"espaconave/imagens/nova-10-web.jpg",c:"Netuno: Andrea Luck, dados NASA/JPL/Voyager-ISS. CC BY 2.0. commons.wikimedia.org/wiki/File:Neptune_-_Nasa%27s_Voyager_2_-_1989_(53506151058).png"},{img:"espaconave/imagens/nova-02-web.jpg",c:"Ônibus Atlantis na plataforma 39A (STS-125): NASA/Scott Andrews (KSC-2009-3108). Domínio público. commons.wikimedia.org/wiki/File:STS-125_Atlantis_Liftoff_02.jpg"},{img:"espaconave/imagens/nova-03-web.jpg",c:"Foguete Ares I-X decolando: NASA (KSC-2009-5944). Domínio público. commons.wikimedia.org/wiki/File:Ares_I-X_launch_08.jpg"},{img:"espaconave/imagens/nova-04-web.jpg",c:"Saturn V na plataforma (Apollo 4): NASA (GPN-2006-000038). Domínio público. commons.wikimedia.org/wiki/File:Apollo_4_liftoff_-_GPN-2006-000038.jpg"},{img:"espaconave/imagens/nova-05-web.jpg",c:"Decolagem da Apollo 11: NASA, restaurada por Michel Vuijlsteke. Domínio público. commons.wikimedia.org/wiki/File:Apollo_11_Launch2.jpg"},{img:"espaconave/imagens/nova-08-web.jpg",c:"Ingenuity sobre Marte: NASA/JPL-Caltech (PIA24541). Domínio público. commons.wikimedia.org/wiki/File:NASA%27s_Ingenuity_helicopter_on_April_4,_2021.jpg"},{img:"espaconave/imagens/nova-09-web.jpg",c:"Primeira imagem colorida de Marte (Perseverance): NASA/JPL-Caltech. Domínio público. commons.wikimedia.org/wiki/File:Perseverance%27s_First_Full-Color_Look_at_Mars.png"},{img:"espaconave/imagens/nova-07-web.jpg",c:"Braço Canadarm2 na ISS (ISS062-E-055099): NASA. Domínio público. commons.wikimedia.org/wiki/File:Canadarm2_during_Expedition_62_(ISS062-E-055099).jpg"},{img:"espaconave/imagens/nova-13-web.jpg",c:"A Terra (The Blue Marble): Harrison Schmitt / Apollo 17, NASA (AS17-148-22727). Domínio público. Cópia redimensionada, retocada no Commons. commons.wikimedia.org/wiki/File:The_Blue_Marble,_AS17-148-22727.jpg"},{img:"espaconave/imagens/nova-14-web.jpg",c:"A Lua (face visível, sonda LRO): NASA/GSFC/Universidade Estadual do Arizona. Domínio público. Cópia redimensionada (1.280 px) de Lua lado próximo LRO, 1.400 × 1.400 px. commons.wikimedia.org/wiki/File:Moon_nearside_LRO.jpg"},{img:"espaconave/imagens/nova-06-web.jpg",c:"Robô Spot (Boston Dynamics) em trilha na floresta: Jonte (Jonatan Holmgren), trabalho próprio. CC BY-SA 4.0. commons.wikimedia.org/wiki/File:Spot_by_Boston_Dynamics.jpg"},{img:"espaconave/imagens/nova-15-web.jpg",c:"Saturno visto pela sonda Cassini (6 out 2004): NASA/JPL/Space Science Institute. Domínio público. Cópia redimensionada (8.000 px) do original de 8.888 × 4.544 px. commons.wikimedia.org/wiki/File:Saturn_from_Cassini_Orbiter_(2004-10-06).jpg"}];
+const FUNDOS=[{img:"imagens/nova-12.jpg",c:"Júpiter: NASA/JPL-Caltech/ASU (sonda Juno). Domínio público. commons.wikimedia.org/wiki/File:Jupiter_-_Juno.jpg"},{img:"imagens/nova-11-web.jpg",c:"Marte: NASA/JPL/USGS (mosaico Viking, PIA00407). Domínio público. commons.wikimedia.org/wiki/File:MARS-Viking.jpg"},{img:"imagens/nova-10-web.jpg",c:"Netuno: Andrea Luck, dados NASA/JPL/Voyager-ISS. CC BY 2.0. commons.wikimedia.org/wiki/File:Neptune_-_Nasa%27s_Voyager_2_-_1989_(53506151058).png"},{img:"imagens/nova-02-web.jpg",c:"Ônibus Atlantis na plataforma 39A (STS-125): NASA/Scott Andrews (KSC-2009-3108). Domínio público. commons.wikimedia.org/wiki/File:STS-125_Atlantis_Liftoff_02.jpg"},{img:"imagens/nova-03-web.jpg",c:"Foguete Ares I-X decolando: NASA (KSC-2009-5944). Domínio público. commons.wikimedia.org/wiki/File:Ares_I-X_launch_08.jpg"},{img:"imagens/nova-04-web.jpg",c:"Saturn V na plataforma (Apollo 4): NASA (GPN-2006-000038). Domínio público. commons.wikimedia.org/wiki/File:Apollo_4_liftoff_-_GPN-2006-000038.jpg"},{img:"imagens/nova-05-web.jpg",c:"Decolagem da Apollo 11: NASA, restaurada por Michel Vuijlsteke. Domínio público. commons.wikimedia.org/wiki/File:Apollo_11_Launch2.jpg"},{img:"imagens/nova-08-web.jpg",c:"Ingenuity sobre Marte: NASA/JPL-Caltech (PIA24541). Domínio público. commons.wikimedia.org/wiki/File:NASA%27s_Ingenuity_helicopter_on_April_4,_2021.jpg"},{img:"imagens/nova-09-web.jpg",c:"Primeira imagem colorida de Marte (Perseverance): NASA/JPL-Caltech. Domínio público. commons.wikimedia.org/wiki/File:Perseverance%27s_First_Full-Color_Look_at_Mars.png"},{img:"imagens/nova-07-web.jpg",c:"Braço Canadarm2 na ISS (ISS062-E-055099): NASA. Domínio público. commons.wikimedia.org/wiki/File:Canadarm2_during_Expedition_62_(ISS062-E-055099).jpg"},{img:"imagens/nova-13-web.jpg",c:"A Terra (The Blue Marble): Harrison Schmitt / Apollo 17, NASA (AS17-148-22727). Domínio público. Cópia redimensionada, retocada no Commons. commons.wikimedia.org/wiki/File:The_Blue_Marble,_AS17-148-22727.jpg"},{img:"imagens/nova-14-web.jpg",c:"A Lua (face visível, sonda LRO): NASA/GSFC/Universidade Estadual do Arizona. Domínio público. Cópia redimensionada (1.280 px) de Lua lado próximo LRO, 1.400 × 1.400 px. commons.wikimedia.org/wiki/File:Moon_nearside_LRO.jpg"},{img:"imagens/nova-06-web.jpg",c:"Robô Spot (Boston Dynamics) em trilha na floresta: Jonte (Jonatan Holmgren), trabalho próprio. CC BY-SA 4.0. commons.wikimedia.org/wiki/File:Spot_by_Boston_Dynamics.jpg"},{img:"imagens/nova-15-web.jpg",c:"Saturno visto pela sonda Cassini (6 out 2004): NASA/JPL/Space Science Institute. Domínio público. Cópia redimensionada (8.000 px) do original de 8.888 × 4.544 px. commons.wikimedia.org/wiki/File:Saturn_from_Cassini_Orbiter_(2004-10-06).jpg"}];
 function fundoAula(n){const f=FUNDOS[(n-1)%FUNDOS.length];const v=$('v-aula');v.style.backgroundImage="linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('"+f.img+"')";let c=$('credito-fundo');if(!c){c=document.createElement('p');c.id='credito-fundo';c.style.cssText='font-size:12px;color:#9fb0d8;margin:16px 0 0;text-align:center';v.appendChild(c);}c.textContent='Foto de fundo: '+f.c;}
 function tela(v){['v-entrada','v-hangar','v-aula','v-prof'].forEach(x=>{$(x).hidden=(x!==v);});window.scrollTo(0,0);}
 const ABAS=[['modelo','1 Modelo'],['poderes','2 Poderes'],['inventar','3 Inventar'],['missoes','4 Missões']];
@@ -951,6 +951,79 @@ async function carregarAlunos(){
   $('p-lista').innerHTML=q.data.length?q.data.map(cartaoAluno).join(''):'<p>Nenhum tripulante ainda.</p>';
   $('p-msg').textContent='Atualizado em '+new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})+'.';
 }
+/* ---------- Viagem depois do login: a nave sai da Lua, cruza o espaço e chega a Marte ----------
+   Camada própria por cima de tudo. As telas de baixo carregam enquanto ela toca. Toque ou tecla pula.
+   Terra = foto real da Apollo 17; Marte = mosaico real das sondas Viking; chão = foto real da Lua (LRO). */
+function viagem(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return Promise.resolve();
+  return new Promise(fim=>{
+    const DUR=6.4, cv=document.createElement('canvas'), x=cv.getContext('2d');
+    cv.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:60;background:#02030a;cursor:pointer';
+    cv.setAttribute('aria-hidden','true'); document.body.appendChild(cv);
+    const cred=document.createElement('p'); cred.style.cssText='position:fixed;left:0;right:0;bottom:6px;margin:0;padding:0 10px;z-index:61;font-size:11px;color:#9fb0d8;text-align:center;pointer-events:none';
+    cred.textContent='Fotos reais: a Terra (Apollo 17, NASA), a Lua (sonda LRO, NASA/GSFC/ASU) e Marte (sondas Viking, NASA/JPL/USGS). Domínio público.'; document.body.appendChild(cred);
+    const img=src=>{const i=new Image();i.src=src;return i;}, ok=i=>i.complete&&i.naturalWidth>0;
+    const TERRA=img('imagens/nova-13-web.jpg'), MARTE=img('imagens/nova-11-web.jpg'), LUA=img('imagens/nova-14-web.jpg');
+    let W,H; const d=Math.min(devicePixelRatio||1,2);
+    const tam=()=>{W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;x.setTransform(d,0,0,d,0,0);}; tam(); addEventListener('resize',tam);
+    const E=Array.from({length:220},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.3,v:Math.random()*.7+.3}));
+    const cl=(v,a,b)=>Math.max(a,Math.min(b,v)), su=v=>{v=cl(v,0,1);return v*v*(3-2*v);}, mix=(a,b,k)=>a+(b-a)*k;
+    function disco(im,cx,cy,r,cor,zoom){ if(r<1)return;
+      const g=x.createRadialGradient(cx,cy,r*.9,cx,cy,r*1.6);g.addColorStop(0,cor);g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(cx-r*1.7,cy-r*1.7,r*3.4,r*3.4);
+      x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();
+      if(ok(im)){const k=zoom||1;x.drawImage(im,cx-r*k,cy-r*k,r*2*k,r*2*k);}else{x.fillStyle=cor.replace(/[\d.]+\)$/,'1)');x.fill();}
+      x.restore(); }
+    function rosto(cx,cy,r,corpo,tela,oculos){ // cabeça de robô na janela
+      x.fillStyle=corpo;x.beginPath();x.roundRect(cx-r,cy-r*.8,r*2,r*1.6,r*.35);x.fill();
+      x.fillStyle='#0c1730';x.beginPath();x.roundRect(cx-r*.72,cy-r*.5,r*1.44,r*.9,r*.2);x.fill();
+      x.fillStyle=tela;x.beginPath();x.arc(cx-r*.34,cy-r*.1,r*.17,0,7);x.arc(cx+r*.34,cy-r*.1,r*.17,0,7);x.fill();
+      if(oculos){x.strokeStyle=tela;x.lineWidth=r*.07;x.beginPath();x.arc(cx-r*.34,cy-r*.1,r*.3,0,7);x.moveTo(cx+r*.64,cy-r*.1);x.arc(cx+r*.34,cy-r*.1,r*.3,0,7);x.stroke();} }
+    function nave(cx,cy,u,ang,fogo,t){ // nave deitada: nariz para a direita quando ang=0
+      x.save();x.translate(cx,cy);x.rotate(ang);
+      if(fogo>0){const L=u*(9+3*Math.sin(t*40))*fogo;const g=x.createLinearGradient(-u*8,0,-u*8-L,0);g.addColorStop(0,'rgba(255,240,200,.95)');g.addColorStop(.35,'rgba(255,150,50,.8)');g.addColorStop(1,'rgba(255,80,20,0)');
+        x.fillStyle=g;x.beginPath();x.moveTo(-u*8,-u*1.7);x.quadraticCurveTo(-u*8-L*.6,0,-u*8-L,0);x.quadraticCurveTo(-u*8-L*.6,0,-u*8,u*1.7);x.fill();}
+      x.fillStyle='#e8501c';x.beginPath();x.moveTo(-u*4,-u*2.4);x.lineTo(-u*9,-u*5.4);x.lineTo(-u*8,-u*2.2);x.fill();x.beginPath();x.moveTo(-u*4,u*2.4);x.lineTo(-u*9,u*5.4);x.lineTo(-u*8,u*2.2);x.fill();
+      const g=x.createLinearGradient(0,-u*2.6,0,u*2.6);g.addColorStop(0,'#8a8e94');g.addColorStop(.3,'#ffffff');g.addColorStop(.7,'#d5d6d2');g.addColorStop(1,'#7b8088');x.fillStyle=g;
+      x.beginPath();x.moveTo(-u*8,-u*2.5);x.lineTo(u*4,-u*2.5);x.quadraticCurveTo(u*9,-u*2.2,u*11.5,0);x.quadraticCurveTo(u*9,u*2.2,u*4,u*2.5);x.lineTo(-u*8,u*2.5);x.closePath();x.fill();
+      x.fillStyle='#e8501c';x.fillRect(-u*6.2,-u*2.5,u*.7,u*5);x.fillStyle='#1b1d22';x.fillRect(u*4.2,-u*2.5,u*.5,u*5);
+      for(const [jx,c,tl,oc] of [[-u*2.6,'#2f6fb5','#9ff3ff',false],[u*1.4,'#1f9e96','#c9fff3',true]]){
+        x.fillStyle='#5b6470';x.beginPath();x.arc(jx,0,u*1.75,0,7);x.fill();x.fillStyle='#123a66';x.beginPath();x.arc(jx,0,u*1.45,0,7);x.fill();
+        x.save();x.beginPath();x.arc(jx,0,u*1.45,0,7);x.clip();x.translate(jx,u*.25);x.rotate(-ang);rosto(0,0,u*1.05,c,tl,oc);x.restore();}
+      x.restore(); }
+    let t0=null, acabou=false;
+    const sair=()=>{ if(acabou)return; acabou=true; removeEventListener('resize',tam); removeEventListener('keydown',pular); cv.remove(); cred.remove(); fim(); };
+    const pular=()=>{ if(t0!==null) t0=performance.now()-(DUR-.45)*1000; };
+    cv.addEventListener('pointerdown',pular); addEventListener('keydown',pular);
+    function q(agora){ if(acabou)return; if(t0===null)t0=agora; const t=(agora-t0)/1000;
+      if(t>=DUR){sair();return;}
+      const m=Math.min(W,H), u=m/52;
+      x.globalAlpha=1; x.fillStyle='#02030a'; x.fillRect(0,0,W,H);
+      // fases: 0 a 1,6 decola da Lua; 1,6 a 4,2 cruzeiro; 4,2 a 6,4 chega a Marte
+      const dec=su(t/1.6), cru=su((t-1.4)/1.2), che=su((t-3.9)/2.2);
+      const vel=mix(.02,1,cru)*(1-che*.75);
+      for(const e of E){ const ex=((e.x-t*vel*e.v*.55)%1+1)%1*W, ey=e.y*H, c=vel*e.v*m*.09;
+        x.strokeStyle=`rgba(255,255,255,${.35+.5*e.v})`; x.lineWidth=e.r; x.lineCap='round'; x.beginPath(); x.moveTo(ex,ey); x.lineTo(ex+Math.max(c,.01),ey); x.stroke(); }
+      // a Terra fica para trás
+      disco(TERRA, mix(W*.78,-m*.25,su((t-.9)/2.6)), mix(H*.22,H*.3,cru), m*mix(.13,.05,cru), 'rgba(90,150,255,.22)', 1.07);
+      // Marte chega
+      if(che>0) disco(MARTE, mix(W+m*.3,W*.72,che), mix(H*.3,H*.5,che), m*mix(.1,.42,che), 'rgba(255,140,90,.18)', 1.03);
+      // chão da Lua some para baixo
+      if(dec<1){ const gy=mix(H*.8,H*1.5,dec);
+        if(ok(LUA)){const n=LUA.naturalWidth,nh=LUA.naturalHeight;x.drawImage(LUA,n*.16,nh*.36,n*.68,nh*.2,0,gy,W,H*.3);x.fillStyle='rgba(120,120,125,.3)';x.fillRect(0,gy,W,H*.3);}
+        else{x.fillStyle='#77777b';x.fillRect(0,gy,W,H*.3);} }
+      // a nave: sobe da Lua, vira para o lado, cruza e estaciona perto de Marte
+      const ang=mix(-Math.PI/2,0,su((t-.5)/1.5)) + Math.sin(t*2.3)*.025;
+      const nx=mix(mix(W*.5,W*.42,cru),W*.3,che), ny=mix(mix(H*.66,H*.5,dec),H*.56,che)+Math.sin(t*3.1)*u*.5;
+      nave(nx,ny,u*mix(1.15,1,cru),ang,1-che*.8,t);
+      // destino
+      const ta=su((t-4.4)/.6); if(ta>0){ x.globalAlpha=ta; x.textAlign='center'; x.fillStyle='#fff'; x.font=`700 ${Math.round(m*.05)}px system-ui,Segoe UI,Arial,sans-serif`; x.fillText('Chegando a Marte',W/2,H*.14);
+        x.fillStyle='#9fb0d8'; x.font=`${Math.round(m*.026)}px system-ui,Segoe UI,Arial,sans-serif`; x.fillText('Byte e Pixel preparam a base. Sua missão começa agora.',W/2,H*.14+m*.045); x.globalAlpha=1; }
+      // entra e sai com fundido
+      const f=Math.max(1-t/.35, (t-(DUR-.45))/.45); if(f>0){ x.fillStyle=`rgba(2,3,10,${cl(f,0,1)})`; x.fillRect(0,0,W,H); if(t>DUR-.45){cv.style.opacity=String(cl(1-(t-(DUR-.45))/.45,0,1));cred.style.opacity=cv.style.opacity;} }
+      requestAnimationFrame(q); }
+    requestAnimationFrame(q);
+  });
+}
 $('form-acesso').addEventListener('submit',async e=>{
   e.preventDefault();
   const m=$('msgacesso'), diz=(t,ok)=>{m.textContent=t;m.style.color=ok?'var(--ok)':'var(--bad)';};
@@ -962,7 +1035,9 @@ $('form-acesso').addEventListener('submit',async e=>{
     const r=await sb.auth.signInWithPassword({email:u+DOMINIO,password:$('a-senha').value});
     if(r.error) throw r.error;
     $('a-senha').value=''; diz('',true); fecharPainel();
+    const vg=viagem();
     if(await ehProfessor(r.data.user)){ abrirMenuProf(); } else { await entrar(r.data.user); }
+    await vg;
   }catch(err){diz('Usuário ou senha incorretos.');}
   b.disabled=false;
 });
@@ -1029,7 +1104,8 @@ function inclinacao(){if(t>=T_POUSO)return 0;return Math.sin(t*1.7)*0.03*(1-t/T_
 // separado e só reaproveitado a cada quadro. Isso deixa a animação leve em computadores comuns.
 const TERRA=new Image();TERRA.src='imagens/nova-13-web.jpg';
 const LUA=new Image();LUA.src='imagens/nova-14-web.jpg';
-TERRA.onload=()=>{fundoCV=null;};LUA.onload=()=>{fundoCV=null;};
+const SATURNO=new Image();SATURNO.src='imagens/nova-15-web.jpg';const JUPITER=new Image();JUPITER.src='imagens/nova-12.jpg';const MARTE=new Image();MARTE.src='imagens/nova-11-web.jpg';
+[TERRA,LUA,SATURNO,JUPITER,MARTE].forEach(i=>i.onload=()=>{fundoCV=null;});
 const pronta=i=>i.complete&&i.naturalWidth>0;
 const RUIDO=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),d=g.createImageData(128,128);
   for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}g.putImageData(d,0,0);return c;})();
@@ -1043,6 +1119,13 @@ function montarFundo(){
   // céu do espaço: preto, sem atmosfera
   const gg=g.createLinearGradient(0,0,0,ch);gg.addColorStop(0,'#02030a');gg.addColorStop(1,'#070b1c');g.fillStyle=gg;g.fillRect(0,0,W,ch);
   for(const s of FIXAS){g.fillStyle=`rgba(255,255,255,${s.a})`;g.beginPath();g.arc(s.x*W,s.y*ch,s.r,0,7);g.fill();}
+  // planetas ao longe (fotos reais; o fundo preto das fotos some com a mistura 'lighten')
+  const mm=Math.min(W,H);
+  g.save();g.globalCompositeOperation='lighten';
+  if(pronta(SATURNO)){const sw=mm*.3,sh=sw*SATURNO.naturalHeight/SATURNO.naturalWidth;g.save();g.translate(W*.17,H*.2);g.rotate(-.32);g.globalAlpha=.95;g.drawImage(SATURNO,-sw/2,-sh/2,sw,sh);g.restore();}
+  if(pronta(JUPITER)){const jr=mm*.045;g.globalAlpha=.95;g.drawImage(JUPITER,W*.47-jr,H*.1-jr,jr*2,jr*2);}
+  if(pronta(MARTE)){const mr=mm*.022;g.globalAlpha=1;g.drawImage(MARTE,W*.33-mr,H*.42-mr,mr*2,mr*2);}
+  g.restore();
   // a Terra vista da Lua (foto real, Apollo 17)
   const tr=Math.min(W,H)*.13,tx=W*.8,ty=H*.2;
   if(pronta(TERRA)){
