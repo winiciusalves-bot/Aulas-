@@ -221,6 +221,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
 .marcas i{width:14px;height:14px;border-radius:4px;display:inline-block}
 .certo{background:#3ddc97}.errado{background:#ff6b6b}
 #v-aula{background:linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('espaconave/imagens/nova-12.jpg') center/cover fixed no-repeat;border-radius:16px;padding:12px}
+#v-aula.fundo-b{background:linear-gradient(180deg,rgba(3,5,13,.78),rgba(3,5,13,.92)),url('espaconave/imagens/nova-11.jpg') center/cover fixed no-repeat}
 </style></head>
 <body>
 <canvas id="ceu" aria-hidden="true"></canvas>
@@ -687,7 +688,7 @@ function abrirAula(n){
   if(reprovadaAntes) S.dados.tentativas[n]=(S.dados.tentativas[n]||0)+1;
   const versao=reprovadaAntes?S.dados.tentativas[n]:(sv&&!sv.concluida&&sv.v)||0;
   A.v=versao;
-  A.n=n; A.passos=passosDe(n,S.aluno.grupo,versao); A.total=contaTotal(A.passos);
+  A.n=n; $('v-aula').classList.toggle('fundo-b',n%2===0); A.passos=passosDe(n,S.aluno.grupo,versao); A.total=contaTotal(A.passos);
   if(reprovadaAntes){ sv=null; } /* refazer: começa do zero, com outra versão */
   if(sv&&!sv.nPassos){ S.dados.antigas=S.dados.antigas||{}; S.dados.antigas[n]=sv; delete S.dados.aulas[n]; sv=null; } // resultado da versão curta fica guardado à parte
   A.revisao=!!(sv&&sv.concluida&&sv.nPassos&&sv.total&&sv.acertos/sv.total>=NOTA_MIN); // aula aprovada: só revisão; reprovada: refaz do zero
