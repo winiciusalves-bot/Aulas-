@@ -244,6 +244,7 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
     </form>
     <p class="nota">Acesso só para os tripulantes. O usuário e a senha são entregues pelo comandante.</p>
   </div>
+  <p id="credito-entrada" style="position:fixed;left:0;right:0;bottom:6px;margin:0;font-size:11px;color:#9fb0d8;text-align:center;pointer-events:none;z-index:3">Fundo: decolagem da Apollo 11, NASA, domínio público (commons.wikimedia.org/wiki/File:Apollo_11_Launch2.jpg). Lua: NASA/GSFC/ASU, sonda LRO, domínio público (cópia redimensionada).</p>
 </section>
 
 <!-- HANGAR -->
@@ -998,8 +999,8 @@ function inclinacao(){if(t>=T_POUSO)return 0;return Math.sin(t*1.7)*0.03*(1-t/T_
 // ---------- cenário (céu = foto real da NASA; Lua = foto real da sonda LRO) ----------
 // Tudo que é fixo (céu, Lua, morros, chão, granulado e vinheta) é pintado UMA vez num canvas
 // separado e só reaproveitado a cada quadro. Isso deixa a animação leve em computadores comuns.
-const FUNDO=new Image();FUNDO.src='imagens/Kennedy_Space_Center_at_sunset,_October_13,_2010.jpg';
-const LUA=new Image();LUA.src='imagens/Moon_nearside_LRO.jpg';
+const FUNDO=new Image();FUNDO.src='imagens/nova-05-web.jpg';
+const LUA=new Image();LUA.src='imagens/nova-14-web.jpg';
 FUNDO.onload=()=>{fundoCV=null;};LUA.onload=()=>{fundoCV=null;};
 const pronta=i=>i.complete&&i.naturalWidth>0;
 const HORIZONTE=0.5;   // na foto, o horizonte fica na metade da altura; usamos só o céu
