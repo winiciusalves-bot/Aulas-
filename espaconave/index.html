@@ -300,12 +300,23 @@ input[type=text],input[type=password]{width:100%;min-height:48px;padding:10px 14
   <div id="prof-menu" class="prof-menu">
     <button class="btn" id="p-materias" type="button">Matérias e tarefas</button>
     <button class="btn sec" id="p-alunos" type="button">Painel de alunos</button>
+    <button class="btn sec" id="p-livre" type="button">Fazer todos os exercícios</button>
     <button class="btn sec" id="p-sair" type="button">Sair</button>
   </div>
   <div id="p-materias-box" hidden>
     <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button></div>
     <p class="sub">Conteúdo completo de cada aula, como o aluno vê. Toque em um grupo para abrir.</p>
     <div id="p-materias-lista" class="grade-p"></div>
+  </div>
+  <div id="p-livre-box" hidden>
+    <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button></div>
+    <p class="sub">Modo livre: você monta o robô e faz qualquer aula, em qualquer ordem, como o aluno vê. Nada é gravado na conta dos alunos. O seu progresso fica só neste aparelho.</p>
+    <div class="prof-menu">
+      <button class="btn" data-livre="A" type="button">Entrar como Grupo A (Byte)</button>
+      <button class="btn" data-livre="B" type="button">Entrar como Grupo B (Pixel)</button>
+      <button class="btn sec" id="p-livre-zerar" type="button">Recomeçar do zero</button>
+    </div>
+    <p id="p-livre-msg" class="sub"></p>
   </div>
   <div id="p-alunos-box" hidden>
     <div class="prof-bar"><button class="btn sec" data-voltar type="button">← Menu</button><button class="btn sec" id="p-atualizar" type="button">Atualizar</button></div>
@@ -681,7 +692,7 @@ function feitaAula(n){return !!(S.dados.aulas&&S.dados.aulas[n]&&S.dados.aulas[n
 const NOTA_MIN=0.8; // regra do plano: 80% nos exercícios objetivos para avançar
 function notaAula(n){const a=S.dados.aulas&&S.dados.aulas[n]; return a&&a.total?a.acertos/a.total:0;}
 function aprovada(n){return feitaAula(n)&&notaAula(n)>=NOTA_MIN;}
-function liberada(n){return completo()&&!!AULAS[n]&&(n===1||aprovada(n-1));}
+function liberada(n){return completo()&&!!AULAS[n]&&(S.livre||n===1||aprovada(n-1));}
 function abrirAula(n){
   n=n||1; if(!AULAS[n]) return;
   salvar(true);
@@ -817,7 +828,7 @@ async function carregar(){
 async function salvar(silencio){
   local(S.dados); let ok=false;
   if(S.online&&S.rowId){ try{const r=await sb.from('acessos_crianca').update({skin:S.dados}).eq('id',S.rowId); ok=!r.error;}catch(e){} }
-  if(!silencio) $('msgsalvar').textContent=ok?'Robô salvo na sua conta.':'Salvo só neste aparelho (sem conexão com a base agora).';
+  if(!silencio) $('msgsalvar').textContent=S.livre?'Modo livre: salvo só neste aparelho.':ok?'Robô salvo na sua conta.':'Salvo só neste aparelho (sem conexão com a base agora).';
   return ok;
 }
 
@@ -847,7 +858,7 @@ setInterval(()=>{ if(SESS&&SESS.visivel&&!document.hidden){ pausarSessao(); reto
 
 /* ---------- Entrada e saída ---------- */
 async function entrar(user){
-  S.uid=user.id; S.key=(user.email||'').split('@')[0];
+  S.livre=false; S.uid=user.id; S.key=(user.email||'').split('@')[0];
   S.aluno=ALUNOS[S.key]||{nome:S.key,grupo:'A'};
   await carregar();
   abrirSessao();
@@ -865,12 +876,29 @@ async function ehProfessor(user){
   catch(e){ return false; }
 }
 function abrirMenuProf(){
-  $('v-prof').hidden=false; $('p-materias-box').hidden=true; $('p-alunos-box').hidden=true; $('prof-menu').hidden=false;
+  $('v-prof').hidden=false; $('p-materias-box').hidden=true; $('p-alunos-box').hidden=true; $('p-livre-box').hidden=true; $('prof-menu').hidden=false;
   ['v-entrada','v-hangar','v-aula'].forEach(x=>$(x).hidden=true); window.scrollTo(0,0);
 }
 document.getElementById('p-materias').onclick=()=>{$('prof-menu').hidden=true;$('p-materias-box').hidden=false;pintarMaterias();};
 document.getElementById('p-alunos').onclick=()=>{$('prof-menu').hidden=true;$('p-alunos-box').hidden=false;carregarAlunos();};
 document.getElementById('p-atualizar').onclick=carregarAlunos;
+/* Modo livre do professor: usa as mesmas telas do aluno, sem ligação com a base (S.online=false, sem rowId, sem sessão de tempo).
+   O progresso fica só no aparelho, numa chave própria (nave-professor-livre-A/B), separada das chaves dos alunos. */
+document.getElementById('p-livre').onclick=()=>{$('prof-menu').hidden=true;$('p-livre-box').hidden=false;$('p-livre-msg').textContent='';};
+function entrarLivre(g){
+  S.livre=true; S.key='professor-livre-'+g; S.aluno={nome:'Professor',grupo:g}; S.online=false; S.rowId=null; SESS=null;
+  const d=local()||{};
+  S.dados={robo:Object.assign(roboPadrao(),d.robo||{}),aulas:d.aulas||{},tentativas:d.tentativas||{},acessos:[],sessoes:[],antigas:d.antigas||{}};
+  if(!Array.isArray(S.dados.robo.poderes)) S.dados.robo.poderes=[];
+  if(!Array.isArray(S.dados.robo.inventados)) S.dados.robo.inventados=[];
+  $('ola').textContent='Hangar do professor · modo livre · Grupo '+g;
+  $('prof-h').innerHTML=prof().svg; $('prof-a').innerHTML=prof().svg;
+  $('nome-robo').value=R().nome; $('chat').textContent=''; $('resp').textContent=''; chat.passo=0; $('msgsalvar').textContent='';
+  $('v-prof').hidden=true; pintar(); tela('v-hangar'); aba(completo()?'missoes':'modelo');
+  falar('fala-h','Modo livre do professor. Monte o robô e depois abra qualquer aula. Nada daqui vai para a conta dos alunos.');
+}
+document.querySelectorAll('#v-prof [data-livre]').forEach(b=>b.onclick=()=>entrarLivre(b.dataset.livre));
+document.getElementById('p-livre-zerar').onclick=()=>{ try{localStorage.removeItem('nave-professor-livre-A');localStorage.removeItem('nave-professor-livre-B');}catch(e){} $('p-livre-msg').textContent='Pronto. O modo livre recomeça do zero nos dois grupos.'; };
 document.querySelectorAll('#v-prof [data-voltar]').forEach(b=>b.onclick=abrirMenuProf);
 document.getElementById('p-sair').onclick=async()=>{ try{await sb.auth.signOut();}catch(e){} S.key=S.aluno=S.uid=null; tela('v-entrada'); };
 const pmin=s=>{s=Math.round((s||0)/60);return s<60?s+' min':Math.floor(s/60)+' h '+(s%60)+' min';};
@@ -938,7 +966,7 @@ $('form-acesso').addEventListener('submit',async e=>{
   }catch(err){diz('Usuário ou senha incorretos.');}
   b.disabled=false;
 });
-$('sair').onclick=async()=>{ await salvar(true); try{await sb.auth.signOut();}catch(e){} S.key=S.aluno=S.uid=null; tela('v-entrada'); };
+$('sair').onclick=async()=>{ await salvar(true); if(S.livre){ S.livre=false; S.key=S.aluno=null; abrirMenuProf(); return; } try{await sb.auth.signOut();}catch(e){} S.key=S.aluno=S.uid=null; tela('v-entrada'); };
 $('salvar').onclick=()=>salvar(false);
 $('voltar').onclick=()=>{ tela('v-hangar'); aba('missoes'); };
 $('finalizar').onclick=finalizar;
