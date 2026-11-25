@@ -676,7 +676,7 @@ function variante(p,v){
     return Object.assign({},p,{q:alt.q,e:alt.e,o:alt.o.slice(rot).concat(alt.o.slice(0,rot)),a:(alt.a-rot+n)%n});
   }
   if(p.t==='classe'&&ALT_C[p.h]){
-    const lista=ALT_C[p.h], itens=lista[(v-1)%lista.length][0];
+    const lista=ALT_C[p.h], itens=lista[(v-1)%lista.length];
     const r=v%itens.length; return Object.assign({},p,{itens:itens.slice(r).concat(itens.slice(0,r))});
   }
   return p;
